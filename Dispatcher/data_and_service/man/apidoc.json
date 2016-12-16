@@ -1,0 +1,12 @@
+{
+  "name": "配送员",
+  "version": "0.1.0",
+  "description": "apiDoc for data_and_service/man module",
+  "title": "配送员",
+  "order": [
+    "api_deliveryman_login",
+    "api_retrieve_deliveryman_info",
+    "api_trigger_man_event",
+    "api_retrieve_man_fsm_log_info"
+  ]
+}

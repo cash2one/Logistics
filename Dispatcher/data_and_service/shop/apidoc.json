@@ -1,0 +1,7 @@
+{
+  "name": "商户",
+  "version": "0.1.0",
+  "description": "apiDoc for data_and_service/shop module",
+  "title": "商户",
+  "order": ["api_shop_login", "api_shop_cash_flow", ""]
+}

@@ -1,0 +1,30 @@
+{
+  "name": "聚合层基于uWSGI的服务",
+  "version": "0.1.0",
+  "description": "apiDoc for api_gateway/uwsgi module",
+  "title": "聚合层uwsgi",
+  "order": [
+    "api_man_sms_code",
+    "api_deliveryman_login",
+    "api_outsource_get_info",
+    "api_outsource_apply_withdraw",
+    "api_update_deliveryman",
+    "api_man_get_remark",
+    "api_man_get_familiars",
+
+    "api_outsource_get_finance_pending",
+    "api_get_flow_history",
+    "api_get_flow_history",
+    "api_outsource_paid",
+    "api_man_operation",
+
+    "api_shop_sms_code",
+    "api_shop_register",
+    "api_shop_login",
+    "api_shop_complete_info",
+    "api_shop_web_top_up",
+    "api_cash_flow",
+    "api_shop_balance",
+    "api_shop_expense"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "name": "Fence",
+  "version": "0.1.0",
+  "description": "聚合成 - 栅栏相关",
+  "title": "Fence",
+  "order":[
+    "Fence"
+  ]
+}

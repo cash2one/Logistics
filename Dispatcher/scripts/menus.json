@@ -1,0 +1,60 @@
+{
+  "button":[
+     {
+          "name":"发货",
+          "sub_button": [
+            {
+              "type": "view",
+              "name": "七夕报名",
+              "url": "http://mobile.123feng.com/valentine/"
+            },
+            {
+              "type": "view",
+              "name": "微信发货",
+              "url": "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxeda2f6550280ac63&redirect_uri=http://japi.gomrwind.com/WindCloud/account/wei_chat/auth_code&response_type=code&scope=snsapi_userinfo&state=fh&connect_redirect=1#wechat_redirect"
+            },
+            {
+              "type": "view",
+              "name": "App下载",
+              "url": "http://a.app.qq.com/o/simple.jsp?pkgname=com.gezbox.sender"
+            }
+          ]
+
+     },
+     {
+      "type":"view",
+      "name":"应聘",
+      "url": "http://mobile.123feng.com/hire/"
+     },
+     {
+           "name":"关于",
+           "sub_button":[
+              {
+               "type":"view",
+               "name":"风先生介绍",
+               "url":"http://mp.weixin.qq.com/s?__biz=MzA5NDY5NTczMg==&mid=502974696&idx=1&sn=935697f2df6ab1e8e2b294ace28e1efb&scene=18#wechat_redirect"
+              },
+              {
+               "type":"view",
+               "name":"最新消息",
+               "url":"http://mp.weixin.qq.com/s?__biz=MzA5NDY5NTczMg==&mid=502974622&idx=1&sn=bdcf47e10c1d65a327411b6f82b11cb2&scene=18#wechat_redirect"
+              },
+              {
+               "type":"view",
+               "name":"合作案例",
+                "url":"http://mp.weixin.qq.com/s?__biz=MzA5NDY5NTczMg==&mid=502974585&idx=1&sn=2072eda880f1f07514d1f19d366488e9&scene=18#wechat_redirect"
+              },
+             {
+               "type":"view",
+               "name":"形象代言",
+               "url":"http://mobile.123feng.com/feng-representer/?from=groupmessage&isappinstalled=0"
+             },
+             {
+               "type":"view",
+               "name":"超能五项",
+               "url":"http://mp.weixin.qq.com/s?__biz=MzA5NDY5NTczMg==&mid=502974591&idx=1&sn=110d76b5e28b7f70b10dfe7e3de6bc73&scene=18#wechat_redirect"
+             }
+           ]
+     }
+  ]
+}

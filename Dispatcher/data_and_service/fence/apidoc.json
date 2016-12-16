@@ -1,0 +1,9 @@
+{
+  "name": "Logic Fence",
+  "version": "0.1.0",
+  "description": "逻辑层 - 栅栏",
+  "title": "Logic Fence",
+  "order":[
+    "Fence"
+  ]
+}
