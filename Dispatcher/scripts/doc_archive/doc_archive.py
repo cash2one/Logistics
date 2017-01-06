@@ -93,7 +93,7 @@ def check():
 
     docdir -= not_apidoc_dir
     if not docdir:
-        print u"请输入足够多的由apidoc生成的文件夹"
+        print("请输入足够多的由apidoc生成的文件夹")
         exit(1)
 
     if output_dir == './':
