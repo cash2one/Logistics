@@ -8,7 +8,7 @@ from models import Settlement, Rewards
 from tools_lib.common_util.sstring import safe_join
 from tools_lib.host_info import DEBUG
 from utils import man_list, leader_list, driver_list
-from utils import mongo_client, format_man, DRIVER_BASE
+from utils import mongodb_client, format_man, DRIVER_BASE
 
 if DEBUG:
     _start_arrow = arrow.get(datetime(2016, 5, 30), "local")
@@ -27,8 +27,8 @@ def get_man_base(tel):
 
 def parttime_settlement():
     logging.info("parttime_settlement start...")
-    man_conn = mongo_client['profile']['man']
-    express = mongo_client['aeolus']['express']
+    man_conn = mongodb_client['profile']['man']
+    express = mongodb_client['aeolus']['express']
 
     m_type = "parttime"
 
@@ -163,7 +163,7 @@ def parttime_settlement():
 
 def driver_settlement():
     logging.info("driver_settlement start...")
-    man_conn = mongo_client['profile']['man']
+    man_conn = mongodb_client['profile']['man']
 
     m_type = "city_driver"
     log = []

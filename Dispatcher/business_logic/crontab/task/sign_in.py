@@ -4,8 +4,7 @@ from __future__ import unicode_literals
 
 import json
 import logging
-import sys
-from  datetime import datetime
+from datetime import datetime
 
 import arrow
 import psycopg2
@@ -17,10 +16,7 @@ from tools_lib.common_util.xls import xls_writer
 from tools_lib.geo.mercator import Mercator
 from tools_lib.host_info import CONFIG_POSTGRESQL, DEBUG
 from utils import man_list, driver_list, mail_list, TIME_PATTERN
-from utils import mongo_client, once, format_man, DRIVER_BASE
-
-reload(sys)
-sys.setdefaultencoding("utf8")
+from utils import mongodb_client, once, format_man, DRIVER_BASE
 
 if DEBUG:
     punish_time = arrow.get(datetime(2016, 5, 1), 'local')
@@ -161,8 +157,8 @@ def man(days=0):
     def process(tel):
         # 为什么在这里进行链接呢
         # 为了后面可以扩展成multiprocessing, 多线程中如果使用同一个数据库链接会出错
-        man_conn = mongo_client['profile']['man']
-        sign_conn = mongo_client['profile']['sign_in']
+        man_conn = mongodb_client['profile']['man']
+        sign_conn = mongodb_client['profile']['sign_in']
         cursor = node_conn.cursor()
 
         # 检查是否有这个人
@@ -250,10 +246,10 @@ def man(days=0):
     try:
         if DEBUG:
             send_mail(mail_list, "[测试]派件员签到报表", "这是测试服务器发出的测试数据\n数据日期:" + str(local), file_name="data.xls",
-                      file_body=xls_writer(msg))
+                      file_stream=xls_writer(msg))
         else:
             send_mail(mail_list, "派件员签到报表", "这是线上服务器发出的线上数据\n数据日期:" + str(local), file_name="data.xls",
-                      file_body=xls_writer(msg))
+                      file_stream=xls_writer(msg))
     except Exception as e:
         logging.exception(e.message)
 
@@ -295,7 +291,7 @@ def driver(days=0):
 
     # ===================== processing =============================
     def process(tel):
-        man_conn = mongo_client['profile']['man']
+        man_conn = mongodb_client['profile']['man']
         cursor = node_conn.cursor()
 
         # 检查是否有这个人
@@ -394,10 +390,10 @@ def driver(days=0):
     try:
         if DEBUG:
             send_mail(mail_list, "[测试]司机签到报表", "这是测试服务器发出的测试数据\n数据日期:" + str(local), file_name="data.xls",
-                      file_body=xls_writer(msg))
+                      file_stream=xls_writer(msg))
         else:
             send_mail(mail_list, "司机签到报表", "这是线上服务器发出的线上数据\n数据日期:" + str(local), file_name="data.xls",
-                      file_body=xls_writer(msg))
+                      file_stream=xls_writer(msg))
     except Exception as e:
         logging.exception(e.message)
 
@@ -411,7 +407,7 @@ def windchat():
     from tools_lib.windchat import shortcuts, conf
 
     local = arrow.now()
-    man_conn = mongo_client['profile']['man']
+    man_conn = mongodb_client['profile']['man']
     man_m_type = "parttime"
 
     id_list = []

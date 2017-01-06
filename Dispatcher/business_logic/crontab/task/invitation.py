@@ -7,14 +7,14 @@ import pytz
 from models import Rewards
 from tools_lib.common_util.archived.gtz import TimeZone
 from tornado.escape import utf8
-from utils import mongo_client, format_man
+from utils import mongodb_client, format_man
 
 
 def shop_reward():
     logging.info("invitation shop reward start...")
-    man_conn = mongo_client['profile']['man']
-    shop_conn = mongo_client['profile']['shop']
-    express = mongo_client['aeolus']['express']
+    man_conn = mongodb_client['profile']['man']
+    shop_conn = mongodb_client['profile']['shop']
+    express = mongodb_client['aeolus']['express']
 
     now = TimeZone.utc_now()
     local = TimeZone.local_now()
@@ -101,8 +101,8 @@ def shop_reward():
 
 def man_reward():
     logging.info("invitation man reward start...")
-    man_conn = mongo_client['profile']['man']
-    express = mongo_client['aeolus']['express']
+    man_conn = mongodb_client['profile']['man']
+    express = mongodb_client['aeolus']['express']
 
     now = TimeZone.utc_now()
     local = TimeZone.local_now()

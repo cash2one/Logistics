@@ -10,7 +10,7 @@ import psycopg2
 from models import OpData
 from tools_lib.common_util.archived.gtz import TimeZone
 from tools_lib.host_info import CONFIG_POSTGRESQL
-from utils import mongo_client, get_zj_statistics, driver_list, TIME_PATTERN
+from utils import mongodb_client, get_zj_statistics, driver_list, TIME_PATTERN
 
 
 # def daily():
@@ -58,9 +58,9 @@ from utils import mongo_client, get_zj_statistics, driver_list, TIME_PATTERN
 def op_data():
     logging.info("op_data start...")
 
-    man_conn = mongo_client['profile']['man']
-    shop_conn = mongo_client['profile']['shop']
-    express = mongo_client['aeolus']['express']
+    man_conn = mongodb_client['profile']['man']
+    shop_conn = mongodb_client['profile']['shop']
+    express = mongodb_client['aeolus']['express']
 
     opdata = OpData.objects.order_by("-create_time").first()
 
