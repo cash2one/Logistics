@@ -1,13 +1,9 @@
 #coding=utf-8
-__author__ = 'kk'
-'''
-tool for managing LeanCloud
-'''
 
-import logging
-import click
-from tools_lib.leancloud.credentials import dev_credentials, prod_credentials
+import os
 
 
 def main():
-    return
+    path = '/Users/chenxinlu/Developer/Logistics/'
+    what = os.scandir(path)
+    print what
