@@ -1,4 +1,8 @@
 {
-    "python.pythonPath": "${workspaceRoot}/venv/bin/python3",
+    "python.pythonPath": "/Users/chenxinlu/Developer/Logistics/venv/bin/python",
+    "python.autoComplete.extraPaths": [
+        "/Users/chenxinlu/Developer/Logistics/venv/lib/python3.6",
+        "/Users/chenxinlu/Developer/Logistics/venv/lib/python3.6/site-packages"
+     ],
     "python.linting.pylintEnabled": false
 }

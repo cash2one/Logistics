@@ -13,5 +13,5 @@ def del_pyc(path):
 
 
 if __name__ == '__main__':
-    path = '/Users/chenxinlu/Developer/Logistics/'
-    del_pyc(path)
+    p = '/Users/chenxinlu/Developer/Logistics/'
+    del_pyc(p)
