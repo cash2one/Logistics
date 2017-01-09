@@ -1,0 +1,133 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>也是rollback-_-请确定所有服务都被启动了再rollback</description>
+  <logRotator class="hudson.tasks.LogRotator">
+    <daysToKeep>-1</daysToKeep>
+    <numToKeep>3</numToKeep>
+    <artifactDaysToKeep>-1</artifactDaysToKeep>
+    <artifactNumToKeep>-1</artifactNumToKeep>
+  </logRotator>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.security.AuthorizationMatrixProperty>
+      <permission>hudson.model.Item.Discover:anonymous</permission>
+    </hudson.security.AuthorizationMatrixProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <jenkins.plugins.publish__over__ssh.BapSshBuilderPlugin plugin="publish-over-ssh@1.13">
+      <delegate>
+        <consolePrefix>SSH: </consolePrefix>
+        <delegate>
+          <publishers>
+            <jenkins.plugins.publish__over__ssh.BapSshPublisher>
+              <configName>PROD-BL-API-210/134(/xvdb/)</configName>
+              <verbose>false</verbose>
+              <transfers>
+                <jenkins.plugins.publish__over__ssh.BapSshTransfer>
+                  <remoteDirectory></remoteDirectory>
+                  <sourceFiles></sourceFiles>
+                  <excludes></excludes>
+                  <removePrefix></removePrefix>
+                  <remoteDirectorySDF>false</remoteDirectorySDF>
+                  <flatten>false</flatten>
+                  <cleanRemote>false</cleanRemote>
+                  <noDefaultExcludes>false</noDefaultExcludes>
+                  <makeEmptyDirs>false</makeEmptyDirs>
+                  <patternSeparator>[, ]+</patternSeparator>
+                  <execCommand># 逻辑层和聚合层
+# 将6555的服务全部切换到5555上
+nginx_conf_dir=/root/gezbox/Atom/MrWind-Configer/nginx_conf/
+nginx_link=/root/gezbox/Atom/MrWind-Configer/nginx_conf/bl_ag.conf
+target_path_x000=bl_ag_x000.conf
+target_path_x100=bl_ag_x100.conf
+
+code_dir_link=/root/gezbox/Atom/code_dir_link
+
+if [[ -L &quot;$nginx_link&quot;  &amp;&amp; &quot;$(readlink $nginx_link)&quot; = &quot;$target_path_x000&quot; ]]
+then
+    configure_file=$target_path_x100
+    code_dir=/xvdb/MrWind-Dispatcher/
+    post_fix=x1
+    queue_fix=x0
+    echo &quot;Switching [x100] to be [ACTIVE]...&quot;
+elif [[ -L &quot;$nginx_link&quot; &amp;&amp; &quot;$(readlink $nginx_link)&quot; = &quot;$target_path_x100&quot; ]]
+then
+    configure_file=$target_path_x000
+    code_dir=/root/gezbox/Atom/MrWind-Dispatcher/
+    post_fix=x0
+    queue_fix=x1
+    echo &quot;Switching [x000] to be [ACTIVE]...&quot;
+fi
+# 将现在的ACTIVE下的IM_ROLLBACK标记删除
+cd $code_dir
+ls -lh
+echo &quot;Removing [IM_ROLLBACK]...&quot;
+rm -rf IM_ROLLBACK
+ls -lh
+# 确保IM_ROLLBACK标记已经被删除
+if [ ! -f ./IM_ROLLBACK ]; then
+    echo &quot;File [IM_ROLLBACK] has been successfully removed!&quot;
+fi
+# 更新Nginx配置文件软链接指向ACTIVE
+echo &quot;Relinking [$nginx_link] to [$configure_file]...&quot;
+cd $nginx_conf_dir
+rm -rf $nginx_link
+ln -s $configure_file $nginx_link
+ls -lh
+# 更新代码目录软链接指向ACTIVE
+echo &quot;Relinking [$code_dir_link] to [$code_dir](ACTIVE)...&quot;
+rm -rf $code_dir_link
+mkdir -p $code_dir
+ln -s $code_dir $code_dir_link
+cd /root/gezbox/Atom
+ls -lh
+
+
+# 重启逻辑层和聚合层的ACTIVE(让她们知道自己请求端口改成5555-ACTIVE)
+# 重启BL层
+/usr/local/python27/bin/supervisorctl -s &quot;http://localhost:9001&quot; -u user -p 123 update
+/usr/local/python27/bin/supervisorctl -s &quot;http://localhost:9001&quot; -u user -p 123 restart &quot;${post_fix}00:*&quot;
+# 重启AG层
+/usr/local/python27/bin/supervisorctl -s &quot;http://localhost:9002&quot; -u user -p 123 update
+/usr/local/python27/bin/supervisorctl -s &quot;http://localhost:9002&quot; -u user -p 123 restart &quot;${post_fix}00:*&quot;
+/usr/local/python27/bin/supervisorctl -s &quot;http://localhost:9002&quot; -u user -p 123 status
+# 重启AG层-风信; 关闭原来x0的queue
+/usr/local/python27/bin/supervisorctl -s &quot;http://localhost:9003&quot; -u user -p 123 update
+/usr/local/python27/bin/supervisorctl -s &quot;http://localhost:9003&quot; -u user -p 123 restart &quot;chatlogger_${post_fix}00:*&quot;
+/usr/local/python27/bin/supervisorctl -s &quot;http://localhost:9003&quot; -u user -p 123 restart &quot;talker_tier_${post_fix}00:*&quot;
+/usr/local/python27/bin/supervisorctl -s &quot;http://localhost:9003&quot; -u user -p 123 restart &quot;queue_${post_fix}00&quot;
+/usr/local/python27/bin/supervisorctl -s &quot;http://localhost:9003&quot; -u user -p 123 stop &quot;queue_${queue_fix}00&quot;
+/usr/local/python27/bin/supervisorctl -s &quot;http://localhost:9003&quot; -u user -p 123 restart &quot;post_${post_fix}00:*&quot;
+/usr/local/python27/bin/supervisorctl -s &quot;http://localhost:9003&quot; -u user -p 123 status
+
+# 真正执行切换
+NP=$(cat /usr/local/nginx/logs/nginx.pid)
+echo &quot;Going to Restart -HUP Nginx[${NP}]...&quot;
+kill -HUP ${NP}</execCommand>
+                  <execTimeout>300000</execTimeout>
+                  <usePty>false</usePty>
+                </jenkins.plugins.publish__over__ssh.BapSshTransfer>
+              </transfers>
+              <useWorkspaceInPromotion>false</useWorkspaceInPromotion>
+              <usePromotionTimestamp>false</usePromotionTimestamp>
+            </jenkins.plugins.publish__over__ssh.BapSshPublisher>
+          </publishers>
+          <continueOnError>false</continueOnError>
+          <failOnError>false</failOnError>
+          <alwaysPublishFromMaster>false</alwaysPublishFromMaster>
+          <hostConfigurationAccess class="jenkins.plugins.publish_over_ssh.BapSshPublisherPlugin" reference="../.."/>
+        </delegate>
+      </delegate>
+    </jenkins.plugins.publish__over__ssh.BapSshBuilderPlugin>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>

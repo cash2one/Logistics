@@ -1,0 +1,20 @@
+Checking (PROD-69) Commit-to-5000
+Checking (PROD-69) Deploy-ALL-to-7000
+Checking (PROD-69) Deploy-Configer
+Checking (PROD-69) One-Key-Deploy-ALL
+Checking BL-AG-Deployment-Commit-to-5555_确定6555端口上的逻辑层及聚合层服务都是OK的再点_O_O
+Checking CD-Deployment-Commit-to-5555_确定6555端口上的核心层服务都是OK的再点_O_O
+Checking Deploy-AG-BL-Configer
+Checking Deploy-AG-BL-to-6555
+Checking Deploy-App-Pages-Frontend
+Checking Deploy-CD-Configer
+Checking Deploy-Core-Data-to-6555
+Checking Deploy-Empire-Frontend
+Checking Deploy-Talent-Frontend
+Checking Doc-MrWind-Dispatcher
+Checking Staging-API
+Checking Staging-MrWind-Configer
+Checking Test-Core-Data-API
+Checking windchat1
+Checking windchat2
+Checking windchat3

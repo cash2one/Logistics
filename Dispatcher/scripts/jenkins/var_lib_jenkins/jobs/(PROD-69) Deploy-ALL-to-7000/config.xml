@@ -1,0 +1,307 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description></description>
+  <logRotator class="hudson.tasks.LogRotator">
+    <daysToKeep>-1</daysToKeep>
+    <numToKeep>3</numToKeep>
+    <artifactDaysToKeep>-1</artifactDaysToKeep>
+    <artifactNumToKeep>-1</artifactNumToKeep>
+  </logRotator>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.security.AuthorizationMatrixProperty>
+      <permission>hudson.model.Item.Read:user</permission>
+      <permission>hudson.model.Item.Discover:anonymous</permission>
+      <permission>hudson.model.Item.Discover:user</permission>
+      <permission>hudson.model.Item.Build:user</permission>
+      <permission>hudson.model.Item.Cancel:user</permission>
+      <permission>hudson.model.Item.Workspace:user</permission>
+    </hudson.security.AuthorizationMatrixProperty>
+  </properties>
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@2.4.1">
+    <configVersion>2</configVersion>
+    <userRemoteConfigs>
+      <hudson.plugins.git.UserRemoteConfig>
+        <url>git@code.gomrwind.com:MrWind-Backend/MrWind-Dispatcher.git</url>
+        <credentialsId>0a4c2271-377b-4927-83ce-25b5cfa5c10b</credentialsId>
+      </hudson.plugins.git.UserRemoteConfig>
+    </userRemoteConfigs>
+    <branches>
+      <hudson.plugins.git.BranchSpec>
+        <name>*/master</name>
+      </hudson.plugins.git.BranchSpec>
+    </branches>
+    <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+    <submoduleCfg class="list"/>
+    <extensions>
+      <hudson.plugins.git.extensions.impl.IgnoreNotifyCommit/>
+    </extensions>
+  </scm>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.plugins.parameterizedtrigger.TriggerBuilder plugin="parameterized-trigger@2.28">
+      <configs>
+        <hudson.plugins.parameterizedtrigger.BlockableBuildTriggerConfig>
+          <configs class="empty-list"/>
+          <projects>(PROD-69) Deploy-Configer</projects>
+          <condition>ALWAYS</condition>
+          <triggerWithNoParameters>false</triggerWithNoParameters>
+          <block>
+            <buildStepFailureThreshold>
+              <name>FAILURE</name>
+              <ordinal>2</ordinal>
+              <color>RED</color>
+              <completeBuild>true</completeBuild>
+            </buildStepFailureThreshold>
+            <unstableThreshold>
+              <name>UNSTABLE</name>
+              <ordinal>1</ordinal>
+              <color>YELLOW</color>
+              <completeBuild>true</completeBuild>
+            </unstableThreshold>
+            <failureThreshold>
+              <name>FAILURE</name>
+              <ordinal>2</ordinal>
+              <color>RED</color>
+              <completeBuild>true</completeBuild>
+            </failureThreshold>
+          </block>
+          <buildAllNodesWithLabel>false</buildAllNodesWithLabel>
+        </hudson.plugins.parameterizedtrigger.BlockableBuildTriggerConfig>
+      </configs>
+    </hudson.plugins.parameterizedtrigger.TriggerBuilder>
+    <jenkins.plugins.publish__over__ssh.BapSshBuilderPlugin plugin="publish-over-ssh@1.13">
+      <delegate>
+        <consolePrefix>SSH: </consolePrefix>
+        <delegate>
+          <publishers>
+            <jenkins.plugins.publish__over__ssh.BapSshPublisher>
+              <configName>PROD-API-69/109(/root/)</configName>
+              <verbose>false</verbose>
+              <transfers>
+                <jenkins.plugins.publish__over__ssh.BapSshTransfer>
+                  <remoteDirectory></remoteDirectory>
+                  <sourceFiles></sourceFiles>
+                  <excludes></excludes>
+                  <removePrefix></removePrefix>
+                  <remoteDirectorySDF>false</remoteDirectorySDF>
+                  <flatten>false</flatten>
+                  <cleanRemote>false</cleanRemote>
+                  <noDefaultExcludes>false</noDefaultExcludes>
+                  <makeEmptyDirs>false</makeEmptyDirs>
+                  <patternSeparator>[, ]+</patternSeparator>
+                  <execCommand>#!/usr/bin/env bash
+# 更新代码目录软链接指向STANDBY
+nginx_active=/root/MrWind-Configer/nginx_conf/prod.conf
+target_path_x0=prod_x0.conf
+target_path_x1=prod_x1.conf
+# 可变目录链接,默认指向ACTIVE,这里会将其暂时改成指向STANDBY
+link_to_code=/root/code_dir_link
+
+if [[ -L &quot;${nginx_active}&quot;  &amp;&amp; &quot;$(readlink ${nginx_active})&quot; = &quot;$target_path_x0&quot; ]]; then
+    echo &quot;Nginx conf linking to: [$(readlink ${nginx_active})]&quot;
+    publish_to=/xvdb/MrWind-Dispatcher
+    echo &quot;x0 is active, going to update x1. Publishing code to [${publish_to}]...&quot;
+elif [[ -L &quot;${nginx_active}&quot; &amp;&amp; &quot;$(readlink ${nginx_active})&quot; = &quot;$target_path_x1&quot; ]]; then
+    echo &quot;Nginx conf linking to: [$(readlink ${nginx_active})]&quot;
+    publish_to=/root/MrWind-Dispatcher
+    echo &quot;x1 is active, going to update x0. Publishing code to [${publish_to}]...&quot;
+else
+    # 没有任何软链接，初始化更新x0
+    echo &quot;Nginx link not found, INIT to x1...&quot;
+    # 如有,删除原有的链接
+    rm -rf ${link_to_code} ${nginx_active}
+    # 初始化代码目录,并创建链接
+    cd /root
+    publish_to=/root/MrWind-Dispatcher
+    mkdir -p ${publish_to}
+    ln -s ${publish_to} code_dir_link
+    # 初始化nginx指向ACTIVE的链接到x1, 这样就会重启x0的代码
+    cd /root/MrWind-Configer/nginx_conf
+    ln -s ${target_path_x1} prod.conf
+fi
+
+# 清理STANDBY代码
+rm -rf ${publish_to}/*
+
+# 暂时将code_dir_link指向需要更新的代码目录
+echo &quot;Temporary linking [${link_to_code}] to [${publish_to}](STANDBY)...&quot;
+rm -rf ${link_to_code}
+mkdir -p ${publish_to}
+cd /root/
+ln -s ${publish_to} code_dir_link
+ls -lh</execCommand>
+                  <execTimeout>120000</execTimeout>
+                  <usePty>false</usePty>
+                </jenkins.plugins.publish__over__ssh.BapSshTransfer>
+              </transfers>
+              <useWorkspaceInPromotion>false</useWorkspaceInPromotion>
+              <usePromotionTimestamp>false</usePromotionTimestamp>
+            </jenkins.plugins.publish__over__ssh.BapSshPublisher>
+          </publishers>
+          <continueOnError>false</continueOnError>
+          <failOnError>true</failOnError>
+          <alwaysPublishFromMaster>false</alwaysPublishFromMaster>
+          <hostConfigurationAccess class="jenkins.plugins.publish_over_ssh.BapSshPublisherPlugin" reference="../.."/>
+        </delegate>
+      </delegate>
+    </jenkins.plugins.publish__over__ssh.BapSshBuilderPlugin>
+    <jenkins.plugins.publish__over__ssh.BapSshBuilderPlugin plugin="publish-over-ssh@1.13">
+      <delegate>
+        <consolePrefix>SSH: </consolePrefix>
+        <delegate>
+          <publishers>
+            <jenkins.plugins.publish__over__ssh.BapSshPublisher>
+              <configName>PROD-API-69/109(/root/)</configName>
+              <verbose>false</verbose>
+              <transfers>
+                <jenkins.plugins.publish__over__ssh.BapSshTransfer>
+                  <remoteDirectory>code_dir_link</remoteDirectory>
+                  <sourceFiles>api_gateway/**, business_logic/**, data_and_service/**, tools_lib/**, scripts/mklogdir.py</sourceFiles>
+                  <excludes></excludes>
+                  <removePrefix></removePrefix>
+                  <remoteDirectorySDF>false</remoteDirectorySDF>
+                  <flatten>false</flatten>
+                  <cleanRemote>false</cleanRemote>
+                  <noDefaultExcludes>false</noDefaultExcludes>
+                  <makeEmptyDirs>false</makeEmptyDirs>
+                  <patternSeparator>[, ]+</patternSeparator>
+                  <execCommand></execCommand>
+                  <execTimeout>120000</execTimeout>
+                  <usePty>false</usePty>
+                </jenkins.plugins.publish__over__ssh.BapSshTransfer>
+              </transfers>
+              <useWorkspaceInPromotion>false</useWorkspaceInPromotion>
+              <usePromotionTimestamp>false</usePromotionTimestamp>
+            </jenkins.plugins.publish__over__ssh.BapSshPublisher>
+            <jenkins.plugins.publish__over__ssh.BapSshPublisher>
+              <configName>PROD-API-69/109(/root/)</configName>
+              <verbose>false</verbose>
+              <transfers>
+                <jenkins.plugins.publish__over__ssh.BapSshTransfer>
+                  <remoteDirectory></remoteDirectory>
+                  <sourceFiles></sourceFiles>
+                  <excludes></excludes>
+                  <removePrefix></removePrefix>
+                  <remoteDirectorySDF>false</remoteDirectorySDF>
+                  <flatten>false</flatten>
+                  <cleanRemote>false</cleanRemote>
+                  <noDefaultExcludes>false</noDefaultExcludes>
+                  <makeEmptyDirs>false</makeEmptyDirs>
+                  <patternSeparator>[, ]+</patternSeparator>
+                  <execCommand>cd code_dir_link
+# 根据supervisor配置文件生成日志目录
+cd scripts/
+. /root/mrwind-venv/bin/activate
+python mklogdir.py /root/MrWind-Configer/supervisor_conf/prod_api.conf
+
+# 为了单例服务拷贝冗余代码
+rm -rf /xvdc/MrWind-Dispatcher/
+mkdir -p /xvdc/MrWind-Dispatcher/
+cd /root/
+cd code_dir_link
+cp -rf * /xvdc/MrWind-Dispatcher/</execCommand>
+                  <execTimeout>120000</execTimeout>
+                  <usePty>false</usePty>
+                </jenkins.plugins.publish__over__ssh.BapSshTransfer>
+              </transfers>
+              <useWorkspaceInPromotion>false</useWorkspaceInPromotion>
+              <usePromotionTimestamp>false</usePromotionTimestamp>
+            </jenkins.plugins.publish__over__ssh.BapSshPublisher>
+          </publishers>
+          <continueOnError>false</continueOnError>
+          <failOnError>true</failOnError>
+          <alwaysPublishFromMaster>false</alwaysPublishFromMaster>
+          <hostConfigurationAccess class="jenkins.plugins.publish_over_ssh.BapSshPublisherPlugin" reference="../.."/>
+        </delegate>
+      </delegate>
+    </jenkins.plugins.publish__over__ssh.BapSshBuilderPlugin>
+    <jenkins.plugins.publish__over__ssh.BapSshBuilderPlugin plugin="publish-over-ssh@1.13">
+      <delegate>
+        <consolePrefix>SSH: </consolePrefix>
+        <delegate>
+          <publishers>
+            <jenkins.plugins.publish__over__ssh.BapSshPublisher>
+              <configName>PROD-API-69/109(/root/)</configName>
+              <verbose>false</verbose>
+              <transfers>
+                <jenkins.plugins.publish__over__ssh.BapSshTransfer>
+                  <remoteDirectory></remoteDirectory>
+                  <sourceFiles></sourceFiles>
+                  <excludes></excludes>
+                  <removePrefix></removePrefix>
+                  <remoteDirectorySDF>false</remoteDirectorySDF>
+                  <flatten>false</flatten>
+                  <cleanRemote>false</cleanRemote>
+                  <noDefaultExcludes>false</noDefaultExcludes>
+                  <makeEmptyDirs>false</makeEmptyDirs>
+                  <patternSeparator>[, ]+</patternSeparator>
+                  <execCommand>#!/usr/bin/env bash
+# CI重启STANDBY的服务们; 将目录链接指回到ACTIVE
+. /root/mrwind-venv/bin/activate
+env |grep VIRTUAL_ENV |wc -l
+
+# 判断要重启的STANDBY
+nginx_active=/root/MrWind-Configer/nginx_conf/prod.conf
+target_path_x0=prod_x0.conf
+target_path_x1=prod_x1.conf
+
+if [[ -L &quot;${nginx_active}&quot; &amp;&amp; &quot;$(readlink ${nginx_active})&quot; = &quot;${target_path_x0}&quot; ]]; then
+    echo &quot;重启AG,BL,Data,Service层STANDBY: x1 group...&quot;
+    post_fix=x1
+elif [[ -L &quot;${nginx_active}&quot;  &amp;&amp; &quot;$(readlink ${nginx_active})&quot; = &quot;${target_path_x1}&quot; ]]; then
+    echo &quot;重启AG,BL,Data,Service层STANDBY: x0 group...&quot;
+    post_fix=x0
+fi
+
+# 重启AG,BL,Data,Service层STANDBY
+supervisorctl -s &quot;http://localhost:9001&quot; -u user -p 123 update
+supervisorctl -s &quot;http://localhost:9001&quot; -u user -p 123 restart &quot;${post_fix}00:*&quot;
+supervisorctl -s &quot;http://localhost:9001&quot; -u user -p 123 status
+
+
+# 可变目录链接,这里将它指回ACTIVE
+if [[ -L &quot;${nginx_active}&quot;  &amp;&amp; &quot;$(readlink ${nginx_active})&quot; = &quot;${target_path_x0}&quot; ]]; then
+    echo &quot;Nginx conf linking to: [$(readlink ${nginx_active})]&quot;
+    publish_to=/root/MrWind-Dispatcher/
+elif [[ -L &quot;${nginx_active}&quot; &amp;&amp; &quot;$(readlink ${nginx_active})&quot; = &quot;${target_path_x1}&quot; ]]; then
+    echo &quot;Nginx conf linking to: [$(readlink ${nginx_active})]&quot;
+    publish_to=/xvdb/MrWind-Dispatcher/
+fi
+link_to_code=/root/code_dir_link
+echo &quot;Relinking [${link_to_code}] to [${publish_to}](ACTIVE)...&quot;
+cd /root
+rm -rf ${link_to_code}
+mkdir -p ${publish_to}
+ln -s ${publish_to} code_dir_link
+ls -lh
+
+# 使更新后的nginx配置文件生效
+NP=$(cat /usr/local/nginx/logs/nginx.pid)
+echo &quot;Going to Restart -HUP Nginx[${NP}]...&quot;
+kill -HUP ${NP}</execCommand>
+                  <execTimeout>300000</execTimeout>
+                  <usePty>false</usePty>
+                </jenkins.plugins.publish__over__ssh.BapSshTransfer>
+              </transfers>
+              <useWorkspaceInPromotion>false</useWorkspaceInPromotion>
+              <usePromotionTimestamp>false</usePromotionTimestamp>
+            </jenkins.plugins.publish__over__ssh.BapSshPublisher>
+          </publishers>
+          <continueOnError>false</continueOnError>
+          <failOnError>true</failOnError>
+          <alwaysPublishFromMaster>false</alwaysPublishFromMaster>
+          <hostConfigurationAccess class="jenkins.plugins.publish_over_ssh.BapSshPublisherPlugin" reference="../.."/>
+        </delegate>
+      </delegate>
+    </jenkins.plugins.publish__over__ssh.BapSshBuilderPlugin>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>

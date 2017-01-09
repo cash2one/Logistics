@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>也是rollback-_-请确定所有服务都被启动了再rollback</description>
+  <logRotator class="hudson.tasks.LogRotator">
+    <daysToKeep>-1</daysToKeep>
+    <numToKeep>3</numToKeep>
+    <artifactDaysToKeep>-1</artifactDaysToKeep>
+    <artifactNumToKeep>-1</artifactNumToKeep>
+  </logRotator>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.security.AuthorizationMatrixProperty>
+      <permission>hudson.model.Item.Read:user</permission>
+      <permission>hudson.model.Item.Discover:anonymous</permission>
+      <permission>hudson.model.Item.Discover:user</permission>
+      <permission>hudson.model.Item.Build:user</permission>
+      <permission>hudson.model.Item.Cancel:user</permission>
+      <permission>hudson.model.Item.Workspace:user</permission>
+    </hudson.security.AuthorizationMatrixProperty>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <jenkins.plugins.publish__over__ssh.BapSshBuilderPlugin plugin="publish-over-ssh@1.13">
+      <delegate>
+        <consolePrefix>SSH: </consolePrefix>
+        <delegate>
+          <publishers>
+            <jenkins.plugins.publish__over__ssh.BapSshPublisher>
+              <configName>PROD-API-69/109(/root/)</configName>
+              <verbose>false</verbose>
+              <transfers>
+                <jenkins.plugins.publish__over__ssh.BapSshTransfer>
+                  <remoteDirectory></remoteDirectory>
+                  <sourceFiles></sourceFiles>
+                  <excludes></excludes>
+                  <removePrefix></removePrefix>
+                  <remoteDirectorySDF>false</remoteDirectorySDF>
+                  <flatten>false</flatten>
+                  <cleanRemote>false</cleanRemote>
+                  <noDefaultExcludes>false</noDefaultExcludes>
+                  <makeEmptyDirs>false</makeEmptyDirs>
+                  <patternSeparator>[, ]+</patternSeparator>
+                  <execCommand>#!/usr/bin/env bash
+# 将6000的服务全部切换到5000上
+nginx_active=/root/MrWind-Configer/nginx_conf/prod.conf
+target_path_x0=prod_x0.conf
+target_path_x1=prod_x1.conf
+
+if [[ -L &quot;${nginx_active}&quot;  &amp;&amp; &quot;$(readlink ${nginx_active})&quot; = &quot;$target_path_x0&quot; ]]; then
+    published=/xvdb/MrWind-Dispatcher
+    target_conf=${target_path_x1}
+    echo &quot;Switching [x1] to be [ACTIVE]. Published code in [${published}]...&quot;
+elif [[ -L &quot;${nginx_active}&quot; &amp;&amp; &quot;$(readlink ${nginx_active})&quot; = &quot;$target_path_x1&quot; ]]; then
+    published=/root/MrWind-Dispatcher
+    target_conf=${target_path_x0}
+    echo &quot;Switching [x0] to be [ACTIVE]. Published code in [${published}]...&quot;
+else
+    echo &quot;ERROR&quot;
+fi
+
+# 可变目录链接,这里将它指回ACTIVE
+link_to_code=/root/code_dir_link
+echo &quot;Relinking [${link_to_code}] to [${published}](ACTIVE)...&quot;
+cd /root
+rm -rf ${link_to_code}
+mkdir -p ${published}
+ln -s ${published} code_dir_link
+ls -lh
+
+# 切换Nginx配置文件指针完成上线
+echo &quot;Relinking [${nginx_active}] to [${target_conf}]...&quot;
+cd /root/MrWind-Configer/nginx_conf
+rm -rf ${nginx_active}
+ln -s ${target_conf} prod.conf
+ls -lh
+
+NP=$(cat /usr/local/nginx/logs/nginx.pid)
+echo &quot;Going to Restart -HUP Nginx[${NP}]...&quot;
+kill -HUP ${NP}</execCommand>
+                  <execTimeout>120000</execTimeout>
+                  <usePty>false</usePty>
+                </jenkins.plugins.publish__over__ssh.BapSshTransfer>
+              </transfers>
+              <useWorkspaceInPromotion>false</useWorkspaceInPromotion>
+              <usePromotionTimestamp>false</usePromotionTimestamp>
+            </jenkins.plugins.publish__over__ssh.BapSshPublisher>
+          </publishers>
+          <continueOnError>false</continueOnError>
+          <failOnError>false</failOnError>
+          <alwaysPublishFromMaster>false</alwaysPublishFromMaster>
+          <hostConfigurationAccess class="jenkins.plugins.publish_over_ssh.BapSshPublisherPlugin" reference="../.."/>
+        </delegate>
+      </delegate>
+    </jenkins.plugins.publish__over__ssh.BapSshBuilderPlugin>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>

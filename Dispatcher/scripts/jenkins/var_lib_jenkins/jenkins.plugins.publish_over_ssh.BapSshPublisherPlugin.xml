@@ -1,0 +1,165 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jenkins.plugins.publish__over__ssh.BapSshPublisherPlugin_-Descriptor plugin="publish-over-ssh@1.13">
+  <hostConfigurations>
+    <jenkins.plugins.publish__over__ssh.BapSshHostConfiguration>
+      <name>PROD-CD-API-129/171(/root/gezbox/) [No Exec]</name>
+      <hostname>10.171.99.129</hostname>
+      <username>root</username>
+      <secretPassword>lIOJ9ZTPZxxzbikRUOQprA==</secretPassword>
+      <remoteRootDir>/root/gezbox/</remoteRootDir>
+      <port>22</port>
+      <commonConfig class="jenkins.plugins.publish_over_ssh.BapSshCommonConfiguration">
+        <secretPassphrase>lIOJ9ZTPZxxzbikRUOQprA==</secretPassphrase>
+        <key></key>
+        <keyPath></keyPath>
+        <disableAllExec>false</disableAllExec>
+      </commonConfig>
+      <timeout>300000</timeout>
+      <overrideKey>true</overrideKey>
+      <disableExec>true</disableExec>
+      <keyInfo>
+        <secretPassphrase>tz0zdPO5TxsBj9N1c8UCrJSDifWUz2ccc24pEVDkKaw=</secretPassphrase>
+        <key></key>
+        <keyPath></keyPath>
+      </keyInfo>
+    </jenkins.plugins.publish__over__ssh.BapSshHostConfiguration>
+    <jenkins.plugins.publish__over__ssh.BapSshHostConfiguration>
+      <name>PROD-BL-API-210/134(/root/gezbox/Atom/)[No Exec]</name>
+      <hostname>10.173.14.210</hostname>
+      <username>root</username>
+      <secretPassword>lIOJ9ZTPZxxzbikRUOQprA==</secretPassword>
+      <remoteRootDir>/root/gezbox/Atom/</remoteRootDir>
+      <port>22</port>
+      <commonConfig class="jenkins.plugins.publish_over_ssh.BapSshCommonConfiguration" reference="../../jenkins.plugins.publish__over__ssh.BapSshHostConfiguration/commonConfig"/>
+      <timeout>300000</timeout>
+      <overrideKey>true</overrideKey>
+      <disableExec>true</disableExec>
+      <keyInfo>
+        <secretPassphrase>ReyzS9R+SlALOCzMEL7tC7x3UYBoR39b54wHzJT/L1A=</secretPassphrase>
+        <key></key>
+        <keyPath></keyPath>
+      </keyInfo>
+    </jenkins.plugins.publish__over__ssh.BapSshHostConfiguration>
+    <jenkins.plugins.publish__over__ssh.BapSshHostConfiguration>
+      <name>PROD-CD-API-129/171(/xvdb/)</name>
+      <hostname>10.171.99.129</hostname>
+      <username>root</username>
+      <secretPassword>lIOJ9ZTPZxxzbikRUOQprA==</secretPassword>
+      <remoteRootDir>/xvdb/</remoteRootDir>
+      <port>22</port>
+      <commonConfig class="jenkins.plugins.publish_over_ssh.BapSshCommonConfiguration" reference="../../jenkins.plugins.publish__over__ssh.BapSshHostConfiguration/commonConfig"/>
+      <timeout>300000</timeout>
+      <overrideKey>true</overrideKey>
+      <disableExec>false</disableExec>
+      <keyInfo>
+        <secretPassphrase>tz0zdPO5TxsBj9N1c8UCrJSDifWUz2ccc24pEVDkKaw=</secretPassphrase>
+        <key></key>
+        <keyPath></keyPath>
+      </keyInfo>
+    </jenkins.plugins.publish__over__ssh.BapSshHostConfiguration>
+    <jenkins.plugins.publish__over__ssh.BapSshHostConfiguration>
+      <name>PROD-BL-API-210/134(/xvdb/)</name>
+      <hostname>10.173.14.210</hostname>
+      <username>root</username>
+      <secretPassword>lIOJ9ZTPZxxzbikRUOQprA==</secretPassword>
+      <remoteRootDir>/xvdb/</remoteRootDir>
+      <port>22</port>
+      <commonConfig class="jenkins.plugins.publish_over_ssh.BapSshCommonConfiguration" reference="../../jenkins.plugins.publish__over__ssh.BapSshHostConfiguration/commonConfig"/>
+      <timeout>600000</timeout>
+      <overrideKey>true</overrideKey>
+      <disableExec>false</disableExec>
+      <keyInfo>
+        <secretPassphrase>ReyzS9R+SlALOCzMEL7tC7x3UYBoR39b54wHzJT/L1A=</secretPassphrase>
+        <key></key>
+        <keyPath></keyPath>
+      </keyInfo>
+    </jenkins.plugins.publish__over__ssh.BapSshHostConfiguration>
+    <jenkins.plugins.publish__over__ssh.BapSshHostConfiguration>
+      <name>PROD-FE-API-138/30(/root/)</name>
+      <hostname>10.170.203.30</hostname>
+      <username>root</username>
+      <secretPassword>lIOJ9ZTPZxxzbikRUOQprA==</secretPassword>
+      <remoteRootDir>/root/</remoteRootDir>
+      <port>22</port>
+      <commonConfig class="jenkins.plugins.publish_over_ssh.BapSshCommonConfiguration" reference="../../jenkins.plugins.publish__over__ssh.BapSshHostConfiguration/commonConfig"/>
+      <timeout>300000</timeout>
+      <overrideKey>true</overrideKey>
+      <disableExec>false</disableExec>
+      <keyInfo>
+        <secretPassphrase>qkkdWXUQKxfaqV3vS7Plo5P27TDUN17VQ9MU+E4vBH4=</secretPassphrase>
+        <key></key>
+        <keyPath></keyPath>
+      </keyInfo>
+    </jenkins.plugins.publish__over__ssh.BapSshHostConfiguration>
+    <jenkins.plugins.publish__over__ssh.BapSshHostConfiguration>
+      <name>DEV-209/31(/root/)</name>
+      <hostname>10.173.1.31</hostname>
+      <username>root</username>
+      <secretPassword>lIOJ9ZTPZxxzbikRUOQprA==</secretPassword>
+      <remoteRootDir>/root/</remoteRootDir>
+      <port>22</port>
+      <commonConfig class="jenkins.plugins.publish_over_ssh.BapSshCommonConfiguration" reference="../../jenkins.plugins.publish__over__ssh.BapSshHostConfiguration/commonConfig"/>
+      <timeout>300000</timeout>
+      <overrideKey>true</overrideKey>
+      <disableExec>false</disableExec>
+      <keyInfo>
+        <secretPassphrase>HIA/rPZ1hEIwW+7dZCi0JK4qzd3AhutDvJFhVWmGYyMuPbEpycOHLM/bfcgMuFld</secretPassphrase>
+        <key></key>
+        <keyPath></keyPath>
+      </keyInfo>
+    </jenkins.plugins.publish__over__ssh.BapSshHostConfiguration>
+    <jenkins.plugins.publish__over__ssh.BapSshHostConfiguration>
+      <name>DEV-209/31(/var/www/html/)</name>
+      <hostname>10.173.1.31</hostname>
+      <username>root</username>
+      <secretPassword>lIOJ9ZTPZxxzbikRUOQprA==</secretPassword>
+      <remoteRootDir>/var/www/html/</remoteRootDir>
+      <port>22</port>
+      <commonConfig class="jenkins.plugins.publish_over_ssh.BapSshCommonConfiguration" reference="../../jenkins.plugins.publish__over__ssh.BapSshHostConfiguration/commonConfig"/>
+      <timeout>300000</timeout>
+      <overrideKey>true</overrideKey>
+      <disableExec>true</disableExec>
+      <keyInfo>
+        <secretPassphrase>HIA/rPZ1hEIwW+7dZCi0JK4qzd3AhutDvJFhVWmGYyMuPbEpycOHLM/bfcgMuFld</secretPassphrase>
+        <key></key>
+        <keyPath></keyPath>
+      </keyInfo>
+    </jenkins.plugins.publish__over__ssh.BapSshHostConfiguration>
+    <jenkins.plugins.publish__over__ssh.BapSshHostConfiguration>
+      <name>PROD-API-69/109(/root/)</name>
+      <hostname>10.171.103.109</hostname>
+      <username>root</username>
+      <secretPassword>lIOJ9ZTPZxxzbikRUOQprA==</secretPassword>
+      <remoteRootDir>/root/</remoteRootDir>
+      <port>22</port>
+      <commonConfig class="jenkins.plugins.publish_over_ssh.BapSshCommonConfiguration" reference="../../jenkins.plugins.publish__over__ssh.BapSshHostConfiguration/commonConfig"/>
+      <timeout>300000</timeout>
+      <overrideKey>true</overrideKey>
+      <disableExec>false</disableExec>
+      <keyInfo>
+        <secretPassphrase>vg8lK49zjURiaNlo0lwei5SDifWUz2ccc24pEVDkKaw=</secretPassphrase>
+        <key></key>
+        <keyPath></keyPath>
+      </keyInfo>
+    </jenkins.plugins.publish__over__ssh.BapSshHostConfiguration>
+    <jenkins.plugins.publish__over__ssh.BapSshHostConfiguration>
+      <name>DEV-NA/104 (/root/)</name>
+      <hostname>10.0.1.104</hostname>
+      <username>root</username>
+      <secretPassword>lIOJ9ZTPZxxzbikRUOQprA==</secretPassword>
+      <remoteRootDir>/root/</remoteRootDir>
+      <port>22</port>
+      <commonConfig class="jenkins.plugins.publish_over_ssh.BapSshCommonConfiguration" reference="../../jenkins.plugins.publish__over__ssh.BapSshHostConfiguration/commonConfig"/>
+      <timeout>300000</timeout>
+      <overrideKey>true</overrideKey>
+      <disableExec>false</disableExec>
+      <keyInfo>
+        <secretPassphrase>wR7wwUHKc6QxaKIGCFRtRlrHKljwRblG1VfEraw3hFU=</secretPassphrase>
+        <key></key>
+        <keyPath></keyPath>
+      </keyInfo>
+    </jenkins.plugins.publish__over__ssh.BapSshHostConfiguration>
+  </hostConfigurations>
+  <commonConfig reference="../hostConfigurations/jenkins.plugins.publish__over__ssh.BapSshHostConfiguration/commonConfig"/>
+  <defaults class="jenkins.plugins.publish_over_ssh.options.SshPluginDefaults"/>
+</jenkins.plugins.publish__over__ssh.BapSshPublisherPlugin_-Descriptor>
