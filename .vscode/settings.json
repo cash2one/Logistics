@@ -1,8 +1,4 @@
+// Place your settings in this file to overwrite default and user settings.
 {
-    "python.pythonPath": "/Users/chenxinlu/Developer/Logistics/venv/bin/python",
-    "python.autoComplete.extraPaths": [
-        "/Users/chenxinlu/Developer/Logistics/venv/lib/python3.6",
-        "/Users/chenxinlu/Developer/Logistics/venv/lib/python3.6/site-packages"
-     ],
     "python.linting.pylintEnabled": false
 }
