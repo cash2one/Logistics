@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding:utf-8
-from __future__ import unicode_literals
+
 
 import json
 from pymongo import MongoClient
@@ -101,7 +101,7 @@ def node_to_schedule(_mcn, _mcs):
         schedule = schedules[man_id]
         s_cursor = _mcs.find({'man.id': man_id}, {'_id': 0})
         for doc in s_cursor:
-            print('%s: %s' % (schedule['man']['name'], schedule == doc))
+            print(('%s: %s' % (schedule['man']['name'], schedule == doc)))
     return schedules
 
 
@@ -146,11 +146,11 @@ def schedule_to_node(_mcs, _mcn, is_check=True):
             n_cursor = _mcn.find({'name': name}, {'_id': 0})
             for doc in n_cursor:
                 doc.pop('point')
-                print('%s: %s' % (name, node == doc))
+                print(('%s: %s' % (name, node == doc)))
                 if node != doc:
                     print('why not?')
                     for k in node:
-                        print('%s: %s' % (k, node[k] == doc[k]))
+                        print(('%s: %s' % (k, node[k] == doc[k])))
     else:
         print('\n根据schedule生成node:')
         for name in nodes:

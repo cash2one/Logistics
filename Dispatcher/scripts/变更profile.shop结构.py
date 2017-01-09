@@ -30,8 +30,8 @@ def move_fields(charge_cursor):
                                       'loc': {'latitude': lat, 'longitude': lng, 'address': loc.get('address', '')}
                                   }}
                                   )
-        print('%s, %s, %s, lat:%s, lng:%s, %s, %s' % (
-            i, c_shop_id, c_shop_name, lat, lng, result.matched_count, result.modified_count))
+        print(('%s, %s, %s, lat:%s, lng:%s, %s, %s' % (
+            i, c_shop_id, c_shop_name, lat, lng, result.matched_count, result.modified_count)))
 
 
 if __name__ == '__main__':

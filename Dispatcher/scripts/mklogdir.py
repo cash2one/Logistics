@@ -1,8 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# @Date    : 2015-09-14 11:42:41
-# @Author  : Jim Zhang (jim.zoumo@gmail.com)
-# @Github  : https://github.com/zoumo
+# coding: utf-8
 
 """Archive Apidoc
 Usage:
@@ -21,8 +18,9 @@ import sys
 from os import makedirs
 from os.path import dirname, isdir, abspath
 from docopt import docopt
+import imp
 
-reload(sys)
+imp.reload(sys)
 sys.setdefaultencoding('utf-8')
 
 # args = docopt(__doc__, version="make log dir from supervisor config 1.0")
@@ -43,5 +41,5 @@ if __name__ == '__main__':
             if isdir(logdir):
                 continue
             else:
-                print "mkdir: %s" % (logdir)
+                print(("mkdir: %s" % (logdir)))
                 makedirs(logdir)

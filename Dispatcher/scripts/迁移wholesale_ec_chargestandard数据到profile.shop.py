@@ -25,12 +25,12 @@ def move_charge(charge_cursor):
             c_shop_id = ObjectId(c_shop_id)
         # 根据fee字段是否存在判断是否已经迁移
         if mc_to.find_one({'_id': c_shop_id, 'fee': {'$exists': True}}):
-            print(u'定价[%s]已迁移.' % c['shop'].get('name'))
+            print(('定价[%s]已迁移.' % c['shop'].get('name')))
             continue
 
         i += 1
         result = mc_to.update_one({'_id': c_shop_id}, {'$set': {'fee': {'ps': ps, 'fh': fh}}})
-        print('%s, %s, %s, ps:%s, fh:%s, %s, %s' % (i, c_shop_id, c_shop_name, ps, fh, result.matched_count, result.modified_count))
+        print(('%s, %s, %s, ps:%s, fh:%s, %s, %s' % (i, c_shop_id, c_shop_name, ps, fh, result.matched_count, result.modified_count)))
 
 
 if __name__ == '__main__':

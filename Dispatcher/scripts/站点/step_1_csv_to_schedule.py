@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding:utf-8
-from __future__ import unicode_literals
+
 
 from pymongo import MongoClient
 from tools_lib.common_util.sstring import safe_unicode
@@ -44,7 +44,7 @@ def dump_to_schedule(from_file, _mc):
                 if v:
                     parsed.append(safe_unicode(v))
 
-            print('%s: %s: %s' % (count, len(parsed), ', '.join(parsed)))
+            print(('%s: %s: %s' % (count, len(parsed), ', '.join(parsed))))
             # 人员基本信息行: 刘从志,18218711837,56c811a27f452563e439bcb6,bd74cd1296da48ed8e1a5248c62d6166,司机
             if len(parsed) == 5 and count != 1 and parsed[4] in ('司机', '收派员'):
                 name = parsed[0]

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding:utf-8
-from __future__ import unicode_literals
+
 from pymongo import MongoClient
 from step_1_csv_to_schedule import dump_to_schedule
 from step_2_synchronization_check import schedule_to_node, node_to_schedule

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding:utf-8
-from __future__ import unicode_literals
+
 
 import json
 
@@ -25,4 +25,4 @@ if __name__ == '__main__':
     for doc in cursor:
         doc.pop('_id')
         mans = {(t['man']['client_id'], t['man']['name']) for t in doc['time_table'] if t['man']['m_type'] == 'man'}
-        print(json.dumps(list(mans), ensure_ascii=False, indent=2))
+        print((json.dumps(list(mans), ensure_ascii=False, indent=2)))

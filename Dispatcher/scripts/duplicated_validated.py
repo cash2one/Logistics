@@ -7,7 +7,7 @@ if __name__ == '__main__':
     cursor = cnx.cursor(dictionary=True)
 
     sql = 'SELECT man_id, tel, expr_num, create_time FROM f_deliveryman.flow WHERE TYPE=\'VALIDATED\';'
-    print sql
+    print(sql)
     cursor.execute(sql)
 
     i = 0
@@ -23,4 +23,4 @@ if __name__ == '__main__':
 
     for k in dup:
         i += 1
-        print i, k, dup[k]
+        print((i, k, dup[k]))

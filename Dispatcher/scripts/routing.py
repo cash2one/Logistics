@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding:utf-8
-from __future__ import unicode_literals
+
 
 import json
 
@@ -63,7 +63,7 @@ def get_orbit_and_schedule():
         conn = psycopg2.connect(host='182.92.115.196', port='5432', database='tlbs', user='postgres',
                                 password='feng123')
     except Exception as e:
-        print(e.message)
+        print((e.message))
         exit(-1)
 
     cursor = conn.cursor()
@@ -175,9 +175,9 @@ def out_of_service_time(place_order_time, _orbit):
         if end > service_e:
             service_e = end
     if place_order_time < service_s or place_order_time > service_e:
-        print('已经超过我们的服务时间啦, 请在(%s,%s)内下单哦' % (service_s, service_e))
+        print(('已经超过我们的服务时间啦, 请在(%s,%s)内下单哦' % (service_s, service_e)))
     else:
-        print('好棒! 没超过我们的服务时间, 下单时间[%s]在(%s,%s)内哦' % (place_order_time, service_s, service_e))
+        print(('好棒! 没超过我们的服务时间, 下单时间[%s]在(%s,%s)内哦' % (place_order_time, service_s, service_e)))
 
 
 out_of_service_time(t0, orbit)
@@ -212,11 +212,11 @@ def find_nearby(_node, _orbit):
                 if dist_n < max_dist:
                     _sn[-1] = dict(point=p, dist=dist_n, nn=nn)
     print('始发站点:')
-    print(json.dumps(_node['node_0'], ensure_ascii=False, indent=2))
-    print(json.dumps([dict(dist=_s['dist'], name=_s['point']['name']) for _s in _s0], ensure_ascii=False, indent=2))
+    print((json.dumps(_node['node_0'], ensure_ascii=False, indent=2)))
+    print((json.dumps([dict(dist=_s['dist'], name=_s['point']['name']) for _s in _s0], ensure_ascii=False, indent=2)))
     print('目的站点:')
-    print(json.dumps(_node['node_n'], ensure_ascii=False, indent=2))
-    print(json.dumps([dict(dist=_s['dist'], name=_s['point']['name']) for _s in _sn], ensure_ascii=False, indent=2))
+    print((json.dumps(_node['node_n'], ensure_ascii=False, indent=2)))
+    print((json.dumps([dict(dist=_s['dist'], name=_s['point']['name']) for _s in _sn], ensure_ascii=False, indent=2)))
 
     if _s0 and _sn:
         print('找到可用站点, 需要进一步匹配时间和路线信息')
@@ -240,7 +240,7 @@ def make_guesses(_s0, _sn, _answers):
             p0_id, p1_id = i['point']['id'], j['point']['id']
             p = '%s %s' % (p0_id, p1_id)
             if p in _answers:
-                print('[✪✪✪][解%s] 找到一条路线能从[%s]到[%s], 进一步匹配时间信息.' % (_cnt, i['point']['name'], j['point']['name']))
+                print(('[✪✪✪][解%s] 找到一条路线能从[%s]到[%s], 进一步匹配时间信息.' % (_cnt, i['point']['name'], j['point']['name'])))
                 ans_list = _answers[p]
                 for ans in ans_list:
                     # 如果s0和sn中存在同一个站点, 优先推荐(不需要上车,直接派件)
@@ -254,20 +254,20 @@ def make_guesses(_s0, _sn, _answers):
                         # ans['confidence'] = 0.9  # todo: 改成根据合理的min(tx),min(ty)来给推荐指数
                         recommend[p].append(ans)
             else:
-                print('[   ][解%s] 没有一条路线能从[%s]到[%s].' % (_cnt, i['point']['name'], j['point']['name']))
+                print(('[   ][解%s] 没有一条路线能从[%s]到[%s].' % (_cnt, i['point']['name'], j['point']['name'])))
 
     if not recommend:
         print('找不到任何时段的可行路线: [预计明日送达]')
     else:
-        print('找到推荐(始发 终点 可选班次)个数为: %s, [预计今日送达]' % len(recommend))
+        print(('找到推荐(始发 终点 可选班次)个数为: %s, [预计今日送达]' % len(recommend)))
 
     for px_py in recommend:
-        print(px_py, len(recommend[px_py]))
-        print(json.dumps(recommend[px_py], ensure_ascii=False, indent=2))
+        print((px_py, len(recommend[px_py])))
+        print((json.dumps(recommend[px_py], ensure_ascii=False, indent=2)))
     return recommend
 
 
 make_guesses(s0, sn, answers)
 _t1 = arrow.now()
 
-print('搜寻解空间耗时: %s ' % (_t1 - _t0))
+print(('搜寻解空间耗时: %s ' % (_t1 - _t0)))

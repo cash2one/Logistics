@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding:utf-8
-from __future__ import unicode_literals
+
 import psycopg2
 import arrow
 import json
@@ -10,7 +10,7 @@ if __name__ == '__main__':
     try:
         conn = psycopg2.connect(host='182.92.115.196', port='5432', database='tlbs', user='postgres', password='feng123')
     except Exception as e:
-        print(e.message)
+        print((e.message))
         exit(-1)
 
     cursor = conn.cursor()
@@ -77,5 +77,5 @@ if __name__ == '__main__':
         schedule = schedule_today[key]
         schedule['run'] = sorted(schedule['run'], cmp=lambda x, y: cmp(x['t'], y['t']))
 
-    print(json.dumps(orbit, ensure_ascii=False, indent=2))
-    print(json.dumps(schedule_today, ensure_ascii=False, indent=2))
+    print((json.dumps(orbit, ensure_ascii=False, indent=2)))
+    print((json.dumps(schedule_today, ensure_ascii=False, indent=2)))

@@ -24,8 +24,9 @@ import os
 import json
 import shutil
 from docopt import docopt
+import imp
 
-reload(sys)
+imp.reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
@@ -97,11 +98,11 @@ def check():
         exit(1)
 
     if output_dir == './':
-        print u"不能指定输出为本文件夹, 请指定一个有效文件夹"
+        print("不能指定输出为本文件夹, 请指定一个有效文件夹")
         exit(1)
 
     if os.path.isfile(output_dir):
-        print u"已经存在" + output_dir + u", 并不是一个文件夹"
+        print(("已经存在" + output_dir + ", 并不是一个文件夹"))
         exit(1)
 
     docdir = list(docdir)

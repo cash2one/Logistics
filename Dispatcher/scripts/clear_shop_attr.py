@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding:utf-8
-from __future__ import unicode_literals
+
 from pymongo import MongoClient
 
 if __name__ == "__main__":
@@ -13,4 +13,4 @@ if __name__ == "__main__":
     #     result = mc.update_many({'_id': shop_id}, {'$unset': {'accounts': 1}})
     #     print result.modified_count
     result = mc.update_many({}, {'$unset': {'biz_type': 1, 'deprecated': ''}})
-    print result.modified_count
+    print((result.modified_count))

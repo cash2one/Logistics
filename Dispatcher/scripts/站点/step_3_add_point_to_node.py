@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding:utf-8
-from __future__ import unicode_literals
+
 
 import json
 from pymongo import MongoClient
@@ -79,7 +79,7 @@ def add_geo(_mcn):
             ]
         }
         result = _mcn.update_one({'_id': doc['_id']}, {'$set': {'point': point}, '$unset': {'geo': ''}})
-        print('%s: %s' % (doc['name'], result.modified_count))
+        print(('%s: %s' % (doc['name'], result.modified_count)))
 
 
 if __name__ == '__main__':

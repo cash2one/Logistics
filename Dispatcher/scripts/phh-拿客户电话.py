@@ -45,7 +45,7 @@ def get_customer_info_from_tn(tn):
     tbody = m.group(0)
     # print tbody
     m = re.findall(r"(?<=<td>)(.*?)(?=</td>)", tbody)
-    for i in xrange(len(m)):
+    for i in range(len(m)):
         item = m[i]
         # 跳过“风先生”这栏信息
         if i == 1:
@@ -79,7 +79,7 @@ if __name__ == '__main__':
         line = "%s\n" % line
         out.append(line.encode('utf-8'))
         i += 1
-        print i, doc['expr_num']
+        print((i, doc['expr_num']))
         # 每N个输出到文件
         if i % N == 0:
             with open("customer.csv", 'a+') as f:

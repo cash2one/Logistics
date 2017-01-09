@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding:utf-8
-from __future__ import unicode_literals
+
 
 import json
 
@@ -52,7 +52,7 @@ if __name__ == '__main__':
                 if v:
                     parsed.append(safe_unicode(v))
 
-            print('%s: %s' % (len(parsed), parsed))
+            print(('%s: %s' % (len(parsed), parsed)))
             # 站点基本信息行: 萧山站,杭州萧山区建设一路金一路路口,,"30.2012140000,120.2662010000"
             if len(parsed) == 4:
                 name = parsed[0]
@@ -63,7 +63,7 @@ if __name__ == '__main__':
                 nodes.append(node_basic)
                 # 不是第一个站点基本信息行, 将上一个站点信息记入mongodb
                 if len(nodes) > 1:
-                    print(json.dumps(nodes[-2], ensure_ascii=False, indent=2))
+                    print((json.dumps(nodes[-2], ensure_ascii=False, indent=2)))
                     # sort node.time_table
                     node = nodes[-2]
                     tt = sorted(node['time_table'],

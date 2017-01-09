@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding:utf-8
-from __future__ import print_function
+
 # optparse is Python 2.3 - 2.6, deprecated in 2.7
 # For 2.7+ use http://docs.python.org/library/argparse.html#module-argparse
 from optparse import OptionParser
@@ -33,7 +33,7 @@ url = service_host + ':5000/port'
 resp = requests.get(url, timeout=TIMEOUT)
 port = resp.json()
 ok, timed_out = True, False
-url = service_host + ":" + unicode(port).encode('utf-8') + "/schedule/logic/wholesale_ec/check_unfinished_expr"
+url = service_host + ":" + str(port).encode('utf-8') + "/schedule/logic/wholesale_ec/check_unfinished_expr"
 
 try:
     r = requests.post(url, json=None, headers=None, timeout=TIMEOUT)
@@ -51,10 +51,10 @@ else:
 # Using the example -m parameter parsed from commandline
 if timed_out:
     print('WARN - POST [%s] timed out.' % url)
-    raise SystemExit, WARNING
+    raise SystemExit(WARNING)
 elif not ok:
     print('CRITICAL - POST [%s] failed.' % url)
-    raise SystemExit, CRITICAL
+    raise SystemExit(CRITICAL)
 else:
     print('OK - POST [%s] done. Sent to [%s] mans.' % (url, r.json() if r and r.json() else ''))
-    raise SystemExit, OK
+    raise SystemExit(OK)

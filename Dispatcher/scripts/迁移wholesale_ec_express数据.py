@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding:utf-8
-from __future__ import unicode_literals
+
 from pymongo import MongoClient
 import re
 from tools_lib.transwarp.tz import utc_now
@@ -47,10 +47,10 @@ def move_express(expr_cursor):
     # ==> 迁移express
     for doc in expr_cursor:
         if mc_expr_new.find_one({'number': doc['expr_num']}):
-            print('运单[%s]已迁移.' % doc['expr_num'])
+            print(('运单[%s]已迁移.' % doc['expr_num']))
             continue
         i += 1
-        print('%s, %s, %s, %s' % (i, doc['expr_num'], doc['status'], doc['shop'].get('name')))
+        print(('%s, %s, %s, %s' % (i, doc['expr_num'], doc['status'], doc['shop'].get('name'))))
         shop_id = doc['shop'].get('id')
         if shop_id == 15081 or (shop_id is None and doc['source'] == 'PHH'):
             shop_id = '56c2d708a785c90ab0014d06'
@@ -132,10 +132,10 @@ def move_trace(trace_cursor):
         # expr_num = doc['_id']
         # 处理trace重复迁移
         if mc_trace_new.find_one({'number': doc['expr_num']}):
-            print('运单[%s]trace已迁移.' % doc['expr_num'])
+            print(('运单[%s]trace已迁移.' % doc['expr_num']))
             continue
         i += 1
-        print('%s, %s' % (i, doc['expr_num']))
+        print(('%s, %s' % (i, doc['expr_num'])))
         cursor = mc_trace_old.find({'expr_num': doc['expr_num']})
         traces = [{
                       "number": t['expr_num'],
