@@ -2,9 +2,9 @@
 """
 给cha.123feng.com用的接口.
 """
-from __future__ import unicode_literals
 
-from apis.express import (redirect_get_express)
+
+from .apis.express import (redirect_get_express)
 from tools_lib.gtornado.web2 import ReqHandler
 from tornado import gen
 

@@ -1,11 +1,11 @@
 # coding:utf-8
-from __future__ import unicode_literals
+
 import base64
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import xml.etree.ElementTree as ET
 from hashlib import md5
 
-import alipay_config as ac
+from . import alipay_config as ac
 from Crypto.Cipher import PKCS1_OAEP
 from Crypto.Hash import SHA
 from Crypto.PublicKey import RSA
@@ -181,7 +181,7 @@ def rsa_decrypt(paras):
 
 def filter_param(paras):
     """过滤空值和签名"""
-    for k, v in paras.items():
+    for k, v in list(paras.items()):
         if not v or k in ['sign', 'sign_type']:
             paras.pop(k)
     return paras
@@ -190,9 +190,9 @@ def filter_param(paras):
 def create_link_string(paras, sort, encode):
     """对参数排序并拼接成query string的形式"""
     if sort:
-        paras = sorted(paras.items(), key=lambda d: d[0])
+        paras = sorted(list(paras.items()), key=lambda d: d[0])
     if encode:
-        return urllib.urlencode(paras)
+        return urllib.parse.urlencode(paras)
     else:
         if not isinstance(paras, list):
             paras = list(paras.items())

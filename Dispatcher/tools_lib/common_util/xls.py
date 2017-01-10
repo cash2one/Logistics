@@ -88,7 +88,7 @@ def xls_reader(xls_file_content, sheet=0):
     except:
         raise SheetNotFound("sheet %s not found." % sheet)
     rest = []
-    for row_num in xrange(the_sheet.nrows):
+    for row_num in range(the_sheet.nrows):
         rest.append(the_sheet.row_values(row_num))
     return rest
 

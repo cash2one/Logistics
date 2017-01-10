@@ -12,7 +12,7 @@ WARNING 警告:仅允许AG层和BL层访问!请严格遵守
 import json
 import logging
 from tornado.httpclient import HTTPRequest
-from conf import WC_DAS_PREFIX, timeouts
+from .conf import WC_DAS_PREFIX, timeouts
 
 
 def req_create(account_id, account_type):

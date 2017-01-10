@@ -1,5 +1,5 @@
 # coding: utf-8
-from __future__ import unicode_literals
+
 import os
 import hashlib
 import requests
@@ -53,7 +53,7 @@ def wx_generate_prepay_native(transact_num, cash):
         # 商户号
         "mch_id": MCH_ID,
         # 随机字符串
-        "nonce_str": ''.join(map(lambda x: (hex(ord(x))[2:]), os.urandom(16))),
+        "nonce_str": ''.join([(hex(ord(x))[2:]) for x in os.urandom(16)]),
         # 商品描述
         "body": '客户支付',
         # 商户订单号
@@ -77,11 +77,11 @@ def wx_generate_prepay_native(transact_num, cash):
     r = requests.post(url=PREPAY_URL, data=params_xml.encode('utf-8'))
     logging.info(r.content)
     wx_xml = Etree.fromstring(r.content)
-    return_code = unicode(wx_xml.find('return_code').text)
+    return_code = str(wx_xml.find('return_code').text)
     result_code = wx_xml.find('result_code')
     # 只有在return_code 和 result_code的时候才算是生成预支付成功
     # return_code 为通信标识, result_code 为操作标识
-    if return_code == SUCCESS and hasattr(result_code, 'text') and unicode(result_code.text) == SUCCESS:
+    if return_code == SUCCESS and hasattr(result_code, 'text') and str(result_code.text) == SUCCESS:
         return {
             'result': 'success',
             # 'prepay_id': wx_xml.find('prepay_id').text,
@@ -122,7 +122,7 @@ def wx_generate_prepay_jsapi(transact_num, cash, spbill_create_ip, code):
         # 商户号
         "mch_id": MCH_ID,
         # 随机字符串
-        "nonce_str": ''.join(map(lambda x: (hex(ord(x))[2:]), os.urandom(16))),
+        "nonce_str": ''.join([(hex(ord(x))[2:]) for x in os.urandom(16)]),
         # 商品描述
         "body": BODY,
         # 商户订单号
@@ -160,11 +160,11 @@ def wx_generate_prepay_jsapi(transact_num, cash, spbill_create_ip, code):
     # </xml>
     logging.info(r.content)
     wx_xml = Etree.fromstring(r.content)
-    return_code = unicode(wx_xml.find('return_code').text)
+    return_code = str(wx_xml.find('return_code').text)
     result_code = wx_xml.find('result_code')
     # 只有在return_code 和 result_code的时候才算是生成预支付成功
     # return_code 为通信标识, result_code 为操作标识
-    if return_code == SUCCESS and hasattr(result_code, 'text') and unicode(result_code.text) == SUCCESS:
+    if return_code == SUCCESS and hasattr(result_code, 'text') and str(result_code.text) == SUCCESS:
         return {
             'result': 'success',
             'prepay_id': wx_xml.find('prepay_id').text,
@@ -186,14 +186,14 @@ def wx_callback(post_args):
     # 解析参数,xml格式
     wx_xml = Etree.fromstring(post_args)
 
-    return_code = unicode(wx_xml.find('return_code').text)
-    result_code = unicode(wx_xml.find('result_code').text)
+    return_code = str(wx_xml.find('return_code').text)
+    result_code = str(wx_xml.find('result_code').text)
     transact_num = wx_xml.find('out_trade_no').text
     total_fee = round(float(wx_xml.find('total_fee').text) / 100, 2)
-    trade_type = unicode(wx_xml.find('trade_type').text)
-    bank_type = unicode(wx_xml.find('bank_type').text)
-    transaction_id = unicode(wx_xml.find('transaction_id').text)
-    time_end = unicode(wx_xml.find('time_end').text)
+    trade_type = str(wx_xml.find('trade_type').text)
+    bank_type = str(wx_xml.find('bank_type').text)
+    transaction_id = str(wx_xml.find('transaction_id').text)
+    time_end = str(wx_xml.find('time_end').text)
 
     # 如果通信失败
     if return_code != SUCCESS:
@@ -261,12 +261,12 @@ def generate_sign(kwargs):
     :return: unicode
     """
     string_sign = ''
-    for item in sorted(kwargs.iteritems(), key=lambda x: x[0]):
+    for item in sorted(iter(kwargs.items()), key=lambda x: x[0]):
         sub = '%s=%s&' % item
         string_sign += sub
     string_sign = string_sign + 'key=' + KEY
     sign = hashlib.md5(string_sign.encode('utf-8')).hexdigest().upper()
-    return unicode(sign)
+    return str(sign)
 
 
 def generate_xml(kwargs):
@@ -327,12 +327,12 @@ def get_js_sdk_signature(noncestr, jsapi_ticket, timestamp, url):
         :return: unicode
         """
         string_sign = ''
-        for item in sorted(kwargs.iteritems(), key=lambda x: x[0]):
+        for item in sorted(iter(kwargs.items()), key=lambda x: x[0]):
             sub = '%s=%s&' % item
             string_sign += sub
         string_sign = string_sign + 'key=' + KEY
         sign = hashlib.sha1(string_sign.encode('utf-8')).hexdigest().upper()
-        return unicode(sign)
+        return str(sign)
 
     # 给微信的参数列表
     # noncestr=Wm3WZYTPz0wzccnW
@@ -360,7 +360,7 @@ if __name__ == '__main__':
     # print(get_jsapi_ticket(
     #     'lO-gRsFaf3jgfDS6iBsKtpaHaW7GNasSh9iq0WjD6iJRUYYnTBehWXUjdJ_eSqE1V0JR03JfSX03aeHiA3GaPxziGqj96UHcxU01OKWyYfsk43hl4JcLbinO-WbteY4wIUGiADAVHT'))
 
-    print(
-        get_js_sdk_signature(''.join(map(lambda x: (hex(ord(x))[2:]), os.urandom(16))),
+    print((
+        get_js_sdk_signature(''.join([(hex(ord(x))[2:]) for x in os.urandom(16)]),
                              'sM4AOVdWfPE4DxkXGEs8VHI_iLGM64MRnq8nt6eZTP5dcEc2YoHFQMeQKy6LEJo3PhsXABkAeD0pgVdbtHFyxA',
-                             1414587457, TOP_UP_NOTIFY_URL))
+                             1414587457, TOP_UP_NOTIFY_URL)))

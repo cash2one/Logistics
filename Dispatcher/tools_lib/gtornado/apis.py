@@ -1,5 +1,5 @@
 # coding:utf-8
-from __future__ import unicode_literals
+
 
 import json
 import logging
@@ -277,4 +277,4 @@ if __name__ == '__main__':
     from functools import partial
 
     f = partial(get_fee, '5773acbbb3a525019093119d')
-    print("shop_charge: %s" % IOLoop.current().run_sync(f))
+    print(("shop_charge: %s" % IOLoop.current().run_sync(f)))

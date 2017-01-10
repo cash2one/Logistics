@@ -1,10 +1,10 @@
 # coding:utf-8
-from __future__ import unicode_literals
+
 import sys
 import math
 from copy import deepcopy
 from operator import eq
-from ConfigParser import ConfigParser
+from configparser import ConfigParser
 
 __all__ = ['ConfUtil', 'ProcessPrint', 'ifnone', 'absolute_round']
 
@@ -58,7 +58,7 @@ class ProcessPrint(object):
         """
         self.cursor += 1
         if self.cursor > 1 and eq(self.cursor % self.step, 0):
-            print '%.1f%%' % (100.0 * self.cursor / self.total_count)
+            print('%.1f%%' % (100.0 * self.cursor / self.total_count))
 
 
 def ifnone(value, unexpected=(None,), default=""):
@@ -86,7 +86,7 @@ def convert_string_with_comma_to_list(s, func=None):
     if '' in s_list:
         s_list.remove('')
     if callable(func):
-        s_list = map(func, s_list)
+        s_list = list(map(func, s_list))
     return s_list
 
 

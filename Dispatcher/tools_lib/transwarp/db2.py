@@ -163,11 +163,11 @@ def create_engine(user, password, database, host='127.0.0.1', port=3306, **kw):
         raise DBError('Engine is already initialized.')
     params = dict(user=user, passwd=password, db=database, host=host, port=port)
     defaults = dict(creator=MySQLdb, mincached=1, maxcached=32, charset='utf8', autocommit=False, cursorclass=Cursor)
-    for k, v in defaults.iteritems():
+    for k, v in defaults.items():
         params[k] = kw.pop(k, v)
     params.update(kw)
     pool = PooledDB(**params)
-    logging.info('Init mysql engine with %s.', {k:v for k,v in params.iteritems() if not k == "password"})
+    logging.info('Init mysql engine with %s.', {k:v for k,v in params.items() if not k == "password"})
     engine = _Engine(pool)
     # test connection...
     logging.info('Init mysql engine <%s> ok.', hex(id(engine)))
@@ -432,7 +432,7 @@ def select_int(sql, *args):
     d = _select(sql, True, *args)
     if len(d) != 1:
         raise MultiColumnsError('Expect only one column.')
-    return int(d.values()[0])
+    return int(list(d.values())[0])
 
 
 @with_connection
@@ -495,7 +495,7 @@ def insert(table, **kw):
       ...
     IntegrityError: (1062, "Duplicate entry '2000' for key 'PRIMARY'")
     """
-    cols, args = zip(*kw.iteritems())
+    cols, args = list(zip(*iter(kw.items())))
     sql = 'insert into %s (%s) values (%s)' % (
         table, ','.join(['`%s`' % col for col in cols]), ','.join(['?' for i in range(len(cols))]))
     return _update(sql, *args)
@@ -606,9 +606,9 @@ def query(sql):
         if cursor.description:
             names = [x[0] for x in cursor.description]
         values = cursor.fetchall()
-        results = [dict(zip(names, value)) for value in values]
+        results = [dict(list(zip(names, value))) for value in values]
         return results, int(cursor.rowcount)
-    except MySQLdb.MySQLError, err:
+    except MySQLdb.MySQLError as err:
         logging.error("execute sql error,err info:%s, sql:%s" % (err, sql))
         raise DatabaseQueryError()
     finally:
@@ -640,4 +640,4 @@ if __name__ == '__main__':
     ]
     
     insert_many('user2', ['id', 'name', 'tel', 'passwd'], col_data)
-    print select('select * from user_center.user limit 10')
+    print(select('select * from user_center.user limit 10'))

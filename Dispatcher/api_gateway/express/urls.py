@@ -1,5 +1,5 @@
 # coding:utf-8
-from __future__ import unicode_literals
+
 from handlers import fh, ps, song, yun, cha, pj, qyjl
 
 urls = []

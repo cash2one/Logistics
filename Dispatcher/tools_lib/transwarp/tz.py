@@ -125,7 +125,7 @@ def utc_to_utc_8(dt, is_date=False, ret="str"):
 
 
 def utc_8_to_utc(dt, is_date=False, ret="str"):
-    if isinstance(dt, unicode):
+    if isinstance(dt, str):
         dt = dt.encode('utf-8')
     if isinstance(dt, str):
         if is_date:

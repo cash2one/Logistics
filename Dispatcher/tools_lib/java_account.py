@@ -1,10 +1,10 @@
 # coding:utf-8
-from __future__ import unicode_literals
+
 
 import json
 import logging
 
-import java_host_info
+from . import java_host_info
 from schema import Schema, Optional
 from tools_lib.common_util import sstring
 from tools_lib.gtornado import http_code
@@ -24,11 +24,11 @@ timeouts = {
 }
 
 # request append keywords with header(json content-type)
-req_kw_json = dict(timeouts.items() + {
+req_kw_json = dict(list(timeouts.items()) + list({
     "headers": {
         "Content-Type": "application/json"
     }
-}.items())
+}.items()))
 
 # 角色标签
 ROLE_TAG_MAN = "man"
@@ -582,20 +582,20 @@ if __name__ == '__main__':
     # 从token取
     f = partial(AsyncAccount.get_basic_from_token, dict(Authorization='token ed104fe249e69fe64ee21676f3da9c49'))
     man = IOLoop.current().run_sync(f)
-    print("man: %s\n" % json.dumps(man, ensure_ascii=False, indent=2))
+    print(("man: %s\n" % json.dumps(man, ensure_ascii=False, indent=2)))
 
     f = partial(AsyncAccount.get_basic_from_token, dict(Authorization='token ed104fe249e69fe64ee21676f3da9c49'))
     shop = IOLoop.current().run_sync(f)
-    print("shop: %s\n" % json.dumps(shop, ensure_ascii=False, indent=2))
+    print(("shop: %s\n" % json.dumps(shop, ensure_ascii=False, indent=2)))
 
     # 从id取
     f = partial(AsyncAccount.get_basic_from_id, '56cc0f9aeed0932e60a16966')
     man = IOLoop.current().run_sync(f)
-    print("man: %s\n" % json.dumps(man, ensure_ascii=False, indent=2))
+    print(("man: %s\n" % json.dumps(man, ensure_ascii=False, indent=2)))
 
     f = partial(AsyncAccount.get_basic_from_id, '56cd130e421aa973b8ccb32c')
     shop = IOLoop.current().run_sync(f)
-    print("shop: %s\n" % json.dumps(shop, ensure_ascii=False, indent=2))
+    print(("shop: %s\n" % json.dumps(shop, ensure_ascii=False, indent=2)))
 
     shop = SyncAccount.get_basic_from_token(dict(Authorization='token d856728b293a57ca26fbd804117dcee9'))
-    print("shop: %s\n" % json.dumps(shop, ensure_ascii=False, indent=2))
+    print(("shop: %s\n" % json.dumps(shop, ensure_ascii=False, indent=2)))

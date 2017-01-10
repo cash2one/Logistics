@@ -1,6 +1,6 @@
 # coding:utf-8
 # 所有涉及机器号及机器IP的都在这里配置，不要在其他配置文件中硬编码
-from __future__ import unicode_literals
+
 import os.path
 import platform
 
@@ -86,22 +86,22 @@ def local_to_online_patch():
     CONFIG_POSTGRESQL = PROD_POSTGRESQL_CONFIG
 
 
-print("IP_PORT_API=[%s]" % IP_PORT_API)
+print(("IP_PORT_API=[%s]" % IP_PORT_API))
 
 if __name__ == "__main__":
-    print IP_API
-    print IP_MONGODB
-    print IP_MYSQL
-    print IP_REDIS
-    print BL_DAS_PORT
-    print IP_PORT_API
-    print CONFIG_POSTGRESQL
+    print(IP_API)
+    print(IP_MONGODB)
+    print(IP_MYSQL)
+    print(IP_REDIS)
+    print(BL_DAS_PORT)
+    print(IP_PORT_API)
+    print(CONFIG_POSTGRESQL)
 
     local_to_online_patch()
-    print IP_API
-    print IP_MONGODB
-    print IP_MYSQL
-    print IP_REDIS
-    print BL_DAS_PORT
-    print IP_PORT_API
-    print CONFIG_POSTGRESQL
+    print(IP_API)
+    print(IP_MONGODB)
+    print(IP_MYSQL)
+    print(IP_REDIS)
+    print(BL_DAS_PORT)
+    print(IP_PORT_API)
+    print(CONFIG_POSTGRESQL)

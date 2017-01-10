@@ -1,10 +1,10 @@
 # coding: utf-8
-from __future__ import unicode_literals
+
 
 import logging
 
 import weibo
-from conf import WEIBO_CONF
+from .conf import WEIBO_CONF
 
 
 def tiny_url(long_url):

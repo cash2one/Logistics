@@ -27,7 +27,7 @@ def name2code(province='', city='', district=''):
     redis_key = key_area_code.format(province_name=province, city_name=city, district_name=district)
     if redis_client.exists(redis_key):
         result = redis_client.hgetall(redis_key)
-        for k in result.keys():
+        for k in list(result.keys()):
             result[k] = int(result[k])
     else:
         result = {
@@ -113,7 +113,7 @@ def code2name(province_code=0, city_code=0, district_code=0):
 
 
 if __name__ == '__main__':
-    rst = name2code(u'浙江省', u'杭州市', u'滨江区')
+    rst = name2code('浙江省', '杭州市', '滨江区')
     print(rst)
-    print(code2name(rst['province_code'], rst['city_code'], rst['district_code']))
+    print((code2name(rst['province_code'], rst['city_code'], rst['district_code'])))
 

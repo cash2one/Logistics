@@ -1,5 +1,5 @@
 # coding:utf-8
-from __future__ import unicode_literals
+
 import platform
 from tools_lib.host_info import PROD_API_NODE
 

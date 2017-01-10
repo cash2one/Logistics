@@ -3,12 +3,12 @@
 # @Date    : 2015-09-07 15:19:48
 # @Author  : Jim Zhang (jim.zoumo@gmail.com)
 # @Github  : https://github.com/zoumo
-from __future__ import unicode_literals
+
 
 import json
 from random import randint
 
-import async_requests
+from . import async_requests
 from tools_lib.common_util.sstring import safe_utf8
 from tornado.web import gen
 
@@ -83,7 +83,7 @@ def async_get_coordinates(city, district, address):
     中的“5.2 Place检索示例”小节
     """
     if not city:
-        city = '杭州市' if isinstance(address, unicode) else safe_utf8('杭州市')
+        city = '杭州市' if isinstance(address, str) else safe_utf8('杭州市')
     address = "%s %s %s" % (city, district, address)
     url = r"http://api.map.baidu.com/geocoder/v2/"
     params = {
@@ -201,8 +201,8 @@ if __name__ == '__main__':
 
     f = partial(async_get_coordinates, '', '', '飞虹路佳丰北苑6-703')
     ret = IOLoop.current().run_sync(f)
-    print("async_get_coordinates: %s, %s" % (ret[1], ret[0]))
+    print(("async_get_coordinates: %s, %s" % (ret[1], ret[0])))
 
     f = partial(async_get_coordinates, '', '', '杭州市滨江区时代大道南环路口')
     ret = IOLoop.current().run_sync(f)
-    print("async_get_coordinates: %s, %s" % (ret[1], ret[0]))
+    print(("async_get_coordinates: %s, %s" % (ret[1], ret[0])))

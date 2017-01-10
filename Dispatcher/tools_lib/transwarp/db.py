@@ -161,13 +161,13 @@ def create_engine(user, password, database, host='127.0.0.1', port=3306, **kw):
         raise DBError('Engine is already initialized.')
     params = dict(user=user, password=password, database=database, host=host, port=port)
     defaults = dict(use_unicode=True, charset='utf8', collation='utf8_general_ci', autocommit=False)
-    for k, v in defaults.iteritems():
+    for k, v in defaults.items():
         params[k] = kw.pop(k, v)
     params.update(kw)
     params['buffered'] = True
     params['pool_name'] = "pool"
     params['pool_size'] = mysql.connector.pooling.CNX_POOL_MAXSIZE
-    logging.info('Init mysql engine with %s.', {k:v for k,v in params.iteritems() if not k == "password"})
+    logging.info('Init mysql engine with %s.', {k:v for k,v in params.items() if not k == "password"})
     engine = _Engine(lambda: mysql.connector.connect(**params))
     # test connection...
     logging.info('Init mysql engine <%s> ok.', hex(id(engine)))
@@ -414,7 +414,7 @@ def select_int(sql, *args):
     d = _select(sql, True, *args)
     if len(d) != 1:
         raise MultiColumnsError('Expect only one column.')
-    return d.values()[0]
+    return list(d.values())[0]
 
 
 @with_connection
@@ -478,7 +478,7 @@ def insert(table, **kw):
       ...
     IntegrityError: 1062 (23000): Duplicate entry '2000' for key 'PRIMARY'
     """
-    cols, args = zip(*kw.iteritems())
+    cols, args = list(zip(*iter(kw.items())))
     sql = 'insert into %s (%s) values (%s)' % (
         table, ','.join(['%s' % col for col in cols]), ','.join(['?' for i in range(len(cols))]))
     return _update(sql, *args)

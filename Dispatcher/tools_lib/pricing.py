@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 # coding: utf-8
-from __future__ import unicode_literals
+
 from math import ceil
 
 # == 基础定价 ==
@@ -83,20 +83,20 @@ def pricing(volume=0, weight=0.0):
 
 
 if __name__ == "__main__":
-    print('[default] cash=%.2d, msg=%s, %s' % pricing())  # default weight=0
-    print('[1.5    ] cash=%.2d, msg=%s, %s' % pricing(weight=1.5))
-    print('[2.5    ] cash=%.2d, msg=%s, %s' % pricing(weight=2.5))
-    print('[3      ] cash=%.2d, msg=%s, %s' % pricing(weight=3))
-    print('[4      ] cash=%.2d, msg=%s, %s' % pricing(weight=4))
-    print('[4.5    ] cash=%.2d, msg=%s, %s' % pricing(weight=4.5))
-    print('[18.5   ] cash=%.2d, msg=%s, %s' % pricing(weight=18.5))
+    print(('[default] cash=%.2d, msg=%s, %s' % pricing()))  # default weight=0
+    print(('[1.5    ] cash=%.2d, msg=%s, %s' % pricing(weight=1.5)))
+    print(('[2.5    ] cash=%.2d, msg=%s, %s' % pricing(weight=2.5)))
+    print(('[3      ] cash=%.2d, msg=%s, %s' % pricing(weight=3)))
+    print(('[4      ] cash=%.2d, msg=%s, %s' % pricing(weight=4)))
+    print(('[4.5    ] cash=%.2d, msg=%s, %s' % pricing(weight=4.5)))
+    print(('[18.5   ] cash=%.2d, msg=%s, %s' % pricing(weight=18.5)))
 
-    print('[8000   ] cash=%.2d, msg=%s, %s' % pricing(volume=8000))
-    print('[13000  ] cash=%.2d, msg=%s, %s' % pricing(volume=13000))
-    print('[20000, -3000] cash=%.2d, msg=%s, %s' % pricing(volume=20000, weight=-3000))
-    print('[100 * 100 * 100] cash=%.2d, msg=%s, %s' % pricing(volume=100 * 100 * 100))
-    print('[100 * 100 * 99] cash=%.2d, msg=%s, %s' % pricing(volume=100 * 100 * 99))
+    print(('[8000   ] cash=%.2d, msg=%s, %s' % pricing(volume=8000)))
+    print(('[13000  ] cash=%.2d, msg=%s, %s' % pricing(volume=13000)))
+    print(('[20000, -3000] cash=%.2d, msg=%s, %s' % pricing(volume=20000, weight=-3000)))
+    print(('[100 * 100 * 100] cash=%.2d, msg=%s, %s' % pricing(volume=100 * 100 * 100)))
+    print(('[100 * 100 * 99] cash=%.2d, msg=%s, %s' % pricing(volume=100 * 100 * 99)))
 
     print()
     import json
-    print(json.dumps(fh_base(), ensure_ascii=False, indent=2))
+    print((json.dumps(fh_base(), ensure_ascii=False, indent=2)))

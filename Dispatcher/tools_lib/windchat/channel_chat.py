@@ -7,7 +7,7 @@ __all__ = ["WCChannelMessage"]
 import json
 import logging
 
-import conf
+from . import conf
 from schema import Schema, Or, Use, Optional
 from tools_lib.common_util.archived.gtz import TimeZone
 from tools_lib.common_util.rabbitmq_client import RabbitMqCtl

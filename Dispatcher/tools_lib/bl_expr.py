@@ -1,5 +1,5 @@
 # coding:utf-8
-from __future__ import unicode_literals
+
 
 
 class ExprState(object):
@@ -107,8 +107,8 @@ class ExprState(object):
 
 if __name__ == '__main__':
     # area_manager_no_cash_time
-    print(ExprState.build_time_name('area_manager', ExprState.EVENT_NO_CASH))
+    print((ExprState.build_time_name('area_manager', ExprState.EVENT_NO_CASH)))
     # parttime_sj_time
-    print(ExprState.build_time_name('parttime', ExprState.EVENT_SJ))
+    print((ExprState.build_time_name('parttime', ExprState.EVENT_SJ)))
     # parttime_qj_time
-    print(ExprState.build_time_name('parttime', ExprState.EVENT_QJ))
+    print((ExprState.build_time_name('parttime', ExprState.EVENT_QJ)))

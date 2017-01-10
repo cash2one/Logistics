@@ -36,7 +36,7 @@ schema_bool = And(Use(int), Use(bool))
 schema_objectid = And(schema_unicode, lambda x: len(x) == 24)
 schema_date = And(Use(utf8), Use(arrow.get), Use(lambda x: x.date()))
 schema_datetime = And(Use(utf8), Use(arrow.get), Use(lambda x: x.datetime))
-schema_hhmm = And(Use(utf8), Use(lambda x: datetime.time(*map(int, x.split(':')))), Use(lambda x: x.strftime("%H:%M")))
+schema_hhmm = And(Use(utf8), Use(lambda x: datetime.time(*list(map(int, x.split(':'))))), Use(lambda x: x.strftime("%H:%M")))
 
 schema_operator = {
     "id": schema_utf8,
@@ -55,33 +55,33 @@ schema_receiver = {
 }
 
 schema_operator_unicode = {
-    u"id": schema_unicode,
-    u"name": schema_unicode_empty,
-    u"tel": schema_unicode,
-    u"m_type": schema_unicode_empty,
+    "id": schema_unicode,
+    "name": schema_unicode_empty,
+    "tel": schema_unicode,
+    "m_type": schema_unicode_empty,
     Optional(object): object
 }
 schema_node_x_unicode = {
-    u'name': schema_unicode_empty,
-    u'tel': schema_unicode_empty,
+    'name': schema_unicode_empty,
+    'tel': schema_unicode_empty,
 
-    u'addr': schema_unicode_empty,
-    u'lat': schema_float,
-    u'lng': schema_float,
-    u'fence': {u'id': schema_unicode, u'name': schema_unicode_empty, Optional(object): object},
+    'addr': schema_unicode_empty,
+    'lat': schema_float,
+    'lng': schema_float,
+    'fence': {'id': schema_unicode, 'name': schema_unicode_empty, Optional(object): object},
 }
 schema_shop_unicode = {
-    u'id': schema_unicode,
-    u'name': schema_unicode_empty,
-    u'tel': schema_unicode,
-    u'm_type': schema_unicode_empty,
+    'id': schema_unicode,
+    'name': schema_unicode_empty,
+    'tel': schema_unicode,
+    'm_type': schema_unicode_empty,
 
-    u'lat': schema_float,
-    u'lng': schema_float,
-    Optional(u'address'): schema_unicode_empty
+    'lat': schema_float,
+    'lng': schema_float,
+    Optional('address'): schema_unicode_empty
 }
 schema_loc = {
-    u"lat": schema_float,
-    u"lng": schema_float,
-    Optional(u"addr"): schema_utf8_empty
+    "lat": schema_float,
+    "lng": schema_float,
+    Optional("addr"): schema_utf8_empty
 }

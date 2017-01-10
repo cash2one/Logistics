@@ -138,7 +138,7 @@ def get_distance(from_latitude, from_longitude, to_latitude, to_longitude, regio
     except Timeout:
         return 0
     except Exception:
-        print traceback.format_exc()
+        print(traceback.format_exc())
         return 0
 
 
@@ -229,9 +229,9 @@ if __name__ == '__main__':
     address = '飞虹路佳丰北苑6-703'
     city = '杭州'
     lat, lng = poi('飞虹路佳丰北苑6-703', '杭州')
-    print("async_get_coordinates: %s, %s" % (lat, lng))
-    print("async_get_coordinates: %s, %s" % (lng, lat))
+    print(("async_get_coordinates: %s, %s" % (lat, lng)))
+    print(("async_get_coordinates: %s, %s" % (lng, lat)))
 
     lat, lng = suggestions('淘果乐', city)
-    print("async_get_coordinates: %s, %s" % (lat, lng))
-    print("async_get_coordinates: %s, %s" % (lng, lat))
+    print(("async_get_coordinates: %s, %s" % (lat, lng)))
+    print(("async_get_coordinates: %s, %s" % (lng, lat)))

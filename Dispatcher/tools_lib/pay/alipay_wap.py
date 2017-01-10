@@ -1,13 +1,13 @@
 # coding:utf-8
-from __future__ import unicode_literals
+
 import logging
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import xml.etree.ElementTree as ET
 
 import re
 import requests
-from alipay_config import WAP_GATEWAY, ALIPAY_VERIFY_URL, DEAL_STATUS, PARTNER
-from alipay_wap_util import build_wap_handshake_query_str, build_wap_do_trade_query_str, build_request, rsa_decrypt, verify
+from .alipay_config import WAP_GATEWAY, ALIPAY_VERIFY_URL, DEAL_STATUS, PARTNER
+from .alipay_wap_util import build_wap_handshake_query_str, build_wap_do_trade_query_str, build_request, rsa_decrypt, verify
 
 
 def create_wap_trade(transact_num, money, desc):
@@ -24,7 +24,7 @@ def create_wap_trade(transact_num, money, desc):
     desc = '123feng.com'
     para = build_request('trade', transact_num, money, desc)
     resp_obj = requests.post(WAP_GATEWAY, params=para)
-    resp = urllib.unquote(resp_obj.content)
+    resp = urllib.parse.unquote(resp_obj.content)
     tmp = re.findall('<request_token>(.+)</request_token>', resp)
     if tmp:
         # TODO
@@ -81,7 +81,7 @@ def wap_sync_notice(get_args):
 def _verify_resp(notify_id):
     """验证response是不是支付宝发出。其实签名就已经能比较好的保证了，这步操作可能是为了防止秘钥泄露的签名伪造"""
     url = '%s&partner=%s&notify_id=%s' % (ALIPAY_VERIFY_URL, PARTNER, notify_id)
-    print url
+    print(url)
     resp = requests.get(url)
     if resp.content == 'true':
         return True
@@ -143,7 +143,7 @@ def gen_wap_transfer_link(transact_num, cash, desc):
     desc = '123feng.com'
     gateway_param = build_wap_handshake_query_str(transact_num, cash, desc)
     resp_obj = requests.post(WAP_GATEWAY, params=gateway_param, timeout=7.5)
-    resp = urllib.unquote(resp_obj.content)
+    resp = urllib.parse.unquote(resp_obj.content)
     tmp = re.findall('<request_token>(.+)</request_token>', resp)
     if tmp:
         token = tmp[0]
@@ -197,4 +197,4 @@ if __name__ == '__main__':
     alipay_notice_args = {'v': '1.0', 'sign': '01dc7d5d108ef6d746d53ec3e31d22df',
                           'notify_data': '<notify><payment_type>1</payment_type><subject>123feng.com</subject><trade_no>2016032921001004370206978744</trade_no><buyer_email>15058115878</buyer_email><gmt_create>2016-03-29 17:49:50</gmt_create><notify_type>trade_status_sync</notify_type><quantity>1</quantity><out_trade_no>20160329Uh9eRR</out_trade_no><notify_time>2016-03-29 17:49:51</notify_time><seller_id>2088811364424201</seller_id><trade_status>TRADE_SUCCESS</trade_status><is_total_fee_adjust>N</is_total_fee_adjust><total_fee>0.01</total_fee><gmt_payment>2016-03-29 17:49:51</gmt_payment><seller_email>abcf@123feng.com</seller_email><price>0.01</price><buyer_id>2088502576717374</buyer_id><notify_id>6c545823879d141a0156e338c595a51iuu</notify_id><use_coupon>N</use_coupon></notify>',
                           'service': 'alipay.wap.trade.create.direct', 'sec_id': 'MD5'}
-    print(wap_trade_notice_handler(alipay_notice_args))
+    print((wap_trade_notice_handler(alipay_notice_args)))

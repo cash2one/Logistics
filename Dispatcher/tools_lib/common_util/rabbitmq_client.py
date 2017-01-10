@@ -66,7 +66,7 @@ class RabbitMqCtl(object):
                 recycle=3600,
                 stale=60,
             )
-        print("Connecting to rabbitmq server @%s" % RABBITMQ_SERVER[server_node])
+        print(("Connecting to rabbitmq server @%s" % RABBITMQ_SERVER[server_node]))
         with cls.__pool_dict[server_node].acquire() as connection:
             connection.channel.basic_publish(
                 exchange=exchange,

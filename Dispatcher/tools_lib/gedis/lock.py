@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 import time
 import uuid
-from gedis import Redis
+from .gedis import Redis
 
 
 class LockTimeout(Exception): pass

@@ -62,7 +62,7 @@ key_sms_code = "sms:code:{tel}"
 # type -> str: todo: del me after song.123feng.com changed the login api to new
 key_token = "token:{content}"
 # type -> hash
-key_area_code = u"area:province:{province_name}:city:{city_name}:district:{district_name}"
+key_area_code = "area:province:{province_name}:city:{city_name}:district:{district_name}"
 # type -> str 接口调用计数器
 key_api_call_count = 'api:count:{method}:{url}'
 # type -> str 日志中心-API调用记录

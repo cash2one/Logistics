@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding:utf-8
-from __future__ import unicode_literals
+
 """
 只在单进程时正确工作.
 """
@@ -57,7 +57,7 @@ def init_log(mod_dir):
                                          delay=0, utc=False, header=None)
     ch.setFormatter(logging.Formatter(logging_msg_format))
     logger.addHandler(ch)
-    print("Logger file located at [%s]." % logger_file)
+    print(("Logger file located at [%s]." % logger_file))
 
 
 class RotatingFileHandlerCustomHeader(RotatingFileHandler, object):
@@ -135,7 +135,7 @@ class RotatingFileHandlerCustomHeader(RotatingFileHandler, object):
 
 if __name__ == "__main__":
 
-    print(time.strftime("%Y-%m-%d_%H-%M-%S.log"))
+    print((time.strftime("%Y-%m-%d_%H-%M-%S.log")))
 
     LOGGING_MSG_FORMAT = '%(name)-14s > [%(levelname)s] [%(asctime)s] : %(message)s'
     LOGGING_DATE_FORMAT = '%Y-%m-%d %H:%M:%S'

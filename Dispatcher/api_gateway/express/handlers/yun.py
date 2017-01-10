@@ -2,12 +2,12 @@
 """
 给yun.123feng.com用的接口.
 """
-from __future__ import unicode_literals
+
 
 import arrow
-from apis import bl_data
-from apis.express import *
-from apis.node import *
+from .apis import bl_data
+from .apis.express import *
+from .apis.node import *
 from schema import Schema, SchemaError, Optional
 from tools_lib.bl_expr import ExprState
 from tools_lib.common_util.archived.gtz import TimeZone
@@ -706,7 +706,7 @@ class OpDataHandler(StaffHandler):
 
         total = dict()
         for _ in content:
-            for (k, v) in _.iteritems():
+            for (k, v) in _.items():
                 if k in total:
                     total[k] += v
                 else:

@@ -6,6 +6,7 @@ import sys
 from multiprocessing.dummy import Pool
 
 import os
+import imp
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir)))
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir, os.pardir, os.pardir)))
@@ -17,7 +18,7 @@ from pymongo import MongoClient
 from handlers.models import *
 from tools_lib.common_util.sstring import safe_join
 
-reload(sys)
+imp.reload(sys)
 sys.setdefaultencoding("utf-8")
 PROD_MONGODB_OUTER_IP = '123.56.117.75'
 MONGODB_CONFIG = {
@@ -28,7 +29,7 @@ MONGODB_CONFIG = {
 
 
 def pprint(*arg):
-    print safe_join(arg)
+    print(safe_join(arg))
 
 
 def sign_in():
@@ -41,7 +42,7 @@ def sign_in():
 
 
 if __name__ == '__main__':
-    print MONGODB_NAME, MONGODB_CONFIG
+    print(MONGODB_NAME, MONGODB_CONFIG)
     from functools import partial
 
     pool = Pool(8)

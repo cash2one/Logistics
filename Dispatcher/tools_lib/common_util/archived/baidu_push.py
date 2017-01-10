@@ -3,7 +3,7 @@ import hashlib
 import platform
 import time
 import traceback
-import urllib
+import urllib.request, urllib.parse, urllib.error
 
 import requests
 
@@ -69,10 +69,10 @@ def baidu_push(token, msg, platform='android', env='develop'):
     try:
         r = requests.post(PUSH_URL, data=params, timeout=5)
     except Exception:
-        print traceback.format_exc()
+        print(traceback.format_exc())
         return False
     response = r.json()
-    print response
+    print(response)
     if response.get("response_params", {}).get("success_amount", ""):
         return True
     else:
@@ -86,7 +86,7 @@ def cal_sign(params, platform='android'):
         params_list.append("%s=%s" % (key, params[key]))
     params_str = "".join(params_list)
     sign_str = METHOD + PUSH_URL + params_str + BAIDU_SETTINGS[platform]['secret_key']
-    encode_str = urllib.quote_plus(sign_str.encode("utf-8"))
+    encode_str = urllib.parse.quote_plus(sign_str.encode("utf-8"))
     return hashlib.md5(encode_str).hexdigest().upper()
 
 
@@ -98,7 +98,7 @@ def __cal_sign(params, device_type=PLATFORM_ANDROID):
             ]
     )
     sign_str = METHOD + PUSH_URL_V3 + params_str + BAIDU_SETTINGS_V3[device_type]['secret_key']
-    encode_str = urllib.quote_plus(sign_str)
+    encode_str = urllib.parse.quote_plus(sign_str)
     return hashlib.md5(encode_str).hexdigest()
 
 
@@ -132,9 +132,9 @@ def baidu_push_v3(channel_id, msg, device_type=PLATFORM_ANDROID):
                           str(platform.uname()) +
                           'python/2.7.3 (Baidu Push Server SDK V3.0.0) cli/Unknown'
         }
-        r = requests.post(PUSH_URL_V3, data=urllib.urlencode(params), headers=headers, timeout=5)
+        r = requests.post(PUSH_URL_V3, data=urllib.parse.urlencode(params), headers=headers, timeout=5)
     except Exception as e:
-        print traceback.format_exc()
+        print(traceback.format_exc())
         return False, {'error': str(e)}
     response = r.json()
 
@@ -151,10 +151,10 @@ if __name__ == '__main__':
         "source": "deliver",
         "type": "force_deliver_notice",
         "content": {
-            "title": u"测试",
-            "body": u"同志们好，首长好",
+            "title": "测试",
+            "body": "同志们好，首长好",
             "create_time": TimeZone.datetime_to_str(TimeZone.utc_now()),
         }
     }
 
-    print baidu_push_v3('3737072413124982526', msg, device_type=PLATFORM_ANDROID)
+    print(baidu_push_v3('3737072413124982526', msg, device_type=PLATFORM_ANDROID))

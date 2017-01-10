@@ -8,7 +8,7 @@ from dateutil.parser import parse
 
 class TimeZone(object):
     UTC_TIMEZONE = pytz.utc
-    DEFAULT_TIMEZONE = pytz.timezone(u'Asia/Shanghai')
+    DEFAULT_TIMEZONE = pytz.timezone('Asia/Shanghai')
     UTC_DATE_TIME_PATTERN = '%Y-%m-%dT%H:%M:%SZ'
     DATE_PATTERN = "%Y-%m-%d"
     DATE_PATTERN_WITH_NO_YEAR = "%m-%d"
@@ -255,26 +255,26 @@ class TimeZone(object):
 
 if __name__ == '__main__':
     local_now = datetime.datetime.now()
-    print 'local_time: %s' % TimeZone.naive_to_aware(local_now, pytz.timezone(pytz.country_timezones('cn')[0]))
-    print 'local_time: %s' % TimeZone.naive_to_aware(local_now)
-    print 'utc_time: %s' % TimeZone.datetime_to_utc(local_now)
-    print 'utc_time_str: %s' % TimeZone.datetime_to_str(TimeZone.datetime_to_utc(local_now))
-    print 'date str: %s' % TimeZone.str_to_date('2015-12-06')
-    print 'utc_now: %s' % TimeZone.utc_now()
-    print 'local_now: %s' % TimeZone.local_now()
+    print('local_time: %s' % TimeZone.naive_to_aware(local_now, pytz.timezone(pytz.country_timezones('cn')[0])))
+    print('local_time: %s' % TimeZone.naive_to_aware(local_now))
+    print('utc_time: %s' % TimeZone.datetime_to_utc(local_now))
+    print('utc_time_str: %s' % TimeZone.datetime_to_str(TimeZone.datetime_to_utc(local_now)))
+    print('date str: %s' % TimeZone.str_to_date('2015-12-06'))
+    print('utc_now: %s' % TimeZone.utc_now())
+    print('local_now: %s' % TimeZone.local_now())
 
-    print 'first in 2014-08 in utc: %s' % TimeZone.datetime_to_utc(
-        TimeZone.naive_to_aware(datetime.datetime(2014, 8, 1)))
-    print 'first in 2014-08 in utc: %s' % TimeZone.datetime_to_utc(
-        TimeZone.naive_to_aware(datetime.datetime(2014, 9, 1)))
+    print('first in 2014-08 in utc: %s' % TimeZone.datetime_to_utc(
+        TimeZone.naive_to_aware(datetime.datetime(2014, 8, 1))))
+    print('first in 2014-08 in utc: %s' % TimeZone.datetime_to_utc(
+        TimeZone.naive_to_aware(datetime.datetime(2014, 9, 1))))
 
     local_d1 = datetime.datetime(2014, 9, 15, 23, 22, 10)
     assert TimeZone.naive_to_aware(local_d1, tz=pytz.utc) == TimeZone.utc_to_local(TimeZone.datetime_to_utc(local_d1))
 
-    print '2013-12: (%s~%s)' % (TimeZone.month_range(2013, 12))
-    print '2014-01: (%s~%s)' % (TimeZone.month_range(2014, 1))
+    print('2013-12: (%s~%s)' % (TimeZone.month_range(2013, 12)))
+    print('2014-01: (%s~%s)' % (TimeZone.month_range(2014, 1)))
 
-    print '2014-01-01: (%s~%s)' % (TimeZone.day_range(2014, 1, 1))
-    print '2013-12-31: (%s~%s)' % (TimeZone.day_range(2013, 12, 31))
-    print '2012-03-01: (%s~%s)' % (TimeZone.day_range(2012, 3, 1))
-    print '2014-03-01: (%s~%s)' % (TimeZone.day_range(2014, 3, 1))
+    print('2014-01-01: (%s~%s)' % (TimeZone.day_range(2014, 1, 1)))
+    print('2013-12-31: (%s~%s)' % (TimeZone.day_range(2013, 12, 31)))
+    print('2012-03-01: (%s~%s)' % (TimeZone.day_range(2012, 3, 1)))
+    print('2014-03-01: (%s~%s)' % (TimeZone.day_range(2014, 3, 1)))

@@ -5,13 +5,13 @@
 A simple, lightweight, WSGI-compatible web framework.
 """
 
-import types, os, re, cgi, sys, json, datetime, functools, mimetypes, threading, logging, urllib, traceback, decimal
-from tz import utc_to_local
+import types, os, re, cgi, sys, json, datetime, functools, mimetypes, threading, logging, urllib.request, urllib.parse, urllib.error, traceback, decimal
+from .tz import utc_to_local
 
 try:
-    from cStringIO import StringIO
+    from io import StringIO
 except ImportError:
-    from StringIO import StringIO
+    from io import StringIO
 
 # thread local object for storing request and response:
 
@@ -68,7 +68,7 @@ class Dict(dict):
 
 def to_dict(raw_dict):
     result_dict = Dict()
-    for key, val in raw_dict.iteritems():
+    for key, val in raw_dict.items():
         result_dict[key] = to_dict(val) if isinstance(val, dict) else val
     return result_dict
 
@@ -245,7 +245,7 @@ _RESPONSE_HEADERS = (
     'X-UA-Compatible',
 )
 
-_RESPONSE_HEADER_DICT = dict(zip(map(lambda x: x.upper(), _RESPONSE_HEADERS), _RESPONSE_HEADERS))
+_RESPONSE_HEADER_DICT = dict(list(zip([x.upper() for x in _RESPONSE_HEADERS], _RESPONSE_HEADERS)))
 
 _HEADER_X_POWERED_BY = ('X-Powered-By', 'transwarp/1.0')
 
@@ -424,14 +424,14 @@ def safe_str(s):
 
     >>> safe_str('s123') == 's123'
     True
-    >>> safe_str(u'\u4e2d\u6587') == '\xe4\xb8\xad\xe6\x96\x87'
+    >>> safe_str(u'\\u4e2d\\u6587') == '\xe4\xb8\xad\xe6\x96\x87'
     True
     >>> safe_str(-123) == '-123'
     True
     """
     if isinstance(s, str):
         return s
-    if isinstance(s, unicode):
+    if isinstance(s, str):
         return s.encode('utf-8')
     return str(s)
 
@@ -440,7 +440,7 @@ def safe_unicode(s, encoding='utf-8'):
     """
     Convert to unicode.
 
-    >>> safe_unicode('\xe4\xb8\xad\xe6\x96\x87') == u'\u4e2d\u6587'
+    >>> safe_unicode('\xe4\xb8\xad\xe6\x96\x87') == u'\\u4e2d\\u6587'
     True
     """
     return s.decode('utf-8') if isinstance(s, str) else s
@@ -455,9 +455,9 @@ def _quote(s, encoding='utf-8'):
     >>> _quote(u'hello world!')
     'hello%20world%21'
     """
-    if isinstance(s, unicode):
+    if isinstance(s, str):
         s = s.encode(encoding)
-    return urllib.quote(s)
+    return urllib.parse.quote(s)
 
 
 def _unquote(s, encoding='utf-8'):
@@ -467,7 +467,7 @@ def _unquote(s, encoding='utf-8'):
     >>> _unquote('http%3A//example/test%3Fa%3D1+')
     u'http://example/test?a=1+'
     """
-    return urllib.unquote(s).decode(encoding)
+    return urllib.parse.unquote(s).decode(encoding)
 
 
 def get(path):
@@ -783,7 +783,7 @@ class Request(object):
         """
         copy = Dict(**kw)
         raw = self._get_raw_input()
-        for k, v in raw.iteritems():
+        for k, v in raw.items():
             copy[k] = v  # [0] if isinstance(v, list) else v
         return copy
 
@@ -874,7 +874,7 @@ class Request(object):
         >>> r.path_info
         '/test/a b.html'
         """
-        return urllib.unquote(self._environ.get('PATH_INFO', ''))
+        return urllib.parse.unquote(self._environ.get('PATH_INFO', ''))
 
     @property
     def host(self):
@@ -890,7 +890,7 @@ class Request(object):
     def _get_headers(self):
         if not hasattr(self, '_headers'):
             hdrs = {}
-            for k, v in self._environ.iteritems():
+            for k, v in self._environ.items():
                 if k.startswith('HTTP_'):
                     # convert 'HTTP_ACCEPT_ENCODING' to 'ACCEPT-ENCODING'
                     hdrs[k[5:].replace('_', '-').upper()] = v.decode('utf-8')
@@ -994,9 +994,9 @@ class Response(object):
         >>> r.headers
         [('Content-Type', 'text/html; charset=utf-8'), ('Set-Cookie', 's1=ok; Max-Age=3600; Path=/; HttpOnly'), ('X-Powered-By', 'transwarp/1.0')]
         """
-        L = [(_RESPONSE_HEADER_DICT.get(k, k), v) for k, v in self._headers.iteritems()]
+        L = [(_RESPONSE_HEADER_DICT.get(k, k), v) for k, v in self._headers.items()]
         if hasattr(self, '_cookies'):
-            for v in self._cookies.itervalues():
+            for v in self._cookies.values():
                 L.append(('Set-Cookie', v))
         L.append(_HEADER_X_POWERED_BY)
         return L
@@ -1142,12 +1142,12 @@ class Response(object):
             self._cookies = {}
         L = ['%s=%s' % (_quote(name), _quote(value))]
         if expires is not None:
-            if isinstance(expires, (float, int, long)):
+            if isinstance(expires, (float, int)):
                 L.append('Expires=%s' % datetime.datetime.fromtimestamp(expires, UTC_0).strftime(
                     '%a, %d-%b-%Y %H:%M:%S GMT'))
             if isinstance(expires, (datetime.date, datetime.datetime)):
                 L.append('Expires=%s' % expires.astimezone(UTC_0).strftime('%a, %d-%b-%Y %H:%M:%S GMT'))
-        elif isinstance(max_age, (int, long)):
+        elif isinstance(max_age, int):
             L.append('Max-Age=%d' % max_age)
         L.append('Path=%s' % path)
         if domain:
@@ -1236,7 +1236,7 @@ class Response(object):
           ...
         TypeError: Bad type of response code.
         """
-        if isinstance(value, (int, long)):
+        if isinstance(value, int):
             if value >= 100 and value <= 999:
                 st = _RESPONSE_STATUSES.get(value, '')
                 if st:
@@ -1245,8 +1245,8 @@ class Response(object):
                     self._status = str(value)
             else:
                 raise ValueError('Bad response code: %d' % value)
-        elif isinstance(value, basestring):
-            if isinstance(value, unicode):
+        elif isinstance(value, str):
+            if isinstance(value, str):
                 value = value.encode('utf-8')
             if _RE_RESPONSE_STATUS.match(value):
                 self._status = value
@@ -1504,7 +1504,7 @@ class WSGIApplication(object):
                 r = fn_exec()
                 # if isinstance(r, Template):
                 #     r = self._template_engine(r.template_name, r.model)
-                if isinstance(r, unicode):
+                if isinstance(r, str):
                     r = r.encode('utf-8')
                 if r is None:
                     r = []
@@ -1573,7 +1573,7 @@ def process_err(err, **kwargs):
     args = ctx.request.input()
     args.update(kwargs)
     if err.message:
-        ret = dict(message=unicode(err.message), request_method=request_method, path_info=path_info, headers=headers,
+        ret = dict(message=str(err.message), request_method=request_method, path_info=path_info, headers=headers,
                    args=args)
         resp = dumps(ret)
     else:

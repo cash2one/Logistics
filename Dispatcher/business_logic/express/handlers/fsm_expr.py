@@ -1,11 +1,11 @@
 # coding:utf-8
-from __future__ import unicode_literals
+
 
 import datetime
 import logging
 import time
 
-from models import Express, Trace, ClientAddress, Fence, Node
+from .models import Express, Trace, ClientAddress, Fence, Node
 from tools_lib.bl_expr import ExprState
 from tools_lib.common_util.archived.gtz import TimeZone
 from tools_lib.weibo.tools import tiny_url
@@ -365,8 +365,8 @@ class ExprFSM(ExprState):
             # (*, EVENT_ALTER_INFO): *,
         }
     }
-    OUTSIDE_EVENTS = set([e[1] for e in FSM['OUTSIDE'].keys()])
-    INSIDE_EVENTS = set([e[1] for e in FSM['INSIDE'].keys()]).union({EVENT_RESET})
+    OUTSIDE_EVENTS = set([e[1] for e in list(FSM['OUTSIDE'].keys())])
+    INSIDE_EVENTS = set([e[1] for e in list(FSM['INSIDE'].keys())]).union({EVENT_RESET})
 
     @classmethod
     def get_next_state(cls, operator_type, current_status, event):

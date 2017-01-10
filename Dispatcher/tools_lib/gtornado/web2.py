@@ -1,5 +1,5 @@
 # coding: utf-8
-from __future__ import unicode_literals
+
 
 import json
 import logging
@@ -111,7 +111,7 @@ class CommandWSHandler(WebSocketHandler):
             data = Schema({
                 "command": schema_utf8,
                 Optional("command_id", default=""): schema_utf8_empty,
-                "content": Or(str, unicode, list, dict),
+                "content": Or(str, str, list, dict),
             }).validate(data)
         except SchemaError:
             self.send(command="bad-json-schema", content=message)
@@ -152,7 +152,7 @@ class ReqHandler(RequestHandler):
             # 如果是204的返回, http的标准是不能有body, 所以tornado的httpclient接收的时候会
             # 报错变成599错误
             self.finish()
-        elif not is_success(status_code) and isinstance(content, (str, unicode)):
+        elif not is_success(status_code) and isinstance(content, str):
             # 当http code是非正常,且content传进来一个文本的时候,包装成一个含有message键的dict
             self.finish({
                 "message": content
@@ -212,14 +212,14 @@ class ReqHandler(RequestHandler):
         获取query_arguments，只取值列表最后一个
         :return:
         """
-        return {key: value[-1] for key, value in self.request.query_arguments.iteritems()}
+        return {key: value[-1] for key, value in self.request.query_arguments.items()}
 
     def get_body_args(self):
         """
         获取body_arguments, 只取列表最后一个
         """
         if self.request.body_arguments:
-            return {key: value[-1] for key, value in self.request.body_arguments.iteritems()}
+            return {key: value[-1] for key, value in self.request.body_arguments.items()}
         elif self.request.body:
             try:
                 data = json.loads(self.request.body)

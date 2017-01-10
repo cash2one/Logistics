@@ -20,7 +20,7 @@ def dictfetchall(cursor):
     :return:
     """
     desc = cursor.description
-    return [dict(zip([col[0] for col in desc], row)) for row in cursor.fetchall()]
+    return [dict(list(zip([col[0] for col in desc], row))) for row in cursor.fetchall()]
 
 
 def get_conn_from_old_db():
@@ -79,8 +79,8 @@ class Mysql(object):
 
     def get_all(self, sql, param=None):
         if DEBUG:
-            print sql
-            print param
+            print(sql)
+            print(param)
 
         if param is None:
             self._cursor.execute(sql)
@@ -91,22 +91,22 @@ class Mysql(object):
 
     def get_one(self, sql, param=None, value_only=True):
         if DEBUG:
-            print sql
-            print param
+            print(sql)
+            print(param)
         if param is None:
             self._cursor.execute(sql)
         else:
             self._cursor.execute(sql, param)
         rst = self._cursor.fetchone()
         if value_only:
-            rst = rst.values()
+            rst = list(rst.values())
             rst = rst[0] if len(rst) > 0 else None
         return rst
 
     def execute(self, sql, param=None):
         if DEBUG:
-            print sql
-            print param
+            print(sql)
+            print(param)
         if param is None:
             count = self._cursor.execute(sql)
         else:
@@ -158,6 +158,6 @@ class Conn2Mysql(object):
 if __name__ == '__main__':
     for i in range(10):
         with Conn2Mysql() as cn:
-            print cn.get_all("select shop_name, phone from f_shop.shop where id = %s", [15081])
+            print(cn.get_all("select shop_name, phone from f_shop.shop where id = %s", [15081]))
         with Conn2Mysql() as cn:
-            print cn.get_all("select shop_name, phone from f_shop.shop where id = %s", [17065])
+            print(cn.get_all("select shop_name, phone from f_shop.shop where id = %s", [17065]))

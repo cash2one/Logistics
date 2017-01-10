@@ -7,7 +7,7 @@ Database operation module. This module is independent with web module.
 
 import time, logging
 
-import db
+from . import db
 
 
 class Field(object):
@@ -123,9 +123,9 @@ _triggers = frozenset(['pre_insert', 'pre_update', 'pre_delete'])
 def _gen_sql(table_name, mappings):
     pk, unique_keys, keys = None, [], []
     sql = ['-- generating SQL for %s:' % table_name, 'create table `%s` (' % table_name]
-    for f in sorted(mappings.values(), lambda x, y: cmp(x._order, y._order)):
+    for f in sorted(list(mappings.values()), lambda x, y: cmp(x._order, y._order)):
         if not hasattr(f, 'ddl'):
-            raise StandardError('no ddl in field "%s".' % f)
+            raise Exception('no ddl in field "%s".' % f)
         ddl = f.ddl
         nullable = f.nullable
         has_comment = not (f.comment == '')
@@ -175,7 +175,7 @@ class ModelMetaclass(type):
         logging.info('Scan ORMapping %s...', name)
         mappings = dict()
         primary_key = None
-        for k, v in attrs.iteritems():
+        for k, v in attrs.items():
             if isinstance(v, Field):
                 if not v.name:
                     v.name = k
@@ -195,7 +195,7 @@ class ModelMetaclass(type):
         # check exist of primary key:
         if not primary_key:
             raise TypeError('Primary key not defined in class: %s' % name)
-        for k in mappings.iterkeys():
+        for k in mappings.keys():
             attrs.pop(k)
         if '__table__' not in attrs:
             attrs['__table__'] = name.lower()
@@ -208,7 +208,7 @@ class ModelMetaclass(type):
         return type.__new__(cls, name, bases, attrs)
 
 
-class Model(dict):
+class Model(dict, metaclass=ModelMetaclass):
     """
     Base class for ORM.
 
@@ -255,7 +255,6 @@ class Model(dict):
       primary key(`id`)
     );
     """
-    __metaclass__ = ModelMetaclass
 
     def __init__(self, **kw):
         super(Model, self).__init__(**kw)
@@ -288,7 +287,7 @@ class Model(dict):
         """
         d = db.select_one('select %s from %s %s' % (cols, cls.__table__, where), *args)
         if cols.find(',') == -1 and cols.strip() != '*':
-            return d.values()[0] if d else None
+            return list(d.values())[0] if d else None
         return cls(**d) if d else None
 
     @classmethod
@@ -332,7 +331,7 @@ class Model(dict):
         self.pre_update and self.pre_update()
         L = []
         args = []
-        for k, v in self.__mappings__.iteritems():
+        for k, v in self.__mappings__.items():
             if v.updatable:
                 if hasattr(self, k):
                     arg = getattr(self, k)
@@ -356,7 +355,7 @@ class Model(dict):
     def insert(self):
         self.pre_insert and self.pre_insert()
         params = {}
-        for k, v in self.__mappings__.iteritems():
+        for k, v in self.__mappings__.items():
             if v.insertable:
                 if not hasattr(self, k):
                     setattr(self, k, v.default)
@@ -365,7 +364,7 @@ class Model(dict):
             r = db.insert('%s' % self.__table__, **params)
         except Exception as e:
             logging.info(e.args)
-            print "MySQL Model.insert() error: args=", e.args
+            print("MySQL Model.insert() error: args=", e.args)
             # TODO !!! generalize ORM return package
             # return {'status': 'Failure', 'msg': e.args,  'data': self}
             raise

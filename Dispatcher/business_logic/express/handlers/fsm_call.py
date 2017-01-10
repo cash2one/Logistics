@@ -1,12 +1,12 @@
 # coding:utf-8
-from __future__ import unicode_literals
+
 
 import datetime
 import logging
 import time
 
-from fsm_expr import ExprFSM
-from models import Call, Express
+from .fsm_expr import ExprFSM
+from .models import Call, Express
 from schema import Schema, Optional
 from tools_lib.bl_call import CallState
 from tools_lib.bl_expr import ExprState
@@ -322,8 +322,8 @@ class CallFSM(CallState):
             # (*, EVENT_ALTER_INFO): *,
         }
     }
-    OUTSIDE_EVENTS = set([e[1] for e in FSM['OUTSIDE'].keys()])
-    INSIDE_EVENTS = set([e[1] for e in FSM['INSIDE'].keys()]).union({EVENT_RESET})
+    OUTSIDE_EVENTS = set([e[1] for e in list(FSM['OUTSIDE'].keys())])
+    INSIDE_EVENTS = set([e[1] for e in list(FSM['INSIDE'].keys())]).union({EVENT_RESET})
 
     @classmethod
     def get_next_state(cls, operator_type, current_status, event):

@@ -50,10 +50,10 @@ class Redis(redis.Redis):
         try:
             return redis.Redis.execute_command(self, *args, **kwargs)
         except (ConnectionError, BusyLoadingError, AuthenticationError) as ex:
-            print('Redis Error happened when executing command %s %s' % (args, kwargs))
+            print(('Redis Error happened when executing command %s %s' % (args, kwargs)))
             raise ex
         except Exception as ex:
-            print('Redis Error happened when executing command %s %s: %s' % (args, kwargs, ex))
+            print(('Redis Error happened when executing command %s %s: %s' % (args, kwargs, ex)))
 
     def expire_at_today(self, key, hour=0):
         from tools_lib.common_util.archived.gtz import TimeZone

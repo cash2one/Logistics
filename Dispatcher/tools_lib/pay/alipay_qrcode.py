@@ -1,19 +1,19 @@
 # coding:utf-8
-from __future__ import unicode_literals
+
 import base64
 import json
 import logging
-from urlparse import parse_qs
+from urllib.parse import parse_qs
 
-import alipay_config
-import alipay_wap_util
+from . import alipay_config
+from . import alipay_wap_util
 import arrow
 import requests
 from Crypto.Hash import SHA
 from Crypto.PublicKey import RSA
 from Crypto.Signature import PKCS1_v1_5
 from tools_lib import host_info
-from urlparse import parse_qs
+from urllib.parse import parse_qs
 
 # 支付宝 open-api 统一入口
 ALIPAY_OPENAPI_GATEWAY = "https://openapi.alipay.com/gateway.do"
@@ -67,7 +67,7 @@ def _base_open_api_params(method, **kwargs):
     }
     all_params.update(kwargs)
     all_params["sign"] = _generate_sign(private_key=alipay_config.APP_PRIVATE_KEY, **all_params)
-    print(json.dumps(all_params))
+    print((json.dumps(all_params)))
     return all_params
 
 

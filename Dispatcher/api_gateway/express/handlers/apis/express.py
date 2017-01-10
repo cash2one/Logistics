@@ -1,12 +1,12 @@
 # coding:utf-8
-from __future__ import unicode_literals
+
 
 import json
 import pickle
 
 import settings
 
-from config import async_cli, timeouts, xls_create_expr_timeouts
+from .config import async_cli, timeouts, xls_create_expr_timeouts
 from tools_lib.common_util import sstring
 from tools_lib.common_util.archived.gtz import TimeZone
 from tools_lib.windchat import http_utils

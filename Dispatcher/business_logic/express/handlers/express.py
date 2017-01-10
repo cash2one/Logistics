@@ -1,5 +1,5 @@
 # coding: utf-8
-from __future__ import unicode_literals
+
 
 import json
 import logging
@@ -9,13 +9,13 @@ from collections import defaultdict
 
 import arrow
 import psycopg2
-from api import query_fence_point_within
-from fsm_call import CallFSM
-from fsm_expr import ExprFSM
+from .api import query_fence_point_within
+from .fsm_call import CallFSM
+from .fsm_expr import ExprFSM
 from haversine import haversine
-from models import ApiError, DuplicateDocError
-from models import ClientAddress
-from models import Express, Call, Node, Schedule, Fence
+from .models import ApiError, DuplicateDocError
+from .models import ClientAddress
+from .models import Express, Call, Node, Schedule, Fence
 from mongoengine import Q
 from schema import Schema, Optional, Use, And, SchemaError
 from tools_lib.bl_call import CallState
@@ -37,6 +37,7 @@ from tools_lib.transwarp.escape import schema_unicode_empty
 from tools_lib.windchat import http_utils
 from tools_lib.windchat import shortcuts, conf
 from tornado import gen
+from functools import reduce
 
 # == postGre ==
 if DEBUG is True:
@@ -324,7 +325,7 @@ class CanBeServed(ReqHandler):
                 conn = psycopg2.connect(host=IP_POSTGRE, port='5432', database='tlbs', user='postgres',
                                         password='feng123')
             except Exception as e:
-                print(e.message)
+                print((e.message))
                 return None, None
 
             cursor = conn.cursor()
@@ -529,8 +530,8 @@ class CanBeServed(ReqHandler):
         prompts.append(msg)
 
         for px_py in recommend:
-            print(px_py, len(recommend[px_py]))
-            print(json.dumps(recommend[px_py], ensure_ascii=False, indent=2))
+            print((px_py, len(recommend[px_py])))
+            print((json.dumps(recommend[px_py], ensure_ascii=False, indent=2)))
         return recommend
 
     @gen.coroutine
@@ -1431,14 +1432,14 @@ class ExpressExportHandler(ReqHandler):
         )
         exp = [
             [
-                u"第三方单号",
-                u"运单编号",
-                u"收货者姓名",
-                u"收货者电话",
-                u"收货者地址",
-                u"备注",
-                u"创建时间",
-                u"运单状态"
+                "第三方单号",
+                "运单编号",
+                "收货者姓名",
+                "收货者电话",
+                "收货者地址",
+                "备注",
+                "创建时间",
+                "运单状态"
             ]
         ]
         for i in values:
@@ -1449,7 +1450,7 @@ class ExpressExportHandler(ReqHandler):
                 i[2].get("node_n", {}).get("tel", ""),
                 i[2].get("node_n", {}).get("addr", ""),
                 i[3],
-                TimeZone.utc_to_local(i[4]).strftime(u"%Y-%m-%d %H:%M:%S"),
+                TimeZone.utc_to_local(i[4]).strftime("%Y-%m-%d %H:%M:%S"),
                 ExprFSM.STATUS_NAME_MAPPING.get(i[5]["sub_status"], "其他状态").decode("utf-8")
             ])
 
@@ -1685,7 +1686,7 @@ class FenceHandler(ReqHandler):
             new_mans.append(m)
         kw["mans"] = new_mans
         # 删除 time_table
-        if kw["node"] and kw["node"].has_key("time_table"):
+        if kw["node"] and "time_table" in kw["node"]:
             kw["node"].pop("time_table")
         # 写数据库
         try:
@@ -1749,7 +1750,7 @@ class FenceHandler(ReqHandler):
             self.resp_args_error(e.message)
             return
         # 删除 time_table
-        if kw.has_key("node") and kw["node"].has_key("time_table"):
+        if "node" in kw and "time_table" in kw["node"]:
             kw["node"].pop("time_table")
         try:
             kw['set__update_time'] = arrow.utcnow().datetime
@@ -1761,7 +1762,7 @@ class FenceHandler(ReqHandler):
                 return
             else:
                 # 筛除id重复的mans
-                if kw.has_key("mans"):
+                if "mans" in kw:
                     new_mans = []
                     collected_man_ids = []
                     for m in kw["mans"]:
@@ -1912,7 +1913,7 @@ def place_order_notify(shop, expr_count):
                 tel_list.append(fence['manager']['tel'])
                 id_list.append(fence["manager"].get("id"))
 
-        msg = u"商户:%s,%s 下了%s单啦，要及时安排运力哦！" % (shop['name'], shop['tel'], expr_count)
+        msg = "商户:%s,%s 下了%s单啦，要及时安排运力哦！" % (shop['name'], shop['tel'], expr_count)
 
         # 给区域经理短信
         for tel in tel_list:

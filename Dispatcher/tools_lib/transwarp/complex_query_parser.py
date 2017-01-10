@@ -16,7 +16,7 @@ def parse_atom_expr(expr, args):
                 has_not = True if expr[key] == 1 else False
             else:
                 col = key
-                col_op = expr[col].keys()[0]
+                col_op = list(expr[col].keys())[0]
                 col_val = expr[col][col_op]
                 # 检查col_op, 看是单元操作符(支持=,<>,>,<,<=,>=,like,regexp,regexp binary), 还是多元操作符(in,between)
                 if col_op.strip() in ('=', '<>', '>', '<', '<=', '>=', 'like', 'regexp', 'regexp binary'):
@@ -25,7 +25,7 @@ def parse_atom_expr(expr, args):
                 elif col_op.strip() == 'in':
                     if not isinstance(col_val, list):
                         raise TypeError("Wrong values for column[%s], should be a list." % col)
-                    expr_str = '%s in (%s)' % (col.strip(), ','.join(['?' for _ in xrange(len(col_val))]))
+                    expr_str = '%s in (%s)' % (col.strip(), ','.join(['?' for _ in range(len(col_val))]))
                     args.extend(col_val)
                 elif col_op.strip() == 'between':
                     if not isinstance(col_val, list) or (isinstance(col_val, list) and len(col_val) != 2):
@@ -266,22 +266,22 @@ def test_json_to_sql():
     }
     put_my_args_here = []
 
-    print "In [1]:\n %s\n\n" % expr_json_example
-    print "Out [1]:\n %s\n" % json_to_query_str(expr_json_example, put_my_args_here)
-    print "Out [2]:\n %s\n" % put_my_args_here
+    print("In [1]:\n %s\n\n" % expr_json_example)
+    print("Out [1]:\n %s\n" % json_to_query_str(expr_json_example, put_my_args_here))
+    print("Out [2]:\n %s\n" % put_my_args_here)
 
 
 def test_sql_to_json():
-    print build_atom_expr('NOT id = 0 ')
-    print build_atom_expr('NOT id=1 ')
-    print build_atom_expr("Not create_time BeTween '2015-11-21' And '2015-11-30' ")
-    print build_atom_expr("Not id in (0 , 1,'str with space' )")
-    print build_atom_expr(" id Not in (0 , 1,'str with space' )")
-    print build_atom_expr(" id in (0 , 1,'str with space' )")
-    print build_atom_expr("DATE(`create_time`)='2015-11-23' ")
+    print(build_atom_expr('NOT id = 0 '))
+    print(build_atom_expr('NOT id=1 '))
+    print(build_atom_expr("Not create_time BeTween '2015-11-21' And '2015-11-30' "))
+    print(build_atom_expr("Not id in (0 , 1,'str with space' )"))
+    print(build_atom_expr(" id Not in (0 , 1,'str with space' )"))
+    print(build_atom_expr(" id in (0 , 1,'str with space' )"))
+    print(build_atom_expr("DATE(`create_time`)='2015-11-23' "))
 
-    print build_atom(" id in (0 , 1,'str with space' )")
-    print build_atom("DATE(`create_time`)='2015-11-23' AND `to_status`='CHECK_RESIGN'")
+    print(build_atom(" id in (0 , 1,'str with space' )"))
+    print(build_atom("DATE(`create_time`)='2015-11-23' AND `to_status`='CHECK_RESIGN'"))
 
 
 # 跑我

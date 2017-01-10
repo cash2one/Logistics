@@ -1,9 +1,9 @@
 # coding:utf-8
-from __future__ import unicode_literals
+
 import json
 import logging
 from tornado.web import gen
-import async_requests
+from . import async_requests
 
 
 # == 生成短链接服务 ==
@@ -26,4 +26,4 @@ if __name__ == '__main__':
 
     f = partial(tiny_url, 'http://cha.123feng.com/sllsdjalsldlakdfaksflkasjfas;fklasjf;alskjfl')
     ret = IOLoop.current().run_sync(f)
-    print("tiny_url: %s" % (ret))
+    print(("tiny_url: %s" % (ret)))

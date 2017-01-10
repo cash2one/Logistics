@@ -12,13 +12,13 @@ from tornado import httpclient
 from tornado.web import RequestHandler
 from tornado.web import gen
 
-from error_code import ERR_UNKNOWN, ERR_NO_CONTENT, ERR_ARG, ERR_MULTIPLE_OBJ_RETURNED, ERR_DUPLICATE_ENTRY
+from .error_code import ERR_UNKNOWN, ERR_NO_CONTENT, ERR_ARG, ERR_MULTIPLE_OBJ_RETURNED, ERR_DUPLICATE_ENTRY
 from tools_lib.gtornado.http_code import (HTTP_200_OK, HTTP_204_NO_CONTENT, HTTP_201_CREATED,
                                           HTTP_400_BAD_REQUEST, HTTP_422_UNPROCESSABLE_ENTITY, HTTP_403_FORBIDDEN,
                                           HTTP_500_INTERNAL_SERVER_ERROR, HTTP_401_UNAUTHORIZED)
 from . import async_requests
 
-STR_OR_UNICODE = Or(str, unicode)
+STR_OR_UNICODE = Or(str, str)
 executor = ThreadPoolExecutor(8)
 
 
@@ -233,7 +233,7 @@ class BaseRequestHandler(RequestHandler):
         获取query_arguments，只取值列表最后一个
         :return:
         """
-        return {key: value[-1] for key, value in self.request.query_arguments.iteritems()}
+        return {key: value[-1] for key, value in self.request.query_arguments.items()}
 
     def get_body_args(self):
         """
@@ -241,7 +241,7 @@ class BaseRequestHandler(RequestHandler):
         :return:
         """
         if self.request.body_arguments:
-            return {key: value[-1] for key, value in self.request.body_arguments.iteritems()}
+            return {key: value[-1] for key, value in self.request.body_arguments.items()}
         elif self.request.body:
             try:
                 data = json.loads(self.request.body)
@@ -328,7 +328,7 @@ class AGRequestHandler(BaseRequestHandler):
         :return:
         """
         # http_client = httpclient.AsyncHTTPClient()
-        response_dict = yield {key: self.asyncHTTPClient.fetch(value) for key, value in request_dict.items()}
+        response_dict = yield {key: self.asyncHTTPClient.fetch(value) for key, value in list(request_dict.items())}
         raise gen.Return(response_dict)
 
     def get_app_name(self):

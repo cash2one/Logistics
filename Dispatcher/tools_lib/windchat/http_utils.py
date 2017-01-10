@@ -33,11 +33,11 @@ def bool_vs_query_string(val):
     :param val:
     :return:
     """
-    if isinstance(val, str) or isinstance(val, unicode):
+    if isinstance(val, str) or isinstance(val, str):
         val = val.lower().strip()
-        if val in ("true", "1", u"true", u"1"):
+        if val in ("true", "1", "true", "1"):
             return True
-        elif val in ("false", "0", u"false", u"0"):
+        elif val in ("false", "0", "false", "0"):
             return False
         else:
             raise Exception("bad value, can't be converted into bool")

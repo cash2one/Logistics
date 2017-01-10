@@ -2,9 +2,9 @@
 # 支付宝即时到账接口
 
 from hashlib import md5
-from urllib import urlencode
+from urllib.parse import urlencode
 import requests
-import alipay_config as ac
+from . import alipay_config as ac
 
 
 def create_direct_pay_by_user(tn, subject, total_fee):
@@ -63,7 +63,7 @@ def params_filter(params):
     :param params: 待排序的字典
     :return: 字典和字符串
     """
-    ks = params.keys()
+    ks = list(params.keys())
     ks.sort()
     new_params = dict()
     prestr = ''

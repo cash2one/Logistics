@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 import sys
-from celery_worker import app
+from .celery_worker import app
 
 
 def normal_task(func, func_args=None, func_kwargs=None, **kwargs):

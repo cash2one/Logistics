@@ -11,9 +11,9 @@ import json
 from tornado import gen
 from tornado.httpclient import AsyncHTTPClient, HTTPClient
 
-import account
-import channel_chat
-import conf
+from . import account
+from . import channel_chat
+from . import conf
 from tools_lib.gtornado.http_code import is_success
 
 async_cli = AsyncHTTPClient()
@@ -52,7 +52,7 @@ def channel_send_message(client_id, message_type=conf.MSG_TYPE_PLAIN_TEXT, conv_
     :param msg: 消息结构内容, 具体结构参见msg_doc
     """
     to_peers = []
-    if isinstance(client_id, (str, unicode)):
+    if isinstance(client_id, str):
         to_peers.append(client_id)
     elif isinstance(client_id, list) or isinstance(client_id, set) or isinstance(client_id, tuple):
         to_peers = client_id

@@ -1,6 +1,6 @@
 # coding:utf-8
-import alipay_config as ac
-from alipay_web_util import create_direct_pay_by_user, notify_verity
+from . import alipay_config as ac
+from .alipay_web_util import create_direct_pay_by_user, notify_verity
 
 
 def create_web_trade(order_num, money):

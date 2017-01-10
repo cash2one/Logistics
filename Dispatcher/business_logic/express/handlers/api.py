@@ -1,5 +1,5 @@
 # coding: utf-8
-from __future__ import unicode_literals
+
 import json
 
 from settings import DAS_API_HOST
@@ -7,7 +7,7 @@ from tornado import gen
 
 from tools_lib.gtornado import async_requests
 from tools_lib.gtornado.http_code import HTTP_200_OK
-from models import Fence
+from .models import Fence
 
 
 @gen.coroutine

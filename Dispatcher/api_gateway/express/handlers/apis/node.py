@@ -1,5 +1,5 @@
 # coding:utf-8
-from __future__ import unicode_literals
+
 import json
 import logging
 from tornado.httpclient import HTTPRequest
@@ -8,7 +8,7 @@ from tornado import gen
 
 from tools_lib.gtornado import async_requests
 import settings
-from config import timeouts
+from .config import timeouts
 
 
 # === yun.123feng.com ===
@@ -110,7 +110,7 @@ def redirect_patch_fence(query, **kwargs):
     return HTTPRequest(
         url,
         method="PATCH",
-        body=json.dumps(dict({"Q": query}.items() + kwargs.items())),
+        body=json.dumps(dict(list({"Q": query}.items()) + list(kwargs.items()))),
         headers={'Content-Type': 'applications/json'},
         **timeouts
     )
