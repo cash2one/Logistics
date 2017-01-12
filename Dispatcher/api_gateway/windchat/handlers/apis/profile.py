@@ -107,7 +107,7 @@ def staff_verify_token(token):
     # logging.info(resp.body)
     # raise gen.Return(json.loads(resp.body).get("user"))
     raise gen.Return({
-        "name": u"风信客服",
+        "name": "风信客服",
         "avatarQiniuHash": "默认客服头像.png",
         "staffNum": 999999
     })

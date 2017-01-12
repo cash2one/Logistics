@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from handlers import app
+from .handlers import app
 
 # 请严格按照顺序来, 不然正则匹配会出错
 urls = [

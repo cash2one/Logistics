@@ -33,7 +33,7 @@ url = service_host + ':5000/port'
 resp = requests.get(url, timeout=TIMEOUT)
 port = resp.json()
 ok, timed_out = True, False
-url = service_host + ":" + str(port).encode('utf-8') + "/schedule/logic/wholesale_ec/check_unfinished_expr"
+url = service_host + ":" + str(port) + "/schedule/logic/wholesale_ec/check_unfinished_expr"
 
 try:
     r = requests.post(url, json=None, headers=None, timeout=TIMEOUT)

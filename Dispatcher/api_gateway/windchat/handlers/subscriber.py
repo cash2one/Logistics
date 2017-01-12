@@ -10,8 +10,8 @@ from tools_lib.gedis.gedis import Redis
 from tools_lib.gtornado.escape import schema_utf8
 from tools_lib.gtornado.web2 import BusinessReqHandler
 from tools_lib.windchat import conf
-from utils import channel_utils
-from apis import account
+from .utils import channel_utils
+from .apis import account
 
 redisc = Redis()
 

@@ -1,5 +1,5 @@
 # coding:utf-8
-from __future__ import unicode_literals
+
 import pickle
 import sys
 import traceback
@@ -30,7 +30,7 @@ def callback(ch, method, properties, body):
     """
     try:
         data = pickle.loads(body)
-        print("[%s] %s %s" % (arrow.now().format(fmt='MM-DD HH:mm:ss'), data['tel'], data['msg']))
+        print(("[%s] %s %s" % (arrow.now().format(fmt='MM-DD HH:mm:ss'), data['tel'], data['msg'])))
 
         # sms_type = data.get('type', 1)
         # if sms_type == 2:
@@ -39,11 +39,11 @@ def callback(ch, method, properties, body):
         # 发送短信
         send_sms(data['tel'], data['msg'])
     except Exception as e:
-        print(traceback.format_exc())
+        print((traceback.format_exc()))
 
 
 if __name__ == '__main__':
-    print('[{current_time}] starting server ...'.format(current_time=arrow.now().format('MM-DD HH:mm:ss')))
+    print(('[{current_time}] starting server ...'.format(current_time=arrow.now().format('MM-DD HH:mm:ss'))))
 
     connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
     channel = connection.channel()

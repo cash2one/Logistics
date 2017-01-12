@@ -28,8 +28,8 @@ define("port", default=5555, help="run on the given port", type=int)
 
 class Application(tornado.web.Application):
     def __init__(self):
-        from urls import urls
-        from settings import MONGODB_NAME, settings
+        from .urls import urls
+        from .settings import MONGODB_NAME, settings
         from tools_lib.gmongoengine.connnection import connect
         connect(MONGODB_NAME)
         tornado.web.Application.__init__(self, urls, **settings)

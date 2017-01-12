@@ -16,8 +16,9 @@ from tools_lib.gmongoengine.paginator import paginator
 from tools_lib.gtornado.escape import schema_utf8
 from tools_lib.gtornado.http_code import HTTP_201_CREATED
 from tools_lib.gtornado.web import BaseRequestHandler
+import imp
 
-reload(sys)
+imp.reload(sys)
 sys.setdefaultencoding("utf-8")
 
 

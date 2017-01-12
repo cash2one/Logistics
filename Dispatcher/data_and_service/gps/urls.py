@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from handlers import ps, gis
+from .handlers import ps, gis
 
 # 请严格按照顺序来, 不然正则匹配会出错
 urls = [

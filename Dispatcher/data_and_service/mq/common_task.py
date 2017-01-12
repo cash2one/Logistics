@@ -3,7 +3,7 @@
 import logging
 
 import requests
-from celery_worker import app
+from .celery_worker import app
 
 
 @app.task

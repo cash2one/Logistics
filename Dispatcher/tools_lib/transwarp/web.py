@@ -68,7 +68,7 @@ class Dict(dict):
 
 def to_dict(raw_dict):
     result_dict = Dict()
-    for key, val in raw_dict.items():
+    for key, val in list(raw_dict.items()):
         result_dict[key] = to_dict(val) if isinstance(val, dict) else val
     return result_dict
 
@@ -783,7 +783,7 @@ class Request(object):
         """
         copy = Dict(**kw)
         raw = self._get_raw_input()
-        for k, v in raw.items():
+        for k, v in list(raw.items()):
             copy[k] = v  # [0] if isinstance(v, list) else v
         return copy
 
@@ -890,7 +890,7 @@ class Request(object):
     def _get_headers(self):
         if not hasattr(self, '_headers'):
             hdrs = {}
-            for k, v in self._environ.items():
+            for k, v in list(self._environ.items()):
                 if k.startswith('HTTP_'):
                     # convert 'HTTP_ACCEPT_ENCODING' to 'ACCEPT-ENCODING'
                     hdrs[k[5:].replace('_', '-').upper()] = v.decode('utf-8')
@@ -994,9 +994,9 @@ class Response(object):
         >>> r.headers
         [('Content-Type', 'text/html; charset=utf-8'), ('Set-Cookie', 's1=ok; Max-Age=3600; Path=/; HttpOnly'), ('X-Powered-By', 'transwarp/1.0')]
         """
-        L = [(_RESPONSE_HEADER_DICT.get(k, k), v) for k, v in self._headers.items()]
+        L = [(_RESPONSE_HEADER_DICT.get(k, k), v) for k, v in list(self._headers.items())]
         if hasattr(self, '_cookies'):
-            for v in self._cookies.values():
+            for v in list(self._cookies.values()):
                 L.append(('Set-Cookie', v))
         L.append(_HEADER_X_POWERED_BY)
         return L

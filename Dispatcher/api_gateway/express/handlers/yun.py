@@ -706,7 +706,7 @@ class OpDataHandler(StaffHandler):
 
         total = dict()
         for _ in content:
-            for (k, v) in _.items():
+            for (k, v) in list(_.items()):
                 if k in total:
                     total[k] += v
                 else:

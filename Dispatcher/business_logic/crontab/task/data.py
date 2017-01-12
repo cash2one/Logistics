@@ -1,16 +1,16 @@
 #! /usr/bin/env python
 # coding: utf-8
-from __future__ import unicode_literals
+
 
 import logging
 from datetime import date, datetime
 
 import arrow
 import psycopg2
-from models import OpData
+from .models import OpData
 from tools_lib.common_util.archived.gtz import TimeZone
 from tools_lib.host_info import CONFIG_POSTGRESQL
-from utils import mongodb_client, get_zj_statistics, driver_list, TIME_PATTERN
+from .utils import mongodb_client, get_zj_statistics, driver_list, TIME_PATTERN
 
 
 # def daily():

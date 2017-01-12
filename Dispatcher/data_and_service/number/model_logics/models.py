@@ -25,4 +25,4 @@ class TrackingNumber(Model):
 
 
 if __name__ == "__main__":
-    print TrackingNumber().__sql__()
+    print((TrackingNumber().__sql__()))

@@ -14,8 +14,8 @@ from tools_lib.gtornado.escape import schema_int, schema_bool, schema_utf8, sche
 from tools_lib.gtornado.web2 import ReqHandler
 from tools_lib.windchat import conf
 
-import apis.account
-from utils import message_delivery_utils
+from . import apis.account
+from .utils import message_delivery_utils
 
 
 class SendChannelMsgToAllHandler(ReqHandler):

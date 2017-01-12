@@ -16,9 +16,10 @@ from tools_lib.gtornado.web2 import ManHandler
 from multiprocessing.dummy import Pool
 from tools_lib.java_account import AsyncAccount
 
-from utils import mongodb_router, mongo_client
+from .utils import mongodb_router, mongo_client
+import imp
 
-reload(sys)
+imp.reload(sys)
 sys.setdefaultencoding("utf-8")
 
 pool = Pool(4)

@@ -3,7 +3,7 @@ __author__ = 'kk'
 
 import logging
 
-import channel_utils
+from . import channel_utils
 from tools_lib import java_account
 from tools_lib.common_util.third_party.image import get_image_url
 from tools_lib.windchat import conf
@@ -105,7 +105,7 @@ def pack_leancloud_callback_to_ws(data):
         m = json.loads(i["data"])
         lm = channel_utils.CP_unread_count(i["conv"]["objectId"], f=i["from"], t=conf.CHANNEL_PRESENCE_ANY_CLIENT_ID)
         prof = yield profile.get_man_by_account_id(m["talker_id"])
-        if not prof or "tel" not in prof.keys():
+        if not prof or "tel" not in list(prof.keys()):
             prof = yield profile.get_shop_by_account_id(m["talker_id"])
         # logging.info(prof)
         m.update({

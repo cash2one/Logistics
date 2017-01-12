@@ -3,7 +3,7 @@ __author__ = 'kk'
 
 import logging
 
-from models import Account
+from .models import Account
 from tools_lib.gtornado.web2 import ReqHandler
 
 try:
@@ -64,7 +64,7 @@ class AccountQueryHandler(ReqHandler):
                 self.resp(list({i.client_id for i in objs})) # 默认查client_id的时候,仅返回client_id的list
 
         elif client_id:
-            if isinstance(client_id, (str, unicode)):
+            if isinstance(client_id, str):
                 client_id = [client_id]
             objs = Account.objects(client_id__in=client_id)
             self.resp([i.format_response() for i in objs]) # 无论如何都是查account_id的时候,返回全部信息

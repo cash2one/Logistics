@@ -391,6 +391,6 @@ class ManagerHandler(ManHandler):
                 {
                     "tel": i,
                     "name": fence_managers_dict[i]
-                } for i in fence_managers_dict.keys()
+                } for i in list(fence_managers_dict.keys())
                 ]
         })

@@ -30,7 +30,7 @@ def callback(ch, method, properties, body):
     """
     try:
         data = json.loads(body)
-        from handlers.utils.message_delivery_utils import deliver_channel_message
+        from .handlers.utils.message_delivery_utils import deliver_channel_message
         deliver_channel_message(data)
     except:
         logging.error("===== > callback  error < =====")

@@ -69,7 +69,7 @@ def baidu_push(token, msg, platform='android', env='develop'):
     try:
         r = requests.post(PUSH_URL, data=params, timeout=5)
     except Exception:
-        print(traceback.format_exc())
+        print((traceback.format_exc()))
         return False
     response = r.json()
     print(response)
@@ -134,7 +134,7 @@ def baidu_push_v3(channel_id, msg, device_type=PLATFORM_ANDROID):
         }
         r = requests.post(PUSH_URL_V3, data=urllib.parse.urlencode(params), headers=headers, timeout=5)
     except Exception as e:
-        print(traceback.format_exc())
+        print((traceback.format_exc()))
         return False, {'error': str(e)}
     response = r.json()
 
@@ -157,4 +157,4 @@ if __name__ == '__main__':
         }
     }
 
-    print(baidu_push_v3('3737072413124982526', msg, device_type=PLATFORM_ANDROID))
+    print((baidu_push_v3('3737072413124982526', msg, device_type=PLATFORM_ANDROID)))

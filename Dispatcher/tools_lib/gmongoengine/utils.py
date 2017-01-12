@@ -32,7 +32,7 @@ def field_to_json(value):
     elif isinstance(value, list):
         ret = [field_to_json(_) for _ in value]
     elif isinstance(value, dict):
-        ret = {k: field_to_json(v) for k, v in value.items()}
+        ret = {k: field_to_json(v) for k, v in list(value.items())}
     elif isinstance(value, float):
         ret = round(value, 2)
     return ret
@@ -59,7 +59,7 @@ def field_to_json_no_round(value):
     elif isinstance(value, list):
         ret = [field_to_json_no_round(_) for _ in value]
     elif isinstance(value, dict):
-        ret = {k: field_to_json_no_round(v) for k, v in value.items()}
+        ret = {k: field_to_json_no_round(v) for k, v in list(value.items())}
     elif isinstance(value, float):
         ret = round(value, 10)
     return ret

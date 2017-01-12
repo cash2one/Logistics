@@ -4,7 +4,7 @@ __author__ = 'kk'
 import logging
 from tornado import gen
 from tools_lib.gtornado.web2 import ReqHandler
-from utils.message_delivery_utils import deliver_channel_message
+from .utils.message_delivery_utils import deliver_channel_message
 
 
 class ChannelMsgDeliveringHandler(ReqHandler):

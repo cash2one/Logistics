@@ -138,7 +138,7 @@ def get_distance(from_latitude, from_longitude, to_latitude, to_longitude, regio
     except Timeout:
         return 0
     except Exception:
-        print(traceback.format_exc())
+        print((traceback.format_exc()))
         return 0
 
 

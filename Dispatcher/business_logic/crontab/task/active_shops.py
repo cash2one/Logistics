@@ -3,11 +3,11 @@
 """
 活跃客户数的定义: 最近7日内，发件大于等于4天的客户
 """
-from __future__ import unicode_literals
+
 import json
 import arrow
 import logging
-from utils import once, expr_conn, mongodb_client, send_mail
+from .utils import once, expr_conn, mongodb_client, send_mail
 from tools_lib.bl_expr import ExprState
 
 
@@ -61,7 +61,7 @@ def send_active_shops_summary(days=0):
             creator_days[tel].add(day)
 
     a = {}
-    for k, v in creator_days.items():
+    for k, v in list(creator_days.items()):
         if len(v) >= 4:
             a[k] = len(v)
     # print(json.dumps(a, ensure_ascii=False, indent=2))

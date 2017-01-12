@@ -1,5 +1,5 @@
 # coding:utf-8
-from __future__ import unicode_literals
+
 
 import json
 import arrow
@@ -7,7 +7,7 @@ import logging
 from bson import ObjectId
 
 from tools_lib import java_windlog
-from utils import cron_conn, expr_conn, call_conn
+from .utils import cron_conn, expr_conn, call_conn
 from tools_lib.bl_expr import ExprState
 
 
@@ -65,7 +65,7 @@ def expr_due_to():
         cron_conn.insert({
             "create_time": time_now.datetime,
             "name": "express",
-            "ref_id": unicode(expr['_id']),
+            "ref_id": str(expr['_id']),
             'msg': msg
         })
 
@@ -91,5 +91,5 @@ def expr_due_to():
         cron_conn.insert({
             "create_time": time_now.datetime,
             "name": "call",
-            "ref_id": unicode(call["_id"])
+            "ref_id": str(call["_id"])
         })

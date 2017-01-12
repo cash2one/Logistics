@@ -1,7 +1,7 @@
 #coding=utf-8
 __author__ = 'kk'
 
-from handlers import callback, api, answerer, subscriber, manager, util, conversation
+from .handlers import callback, api, answerer, subscriber, manager, util, conversation
 
 
 urls = [

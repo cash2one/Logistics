@@ -19,12 +19,12 @@ def is_valid_kw(obj, is_update=False, **kw):
     # 检查是否要求存在的参数都存在
     else:
         args = set(kw.keys())
-        required = {key_name for key_name, orm_val in mappings.items() if orm_val.nullable is False and orm_val.primary_key is False}
+        required = {key_name for key_name, orm_val in list(mappings.items()) if orm_val.nullable is False and orm_val.primary_key is False}
         required -= {'deleted', 'create_time', 'update_time'}
         if not required.issubset(args):
             raise ValueError("Not providing required args: %s." % list(required-args))
     # 检查参数类型
-    for key_name, kv in kw.items():
+    for key_name, kv in list(kw.items()):
         if key_name in mappings:
             orm_val = mappings[key_name]
             if orm_val.ddl.find('int') != -1:

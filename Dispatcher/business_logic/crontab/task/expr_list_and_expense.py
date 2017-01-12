@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # coding:utf-8
-from __future__ import unicode_literals
+
 import os
 import arrow
 import logging
 import pymongo
-from utils import expr_conn, TIME_PATTERN
+from .utils import expr_conn, TIME_PATTERN
 from tools_lib.common_util.mail import send_mail
 from tools_lib.common_util.xls import xls_writer
 

@@ -1,9 +1,9 @@
 # coding:utf-8
-from __future__ import unicode_literals
+
 
 import logging
 
-from logics import ShopLogic, ShopFSMLogLogic
+from .logics import ShopLogic, ShopFSMLogLogic
 from tools_lib.common_util.third_party.sms_api import async_send_sms, SMS_TYPE_NORMAL
 from tools_lib.transwarp import db
 from tools_lib.transwarp.tz import utc_8_now
@@ -70,8 +70,8 @@ class ShopFSM(object):
             # (*, EVENT_ALTER_INFO): *,
         }
     }
-    OUTSIDE_EVENTS = set([e[1] for e in FSM['OUTSIDE'].keys()])
-    FE_INSIDE_EVENTS = set([e[1] for e in FSM['FE_INSIDE'].keys()]).union({EVENT_RESET, EVENT_BAN, EVENT_ALTER_INFO})
+    OUTSIDE_EVENTS = set([e[1] for e in list(FSM['OUTSIDE'].keys())])
+    FE_INSIDE_EVENTS = set([e[1] for e in list(FSM['FE_INSIDE'].keys())]).union({EVENT_RESET, EVENT_BAN, EVENT_ALTER_INFO})
 
     @classmethod
     def get_next_state(cls, operator_type, current_status, event):
@@ -157,6 +157,6 @@ class ShopFSM(object):
             return None
 
 if __name__ == "__main__":
-    print(ShopFSM.OUTSIDE_EVENTS)
-    print(ShopFSM.FE_INSIDE_EVENTS)
-    print(ShopFSM.FE_INSIDE_EVENTS.union(ShopFSM.OUTSIDE_EVENTS))
+    print((ShopFSM.OUTSIDE_EVENTS))
+    print((ShopFSM.FE_INSIDE_EVENTS))
+    print((ShopFSM.FE_INSIDE_EVENTS.union(ShopFSM.OUTSIDE_EVENTS)))

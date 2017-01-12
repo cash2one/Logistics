@@ -3,11 +3,11 @@
 """
 报错统计：每日将所有报错为未找到合适路线的订单导出为excel并发送到指定邮箱
 """
-from __future__ import unicode_literals
+
 import json
 import arrow
 import logging
-from utils import once, expr_conn, mongodb_client, send_mail
+from .utils import once, expr_conn, mongodb_client, send_mail
 from tools_lib.bl_expr import ExprState
 
 

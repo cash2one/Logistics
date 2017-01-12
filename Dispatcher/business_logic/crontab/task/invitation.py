@@ -4,10 +4,10 @@ import logging
 from datetime import datetime
 
 import pytz
-from models import Rewards
+from .models import Rewards
 from tools_lib.common_util.archived.gtz import TimeZone
 from tornado.escape import utf8
-from utils import mongodb_client, format_man
+from .utils import mongodb_client, format_man
 
 
 def shop_reward():

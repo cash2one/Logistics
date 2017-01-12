@@ -1,5 +1,5 @@
 # coding: utf-8
-from __future__ import unicode_literals
+
 from tools_lib.host_info import DEBUG, IP_API, BL_DAS_PORT
 from task import expr_tt_summary, active_shops, node_to_schedule
 from task import expr_due_to

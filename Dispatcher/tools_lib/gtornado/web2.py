@@ -212,14 +212,14 @@ class ReqHandler(RequestHandler):
         获取query_arguments，只取值列表最后一个
         :return:
         """
-        return {key: value[-1] for key, value in self.request.query_arguments.items()}
+        return {key: value[-1] for key, value in list(self.request.query_arguments.items())}
 
     def get_body_args(self):
         """
         获取body_arguments, 只取列表最后一个
         """
         if self.request.body_arguments:
-            return {key: value[-1] for key, value in self.request.body_arguments.items()}
+            return {key: value[-1] for key, value in list(self.request.body_arguments.items())}
         elif self.request.body:
             try:
                 data = json.loads(self.request.body)

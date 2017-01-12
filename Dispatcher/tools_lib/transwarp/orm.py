@@ -175,7 +175,7 @@ class ModelMetaclass(type):
         logging.info('Scan ORMapping %s...', name)
         mappings = dict()
         primary_key = None
-        for k, v in attrs.items():
+        for k, v in list(attrs.items()):
             if isinstance(v, Field):
                 if not v.name:
                     v.name = k
@@ -195,7 +195,7 @@ class ModelMetaclass(type):
         # check exist of primary key:
         if not primary_key:
             raise TypeError('Primary key not defined in class: %s' % name)
-        for k in mappings.keys():
+        for k in list(mappings.keys()):
             attrs.pop(k)
         if '__table__' not in attrs:
             attrs['__table__'] = name.lower()
@@ -331,7 +331,7 @@ class Model(dict, metaclass=ModelMetaclass):
         self.pre_update and self.pre_update()
         L = []
         args = []
-        for k, v in self.__mappings__.items():
+        for k, v in list(self.__mappings__.items()):
             if v.updatable:
                 if hasattr(self, k):
                     arg = getattr(self, k)
@@ -355,7 +355,7 @@ class Model(dict, metaclass=ModelMetaclass):
     def insert(self):
         self.pre_insert and self.pre_insert()
         params = {}
-        for k, v in self.__mappings__.items():
+        for k, v in list(self.__mappings__.items()):
             if v.insertable:
                 if not hasattr(self, k):
                     setattr(self, k, v.default)
@@ -364,7 +364,7 @@ class Model(dict, metaclass=ModelMetaclass):
             r = db.insert('%s' % self.__table__, **params)
         except Exception as e:
             logging.info(e.args)
-            print("MySQL Model.insert() error: args=", e.args)
+            print(("MySQL Model.insert() error: args=", e.args))
             # TODO !!! generalize ORM return package
             # return {'status': 'Failure', 'msg': e.args,  'data': self}
             raise

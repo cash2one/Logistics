@@ -1,5 +1,5 @@
 # coding:utf-8
-from __future__ import unicode_literals
+
 from tools_lib.common_util.log import simple_conf_init
 
 simple_conf_init()
@@ -12,7 +12,7 @@ import arrow
 import time
 import datetime
 from schema import Schema, SchemaError, Optional
-from utils import once
+from .utils import once
 from tools_lib.gtornado.escape import schema_unicode, schema_unicode_empty
 
 
@@ -165,7 +165,7 @@ def _do_it_pm(mission_id):
             "locationAddress": "江陵路2013号星耀城1期101号(么么哒美食对面)"
         }
         resp_obj = requests.post(url, json=body)
-        print(json.dumps(resp_obj.content, ensure_ascii=False, indent=2))
+        print((json.dumps(resp_obj.content, ensure_ascii=False, indent=2)))
 
 
 def do_cliche():
@@ -181,7 +181,7 @@ def do_cliche():
             "locationAddress": "江陵路2013号星耀城1期101号(么么哒美食对面)"
         }
         resp_obj = requests.post(url, json=body)
-        print(json.dumps(resp_obj.content, ensure_ascii=False, indent=2))
+        print((json.dumps(resp_obj.content, ensure_ascii=False, indent=2)))
 
     for mission_id in b:
         url = 'http://api.gomrwind.com:5000/WindMission/mission/attendance/operateSign'
@@ -193,9 +193,9 @@ def do_cliche():
             "effectorId": "11e62c84f2632d70bdaf22266a250d8f"
         }
         resp_obj = requests.post(url, json=body)
-        print(json.dumps(resp_obj.content, ensure_ascii=False, indent=2))
+        print((json.dumps(resp_obj.content, ensure_ascii=False, indent=2)))
 
 
 if __name__ == "__main__":
     c, d = _get_seperated_tasks()
-    print(c, d)
+    print((c, d))

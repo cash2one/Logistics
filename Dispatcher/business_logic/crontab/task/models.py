@@ -13,7 +13,7 @@ class Rewards(Document):
     title = StringField(default="", comment="事件标题")
     desc = StringField(default="", comment="事件描述")
     money = FloatField(default=0.0, comment="金额")
-    create_time = DateTimeField(default=datetime.utcnow, comment=u'创建时间')
+    create_time = DateTimeField(default=datetime.utcnow, comment='创建时间')
     man = DictField(default={}, comment="奖惩人员信息")
     source = DictField(default={}, comment="奖惩事件来源")
 
@@ -44,7 +44,7 @@ class Settlement(Document):
     sj_profit = FloatField(default=0)
     pj_profit = FloatField(default=0)
     total = FloatField(default=0)
-    create_time = DateTimeField(default=datetime.utcnow, comment=u'创建时间')
+    create_time = DateTimeField(default=datetime.utcnow, comment='创建时间')
     man = DictField(default={}, comment="人员信息")
     meta = {
         'db_alias': 'aeolus_connection',
@@ -108,7 +108,7 @@ class OpData(Document):
     rj_fh_update = IntField(default=0, comment="当日发货端更新数")
     rj_ps_update = IntField(default=0, comment="当日收派端更新数")
 
-    create_time = DateTimeField(default=datetime.utcnow, comment=u'创建时间')
+    create_time = DateTimeField(default=datetime.utcnow, comment='创建时间')
     meta = {
         'db_alias': 'aeolus_connection',
         'collection': 'op_data',

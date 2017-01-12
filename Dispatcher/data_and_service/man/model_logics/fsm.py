@@ -1,9 +1,9 @@
 # coding:utf-8
-from __future__ import unicode_literals
+
 
 import logging
 
-from logics import ManFSMLogLogic, ManLogic
+from .logics import ManFSMLogLogic, ManLogic
 from tools_lib.common_util.third_party.sms_api import async_send_sms, SMS_TYPE_NORMAL
 from tools_lib.transwarp import db
 from tools_lib.transwarp.tz import utc_8_now
@@ -52,8 +52,8 @@ class ManFSM(object):
             # (*, EVENT_COMPLETE_INFO): *,
         }
     }
-    APP_EVENTS = set([e[1] for e in FSM['APP'].keys()])
-    FE_EVENTS = set([e[1] for e in FSM['FE'].keys()]).union({EVENT_RESET, EVENT_BAN})
+    APP_EVENTS = set([e[1] for e in list(FSM['APP'].keys())])
+    FE_EVENTS = set([e[1] for e in list(FSM['FE'].keys())]).union({EVENT_RESET, EVENT_BAN})
 
     @classmethod
     def get_next_state(cls, operator_type, current_status, event, **kwargs):
@@ -139,5 +139,5 @@ class ManFSM(object):
 
 
 if __name__ == '__main__':
-    print(ManFSM.__dict__)
-    print(dir(ManFSM))
+    print((ManFSM.__dict__))
+    print((dir(ManFSM)))

@@ -58,7 +58,7 @@ class ProcessPrint(object):
         """
         self.cursor += 1
         if self.cursor > 1 and eq(self.cursor % self.step, 0):
-            print('%.1f%%' % (100.0 * self.cursor / self.total_count))
+            print(('%.1f%%' % (100.0 * self.cursor / self.total_count)))
 
 
 def ifnone(value, unexpected=(None,), default=""):

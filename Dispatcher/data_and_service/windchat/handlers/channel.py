@@ -4,7 +4,7 @@ __author__ = 'kk'
 import traceback
 from logging import error
 
-from models import Channel
+from .models import Channel
 from tools_lib.common_util.archived.pagination import paginator
 from tools_lib.gtornado.web2 import ReqHandler
 from tools_lib.windchat import http_utils
@@ -110,7 +110,7 @@ class ChannelHandler(ReqHandler):
         """
         data = self.get_body_args()
         r = Channel.objects(channel_leancloud_id=cli).first()
-        for i in data.keys():
+        for i in list(data.keys()):
 
             if i in (
                 "cli", "channel_leancloud_id", # cli

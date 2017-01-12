@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding:utf-8
 from tools_lib.transwarp.tz import utc_8_now
-from models import TrackingNumber
+from .models import TrackingNumber
 
 
 class TrackingNumberLogic(object):

@@ -39,5 +39,5 @@ if __name__ == '__main__':
     wsgi_app.run(6002, host='0.0.0.0')
 else:
     # init log does not work here.
-    print "\n@@@ uWSGI @@@\n"
+    print("\n@@@ uWSGI @@@\n")
     application = wsgi_app.get_wsgi_application()

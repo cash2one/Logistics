@@ -13,7 +13,7 @@ from tools_lib.common_util.archived.baidu_push import baidu_push_v3, PLATFORM_AN
 from tools_lib.common_util.archived.gtz import TimeZone
 from tools_lib.common_util.rabbitmq_client import EXCHANGE_PUSH_MSG, TYPE_FANOUT
 try:
-    import cPickle as pickle
+    import pickle as pickle
 except:
     import pickle
 
@@ -48,12 +48,12 @@ def callback(ch, method, properties, body):
             except:
                 pass
     except:
-        print traceback.format_exc()
+        print((traceback.format_exc()))
     finally:
         pass
 
 if __name__ == '__main__':
-    print '[{current_time}] starting server ...'.format(current_time=TimeZone.local_now())
+    print(('[{current_time}] starting server ...'.format(current_time=TimeZone.local_now())))
 
     connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
     channel = connection.channel()

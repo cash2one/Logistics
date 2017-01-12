@@ -158,6 +158,6 @@ class Conn2Mysql(object):
 if __name__ == '__main__':
     for i in range(10):
         with Conn2Mysql() as cn:
-            print(cn.get_all("select shop_name, phone from f_shop.shop where id = %s", [15081]))
+            print((cn.get_all("select shop_name, phone from f_shop.shop where id = %s", [15081])))
         with Conn2Mysql() as cn:
-            print(cn.get_all("select shop_name, phone from f_shop.shop where id = %s", [17065]))
+            print((cn.get_all("select shop_name, phone from f_shop.shop where id = %s", [17065])))

@@ -1,7 +1,7 @@
 # coding:utf-8
 import logging
 from decimal import Decimal
-from models import Statistics, Flow, TopUp, Shop, ShopFSMLog, TRANSACT_TYPE
+from .models import Statistics, Flow, TopUp, Shop, ShopFSMLog, TRANSACT_TYPE
 from tools_lib.transwarp.tz import utc_8_now
 from tools_lib.transwarp.validate import is_valid_kw
 from tools_lib.transwarp.web import Dict
@@ -68,7 +68,7 @@ class ShopLogic(object):
         for key in s:
             if key in expected:
                 if key == 'id':
-                    s_packed['shop_id'] = unicode(s[key])
+                    s_packed['shop_id'] = str(s[key])
                 else:
                     s_packed[key] = s[key]
         return s_packed

@@ -1,5 +1,5 @@
 # coding:utf-8
-from __future__ import unicode_literals
+
 
 import hashlib
 import logging
@@ -428,7 +428,7 @@ def api_retrieve_man_info(what):
     request = ctx.request.input()
     # 如果传入what,by不是允许的值,直接报错
     if what not in WHATS:
-        raise ValueError("WHAT[%s] should be in WHATS%s." % (what, WHATS.keys()))
+        raise ValueError("WHAT[%s] should be in WHATS%s." % (what, list(WHATS.keys())))
     params = set([str(k).lower().strip() for k in request])
     bys = set(BYS.keys())
     by = params.intersection(bys)
@@ -464,7 +464,7 @@ def api_retrieve_man_info(what):
         if man and man.my_man:
             only = ('status', 'id', 'name', 'tel', 'avatar')
             my_man = {m['id']: m['bind_time'] for m in man.my_man}
-            mans = Man.objects(id__in=my_man.keys()).only(*only)
+            mans = Man.objects(id__in=list(my_man.keys())).only(*only)
             ret = []
             for m in mans:
                 packed_man = ManLogic.pack_man(m, only=only)
@@ -718,4 +718,4 @@ def api_retrieve_flow_statistics():
 
 
 if __name__ == "__main__":
-    print(set(OPERATIONS.keys()).union(ManFSM.FE_EVENTS).union(ManFSM.APP_EVENTS))
+    print((set(OPERATIONS.keys()).union(ManFSM.FE_EVENTS).union(ManFSM.APP_EVENTS)))

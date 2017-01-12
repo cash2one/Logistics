@@ -24,4 +24,4 @@ CELERY_IMPORTS = (
     'common_task',
 )
 
-from periodic_task import *
+from .periodic_task import *

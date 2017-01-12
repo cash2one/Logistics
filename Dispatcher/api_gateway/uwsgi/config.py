@@ -35,5 +35,5 @@ CONFIGS = to_dict(default_configs)
 
 # 打印最终的配置
 if __name__ == "__main__":
-    print("platform.node()=[%s]" % platform.node())
-    print("Configure using:\n%s" % CONFIGS)
+    print(("platform.node()=[%s]" % platform.node()))
+    print(("Configure using:\n%s" % CONFIGS))

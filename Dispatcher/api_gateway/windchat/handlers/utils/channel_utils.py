@@ -75,7 +75,7 @@ def CP_unread_count(cli, f, t, r_p_line=None):
         r_p_line.get(last_key)
         ret = r_p_line.execute()
         if ret[0]==None: ret[0] = 0
-        if ret[1]==None: ret[1] = u""
+        if ret[1]==None: ret[1] = ""
         return int(ret[0]), ret[1]
 
 def CP_bulk_unread_count(kwargs):
@@ -93,7 +93,7 @@ def CP_bulk_unread_count(kwargs):
     while resp:
         last_message = resp.pop()
         unread = resp.pop()
-        if last_message==None: last_message = u""
+        if last_message==None: last_message = ""
         if unread==None: unread = 0
         ret.append((unread, last_message))
     return ret
@@ -144,7 +144,7 @@ class Subscriber(object):
         绑定
         这种情况下所有参数都不可为FILTER_ANY
         """
-        if not isinstance(accessory_info, (str, unicode)):
+        if not isinstance(accessory_info, str):
             accessory_info = json.dumps(accessory_info, ensure_ascii=False)
         self.redis_c.set(self.key, accessory_info)
 

@@ -1,5 +1,5 @@
 # coding:utf-8
-from __future__ import unicode_literals
+
 
 import decimal
 import functools
@@ -93,9 +93,9 @@ FE_EVENTS = Dict(**{k: k for k in ('EVENT_RESET', 'EVENT_BAN',
 WHATS = Dict(**{x: x for x in ("BASIC", "STATUS", "ACCOUNT_LIST", "FAMILIAR_LIST", "CODE", "MAN_LIST", "PICKUP_LIST")})
 
 # ===> 以下为商户相关操作 <===
-OUTSIDE_EVENTS = Dict(**{k: k for k in (u'EVENT_ACK_INFO_NO', u'EVENT_COMPLETE_INFO', u'EVENT_ACK_INFO_YES')})
+OUTSIDE_EVENTS = Dict(**{k: k for k in ('EVENT_ACK_INFO_NO', 'EVENT_COMPLETE_INFO', 'EVENT_ACK_INFO_YES')})
 FE_INSIDE_EVENTS = Dict(**{k: k for k in (
-    u'EVENT_ALTER_INFO', u'EVENT_RESET', u'EVENT_HR_DECIDE_INFO_MISTAKEN', u'EVENT_HR_DECIDE_YES', u'EVENT_BAN')})
+    'EVENT_ALTER_INFO', 'EVENT_RESET', 'EVENT_HR_DECIDE_INFO_MISTAKEN', 'EVENT_HR_DECIDE_YES', 'EVENT_BAN')})
 
 
 def api_with_deliveryman_auth(func):
@@ -224,7 +224,7 @@ def api_man_sms_code():
     url = urls["man_sms"]
     param = ctx.request.input()
     # 如果是QA,不发验证码.
-    if not DEBUG and param.tel in QA.keys():
+    if not DEBUG and param.tel in list(QA.keys()):
         raise ValueError("检测到%s尝试获取PROD验证码.请用【13245678901:123456】登录." % QA[param.tel])
     resp = requests.get(url, params=param, timeout=TIMEOUT)
     process_bl_response(resp)
@@ -477,7 +477,7 @@ def api_outsource_get_applied_withdraw(man):
     resp = requests.post(url, json=body, params=ctx.request.input(), timeout=TIMEOUT)
     flows = process_bl_response(resp)
     for f in flows:
-        f['create_time'] += u'+0800'
+        f['create_time'] += '+0800'
     return flows
 
 
@@ -1156,7 +1156,7 @@ def api_shop_sms_code():
     url = urls["shop_sms"]
     param = ctx.request.input()
     # 如果是QA,不发验证码.
-    if not DEBUG and param.tel in QA.keys():
+    if not DEBUG and param.tel in list(QA.keys()):
         raise ValueError("检测到%s尝试获取PROD验证码.请用【13245678901:111111】登录." % QA[param.tel])
     resp = requests.get(url, params=param, timeout=TIMEOUT)
     process_bl_response(resp)

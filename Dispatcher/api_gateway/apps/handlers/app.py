@@ -10,8 +10,9 @@ from tornado import gen
 from tools_lib.gtornado.http_code import HTTP_200_OK
 from tools_lib.gtornado.web import BaseRequestHandler
 from tools_lib.host_info import IP_API, BL_DAS_PORT
+import imp
 
-reload(sys)
+imp.reload(sys)
 sys.setdefaultencoding("utf-8")
 
 das_url = "http://%s:%s" % (IP_API, BL_DAS_PORT)

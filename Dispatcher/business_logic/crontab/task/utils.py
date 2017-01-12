@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 # coding: utf-8
-from __future__ import unicode_literals
+
 import logging
 import traceback
 from functools import wraps
@@ -182,7 +182,7 @@ def inner(func, when, params):
         # 调度下次定时调用
         io_loop.call_at(next_when, inner, **{'func': func, 'when': when, 'params': params})
         logging.info("Task named [{func_name}] scheduled at [{time}]".format(
-            func_name=func.func_name, time=arrow.get(next_when).to('local').isoformat()))
+            func_name=func.__name__, time=arrow.get(next_when).to('local').isoformat()))
         return ret
     except Exception as e:
         s = traceback.format_exc()
@@ -190,7 +190,7 @@ def inner(func, when, params):
         send_mail(
             to_addrs=mail_alert_to,
             title="Cron Exception: [{task_name}] [{datetime}]".format(
-                task_name=func.func_name,
+                task_name=func.__name__,
                 datetime=arrow.now().isoformat()
             ),
             body=s
@@ -213,8 +213,8 @@ def call_at_day(func, when, params=None):
     first_when = generate_next_time(when)
     io_loop.call_at(first_when, inner, **kwargs)
     logging.info("Task named [{func_name}] firstly scheduled at [{time}]".format(
-        func_name=func.func_name, time=arrow.get(first_when).to('local').isoformat()))
+        func_name=func.__name__, time=arrow.get(first_when).to('local').isoformat()))
 
 
 if __name__ == '__main__':
-    print(get_zj_statistics('', ''))
+    print((get_zj_statistics('', '')))

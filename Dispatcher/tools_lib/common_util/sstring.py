@@ -64,7 +64,7 @@ def convert_utf8(value):
 
 def safe_format(format_str, *arg, **kwargs):
     safe_arg = [safe_utf8(s) for s in arg]
-    safe_kwargs = {safe_utf8(k): safe_utf8(v) for k, v in kwargs.items()}
+    safe_kwargs = {safe_utf8(k): safe_utf8(v) for k, v in list(kwargs.items())}
     safe_str = safe_utf8(format_str)
     return safe_str.format(*safe_arg, **safe_kwargs)
 

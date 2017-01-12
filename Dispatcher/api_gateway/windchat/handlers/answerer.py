@@ -6,8 +6,8 @@ import traceback
 
 import tornadoredis
 
-import apis.account
-import apis.profile
+from . import apis.account
+from . import apis.profile
 from schema import Schema, SchemaError, Optional
 from tools_lib.common_util.archived.pagination import paginator
 from tools_lib.gedis.gedis import Redis, REDIS_SERVERS
@@ -17,7 +17,7 @@ from tools_lib.gtornado.web2 import CommandWSHandler
 from tools_lib.leancloud import sdk, credentials
 from tools_lib.windchat import conf
 from tornado import gen
-from utils import channel_utils, answerer_utils, message_utils
+from .utils import channel_utils, answerer_utils, message_utils
 
 redisc = Redis()
 
@@ -370,11 +370,11 @@ class AnswererWS(CommandWSHandler):
         for i in profiles_man:
             d = client_id_account_dict_dict.get(i["id"])
             if d:
-                profiles_with_client_id.append(dict(i.items() + d.items()))
+                profiles_with_client_id.append(dict(list(i.items()) + list(d.items())))
         for i in profiles_shop:
             d = client_id_account_dict_dict.get(i["id"])
             if d:
-                profiles_with_client_id.append(dict(i.items() + d.items()))
+                profiles_with_client_id.append(dict(list(i.items()) + list(d.items())))
         # self.info(len(profiles_with_client_id))
         profiles_dict_with_client_id_as_key = {i["client_id"]: i for i in profiles_with_client_id}
 

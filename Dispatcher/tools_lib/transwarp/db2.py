@@ -163,11 +163,11 @@ def create_engine(user, password, database, host='127.0.0.1', port=3306, **kw):
         raise DBError('Engine is already initialized.')
     params = dict(user=user, passwd=password, db=database, host=host, port=port)
     defaults = dict(creator=MySQLdb, mincached=1, maxcached=32, charset='utf8', autocommit=False, cursorclass=Cursor)
-    for k, v in defaults.items():
+    for k, v in list(defaults.items()):
         params[k] = kw.pop(k, v)
     params.update(kw)
     pool = PooledDB(**params)
-    logging.info('Init mysql engine with %s.', {k:v for k,v in params.items() if not k == "password"})
+    logging.info('Init mysql engine with %s.', {k:v for k,v in list(params.items()) if not k == "password"})
     engine = _Engine(pool)
     # test connection...
     logging.info('Init mysql engine <%s> ok.', hex(id(engine)))
@@ -495,7 +495,7 @@ def insert(table, **kw):
       ...
     IntegrityError: (1062, "Duplicate entry '2000' for key 'PRIMARY'")
     """
-    cols, args = list(zip(*iter(kw.items())))
+    cols, args = list(zip(*iter(list(kw.items()))))
     sql = 'insert into %s (%s) values (%s)' % (
         table, ','.join(['`%s`' % col for col in cols]), ','.join(['?' for i in range(len(cols))]))
     return _update(sql, *args)
@@ -640,4 +640,4 @@ if __name__ == '__main__':
     ]
     
     insert_many('user2', ['id', 'name', 'tel', 'passwd'], col_data)
-    print(select('select * from user_center.user limit 10'))
+    print((select('select * from user_center.user limit 10')))

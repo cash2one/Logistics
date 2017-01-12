@@ -1,6 +1,6 @@
 # ! /usr/bin/env python
 # coding: utf-8
-from __future__ import unicode_literals
+
 
 import json
 import logging
@@ -9,14 +9,14 @@ from datetime import datetime
 import arrow
 import psycopg2
 import psycopg2.extras
-from models import Rewards
+from .models import Rewards
 from tools_lib.common_util.mail import send_mail
 from tools_lib.common_util.sstring import safe_join
 from tools_lib.common_util.xls import xls_writer
 from tools_lib.geo.mercator import Mercator
 from tools_lib.host_info import CONFIG_POSTGRESQL, DEBUG
-from utils import man_list, driver_list, mail_list, TIME_PATTERN
-from utils import mongodb_client, once, format_man, DRIVER_BASE
+from .utils import man_list, driver_list, mail_list, TIME_PATTERN
+from .utils import mongodb_client, once, format_man, DRIVER_BASE
 
 if DEBUG:
     punish_time = arrow.get(datetime(2016, 5, 1), 'local')
@@ -403,7 +403,7 @@ def driver(days=0):
 
 
 def windchat():
-    from utils import man_list
+    from .utils import man_list
     from tools_lib.windchat import shortcuts, conf
 
     local = arrow.now()

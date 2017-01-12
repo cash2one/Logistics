@@ -261,7 +261,7 @@ def generate_sign(kwargs):
     :return: unicode
     """
     string_sign = ''
-    for item in sorted(iter(kwargs.items()), key=lambda x: x[0]):
+    for item in sorted(iter(list(kwargs.items())), key=lambda x: x[0]):
         sub = '%s=%s&' % item
         string_sign += sub
     string_sign = string_sign + 'key=' + KEY
@@ -327,7 +327,7 @@ def get_js_sdk_signature(noncestr, jsapi_ticket, timestamp, url):
         :return: unicode
         """
         string_sign = ''
-        for item in sorted(iter(kwargs.items()), key=lambda x: x[0]):
+        for item in sorted(iter(list(kwargs.items())), key=lambda x: x[0]):
             sub = '%s=%s&' % item
             string_sign += sub
         string_sign = string_sign + 'key=' + KEY

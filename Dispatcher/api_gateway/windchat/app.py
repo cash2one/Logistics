@@ -28,8 +28,8 @@ init(**credentials)
 class Application(tornado.web.Application):
 
     def __init__(self):
-        from urls import urls
-        from settings import settings
+        from .urls import urls
+        from .settings import settings
         tornado.web.Application.__init__(self, urls, **settings)
 
 

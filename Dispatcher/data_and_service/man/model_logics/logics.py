@@ -1,10 +1,10 @@
 # coding:utf-8
-from __future__ import unicode_literals
+
 
 from decimal import Decimal
 from math import floor
 
-from models import ManFSMLog, Flow, Statistics, CASH_FLOW, Man
+from .models import ManFSMLog, Flow, Statistics, CASH_FLOW, Man
 from tools_lib.common_util.third_party.image import get_image_url
 from tools_lib.transwarp import db
 from tools_lib.transwarp.tz import utc_8_now
@@ -50,7 +50,7 @@ class ManLogic(object):
         for key in Man._db_field_map:
             if key in kw and key not in excludes:
                 if key == 'id':
-                    m_filtered['man_id'] = unicode(kw[key])
+                    m_filtered['man_id'] = str(kw[key])
                 else:
                     m_filtered[key] = kw[key]
         return m_filtered
@@ -70,7 +70,7 @@ class ManLogic(object):
         for key in m:
             if key in expected:
                 if key == 'id':
-                    m_packed['man_id'] = unicode(m[key])
+                    m_packed['man_id'] = str(m[key])
                 elif key in ('avatar', 'id_card_back'):
                     m_packed[key] = get_image_url(m[key])
                 else:

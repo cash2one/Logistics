@@ -31,18 +31,18 @@ minus_driver = {t[0] for t in drivers}
 testers = db.select("select id from f_deliveryman.deliveryman where real_name like '%测试%'")
 testers = {t[0] for t in testers}
 
-print("length of minus_teamleader=[%s]. type=[%s]" % (len(minus_teamleader), type(minus_teamleader)))
-print("length of minus_driver=[%s]. type=[%s]" % (len(minus_driver), type(minus_driver)))
-print("length of testers=[%s]. type=[%s]" % (len(testers), type(testers)))
+print(("length of minus_teamleader=[%s]. type=[%s]" % (len(minus_teamleader), type(minus_teamleader))))
+print(("length of minus_driver=[%s]. type=[%s]" % (len(minus_driver), type(minus_driver))))
+print(("length of testers=[%s]. type=[%s]" % (len(testers), type(testers))))
 
 # 找到所有在架构中的人
 all_working = db.select(
     "SELECT user_id FROM user_center.deliver_org where deleted <> 1 and level in (2, 3, 4) and user_id <> 0")
 all_working = {t[0] for t in all_working}
-print("length of all_working=[%s]. type=[%s]" % (len(all_working), type(all_working)))
+print(("length of all_working=[%s]. type=[%s]" % (len(all_working), type(all_working))))
 
 out = all_working - minus_teamleader - minus_driver - testers
-print("length of out=[%s]. type=[%s]" % (len(out), type(out)))
+print(("length of out=[%s]. type=[%s]" % (len(out), type(out))))
 
 # 找到所有11月累计10日无营收
 ten_no_tip = db.select("""
@@ -58,7 +58,7 @@ ten_no_tip = db.select("""
                         GROUP BY user_id
                         HAVING COUNT(*) >= 10""")
 ten_no_tip = {t[0] for t in ten_no_tip}
-print("length of ten_no_tip=[%s]. type=[%s]" % (len(ten_no_tip), type(ten_no_tip)))
+print(("length of ten_no_tip=[%s]. type=[%s]" % (len(ten_no_tip), type(ten_no_tip))))
 
 out &= ten_no_tip
 print("")
@@ -80,8 +80,8 @@ valid = db.select("""
                     id in (%s) and status in ('CHECK_BINDING_TEAM', 'CHECK_WORKING')"""
                   % ','.join([str(i) for i in out]))
 valid = {t[0] for t in valid}
-print("Invalids are in status %s." % invalids_status)
-print("Auto apply resign: [%s/%s]." % ((len(out) - len(invalids)), len(out)))
+print(("Invalids are in status %s." % invalids_status))
+print(("Auto apply resign: [%s/%s]." % ((len(out) - len(invalids)), len(out))))
 
 bindings = db.select("""
                 select
@@ -90,11 +90,11 @@ bindings = db.select("""
                 where
                     id in (%s) and status = 'CHECK_BINDING_TEAM'
                 """ % ','.join([str(i) for i in out]))
-print("Auto apply resign valids = [WORKING][%s] + [BINDING_TEAM][%s]." %
-      ((len(out) - len(invalids) - len(bindings)), len(bindings)))
+print(("Auto apply resign valids = [WORKING][%s] + [BINDING_TEAM][%s]." %
+      ((len(out) - len(invalids) - len(bindings)), len(bindings))))
 bindings = {t[0] for t in bindings}
-print("WORKING=%s" % (valid-bindings))
-print("BINDING=%s" % bindings)
+print(("WORKING=%s" % (valid-bindings)))
+print(("BINDING=%s" % bindings))
 
 
 # 自动申请离职
@@ -109,8 +109,8 @@ for man in valid:
     # else:
     #     suc += 1
     #     suc_man.append(man)
-print("Auto apply resign: succeeded=[%s], failed=[%s], mans=[%s]." % (suc, err, len(suc_man)))
-print suc_man
+print(("Auto apply resign: succeeded=[%s], failed=[%s], mans=[%s]." % (suc, err, len(suc_man))))
+print(suc_man)
 
 # 发风信通知
 # send_plain_text_to_delivers_shortcut(suc_man, safe_utf8("您好, 由于系统检测到您长期没有送单, 于是自动为您申请了离职, 请您按照要求归还装备办理离职手续, 如需撤销离职, 请到账户/工作分配/离职申请下点击撤销离职."))

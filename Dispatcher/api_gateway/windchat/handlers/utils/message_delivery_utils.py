@@ -10,7 +10,7 @@ from tools_lib.leancloud.credentials import credentials
 from tools_lib.gtornado.escape import schema_int, schema_utf8, schema_utf8_empty, schema_bool
 from tools_lib.windchat import conf
 
-import channel_utils
+from . import channel_utils
 
 
 def deliver_channel_message(body):

@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-from __future__ import unicode_literals
+
 
 import sys
 
@@ -10,7 +10,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), os.pa
 
 from tools_lib.common_util.rabbitmq_client import EXCHANGE_SEND_SMS, RabbitMqCtl
 try:
-    import cPickle as pickle
+    import pickle as pickle
 except:
     import pickle
 

@@ -9,8 +9,8 @@ from tools_lib.gedis.gedis import Redis
 from tools_lib.gtornado.web2 import ReqHandler
 from tools_lib.windchat import conf
 
-from utils.answerer_utils import pack_leancloud_callback_to_ws
-from utils import channel_utils, message_utils
+from .utils.answerer_utils import pack_leancloud_callback_to_ws
+from .utils import channel_utils, message_utils
 
 redisc = Redis()
 

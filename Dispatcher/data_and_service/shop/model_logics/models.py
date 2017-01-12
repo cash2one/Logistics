@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding:utf-8
-from __future__ import unicode_literals
+
 """
 Models for shop
 """
@@ -71,21 +71,21 @@ class ShopFSMLog(Model):
 
 
 class Shop(Document):
-    tel = MStringField(max_length=11, unique=True, comment=u"11位手机号, 要求唯一")
-    password = MStringField(min_length=32, max_length=32, comment=u"密码")
+    tel = MStringField(max_length=11, unique=True, comment="11位手机号, 要求唯一")
+    password = MStringField(min_length=32, max_length=32, comment="密码")
 
-    name = MStringField(default=None, max_length=64, comment=u"商户名")
-    status = MStringField(max_length=32, default='STATUS_VALID', comment=u"商户状态")
+    name = MStringField(default=None, max_length=64, comment="商户名")
+    status = MStringField(max_length=32, default='STATUS_VALID', comment="商户状态")
     contact = DynamicField(comment='联系人: name, tel')
 
-    loc = DictField(default=dict, comment=u"商户所属地址: address, lat,lng")
+    loc = DictField(default=dict, comment="商户所属地址: address, lat,lng")
     # 预计单量,货物类型,平均体积,时效要求, 需求描述
     requirement = DynamicField(comment='商户配送需求: forecast_orders,cargo_type,average_size,time_limit,remark')
     recommended_by = DynamicField(default=None, comment='推荐人: tel,time')
 
     fee = DictField(default=None, comment='商户定价: fh, ps, ...')
 
-    create_time = MDateTimeField(default=utc_now, comment=u"创建时间")
+    create_time = MDateTimeField(default=utc_now, comment="创建时间")
 
     meta = {
         "db_alias": "profile_connection",
@@ -102,4 +102,4 @@ class Shop(Document):
 
 
 if __name__ == "__main__":
-    print(Flow().__sql__())
+    print((Flow().__sql__()))

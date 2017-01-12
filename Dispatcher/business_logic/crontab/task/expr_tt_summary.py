@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # coding:utf-8
-from __future__ import unicode_literals
+
 import logging
 import arrow
-from utils import once, expr_conn, mongodb_client, send_mail
+from .utils import once, expr_conn, mongodb_client, send_mail
 from tools_lib.bl_expr import ExprState
 
 

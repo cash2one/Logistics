@@ -1,7 +1,7 @@
 #coding=utf-8
 __author__ = 'kk'
 
-from handlers import channel, account
+from .handlers import channel, account
 
 urls = [
     # 账户
