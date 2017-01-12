@@ -8,7 +8,7 @@ import traceback
 from collections import defaultdict
 
 import arrow
-import psycopg2
+# import psycopg2
 from .api import query_fence_point_within
 from .fsm_call import CallFSM
 from .fsm_expr import ExprFSM
@@ -316,90 +316,89 @@ class PickleSearchHandler(ReqHandler):
 class CanBeServed(ReqHandler):
     # == 以下从于昕那里取: 放redis,ttl=24h ==
     @staticmethod
-    def _get_orbit_and_schedule():
-        orbit_str = redis_client.get(key_nodes)
-        schedule_today_str = redis_client.get(key_schedule_today)
-        # 如果站点信息或者今日线路信息任一一个过期, 重新取一遍数据库
-        if (not orbit_str) or (not schedule_today_str):
-            try:
-                conn = psycopg2.connect(host=IP_POSTGRE, port='5432', database='tlbs', user='postgres',
-                                        password='feng123')
-            except Exception as e:
-                print((e.message))
-                return None, None
-
-            cursor = conn.cursor()
-            cursor.execute("""select
-            c.node_id,c.deliver_id,c.reg_cron,d.node_name,ST_AsGeoJSON(d.loc) as loc,d.node_address
-            from
-                (select a.node_id,a.deliver_id,b.reg_cron from trans.bs_trans_bind_node_info as a
-                left join trans.bs_trans_reg_time as b
-                on a.cron_id=b.id
-                where a.status = 1 and a.deliver_id is not NULL) as c
-            left join trans.bs_trans_node_info as d
-            on c.node_id=d.node_id;""")
-            # node_id                              deliver_id                   reg_cron        node_name loc                                                        node_address
-            # 11e603b4722edfd025342a53cbd7fae9    56fb30b5eed093338d22a919    0 30 9 * * ?    星耀城    {"type":"Point","coordinates":[120.221344,30.219355]}    杭州市滨江区星耀城
-            _orbit = []
-            _schedule_today = {}
-
-            nodes = {}
-            for record in cursor:
-                ts = record[2].split(' ')
-                hour = int(ts[2])
-                mi = int(ts[1])
-                t = arrow.now().replace(hour=hour if hour != 24 else 0, minute=int(mi))
-
-                unicode_record = []
-                for col in record:
-                    if isinstance(col, str):
-                        unicode_record.append(col.decode('utf-8'))
-                    else:
-                        unicode_record.append(col)
-
-                man_id = unicode_record[1]
-                node_id = unicode_record[0]
-                node_name = unicode_record[3]
-                node_address = unicode_record[5]
-                t = t.format(fmt='HH:mm')
-                coordinates = json.loads(unicode_record[4])['coordinates']
-                coordinates = (coordinates[1], coordinates[0])  # (30.0, 120.0)把纬度放在前面
-
-                # 捞nodes来算orbit: t没排序
-                if node_id not in nodes:
-                    nodes[node_id] = dict(coordinates=coordinates, name=node_name, id=node_id, t=[t])
-                else:
-                    nodes[node_id]['t'].append(t)
-
-                # 算schedule_today: run没排序
-                footprint = dict(coordinates=coordinates, name=node_name, id=node_id, t=t)
-                if man_id not in _schedule_today:
-                    _schedule_today[man_id] = dict(run=[footprint])
-                else:
-                    _schedule_today[man_id]['run'].append(footprint)
-
-            conn.close()
-
-            # 算orbit, 给t排序
-            for key in nodes:
-                node = nodes[key]
-                t_list = node['t']
-                node['t'] = sorted(t_list)
-                _orbit.append(node)
-
-            # 给schedule_today[man_id][run]排序
-            for key in _schedule_today:
-                schedule = _schedule_today[key]
-                schedule['run'] = sorted(schedule['run'], cmp=lambda x, y: cmp(x['t'], y['t']))
-        else:
-            _orbit = json.loads(orbit_str)
-            _schedule_today = json.loads(schedule_today_str)
-            return _orbit, _schedule_today
-
-        # print(json.dumps(_orbit, ensure_ascii=False, indent=2))
-        # print(json.dumps(_schedule_today, ensure_ascii=False, indent=2))
-        return _orbit, _schedule_today
-
+    # def _get_orbit_and_schedule():
+    #     orbit_str = redis_client.get(key_nodes)
+    #     schedule_today_str = redis_client.get(key_schedule_today)
+    #     # 如果站点信息或者今日线路信息任一一个过期, 重新取一遍数据库
+    #     if (not orbit_str) or (not schedule_today_str):
+    #         try:
+    #             conn = psycopg2.connect(host=IP_POSTGRE, port='5432', database='tlbs', user='postgres',
+    #                                     password='feng123')
+    #         except Exception as e:
+    #             print((e.message))
+    #             return None, None
+    #
+    #         cursor = conn.cursor()
+    #         cursor.execute("""select
+    #         c.node_id,c.deliver_id,c.reg_cron,d.node_name,ST_AsGeoJSON(d.loc) as loc,d.node_address
+    #         from
+    #             (select a.node_id,a.deliver_id,b.reg_cron from trans.bs_trans_bind_node_info as a
+    #             left join trans.bs_trans_reg_time as b
+    #             on a.cron_id=b.id
+    #             where a.status = 1 and a.deliver_id is not NULL) as c
+    #         left join trans.bs_trans_node_info as d
+    #         on c.node_id=d.node_id;""")
+    #         # node_id                              deliver_id                   reg_cron        node_name loc                                                        node_address
+    #         # 11e603b4722edfd025342a53cbd7fae9    56fb30b5eed093338d22a919    0 30 9 * * ?    星耀城    {"type":"Point","coordinates":[120.221344,30.219355]}    杭州市滨江区星耀城
+    #         _orbit = []
+    #         _schedule_today = {}
+    #
+    #         nodes = {}
+    #         for record in cursor:
+    #             ts = record[2].split(' ')
+    #             hour = int(ts[2])
+    #             mi = int(ts[1])
+    #             t = arrow.now().replace(hour=hour if hour != 24 else 0, minute=int(mi))
+    #
+    #             unicode_record = []
+    #             for col in record:
+    #                 if isinstance(col, str):
+    #                     unicode_record.append(col.decode('utf-8'))
+    #                 else:
+    #                     unicode_record.append(col)
+    #
+    #             man_id = unicode_record[1]
+    #             node_id = unicode_record[0]
+    #             node_name = unicode_record[3]
+    #             node_address = unicode_record[5]
+    #             t = t.format(fmt='HH:mm')
+    #             coordinates = json.loads(unicode_record[4])['coordinates']
+    #             coordinates = (coordinates[1], coordinates[0])  # (30.0, 120.0)把纬度放在前面
+    #
+    #             # 捞nodes来算orbit: t没排序
+    #             if node_id not in nodes:
+    #                 nodes[node_id] = dict(coordinates=coordinates, name=node_name, id=node_id, t=[t])
+    #             else:
+    #                 nodes[node_id]['t'].append(t)
+    #
+    #             # 算schedule_today: run没排序
+    #             footprint = dict(coordinates=coordinates, name=node_name, id=node_id, t=t)
+    #             if man_id not in _schedule_today:
+    #                 _schedule_today[man_id] = dict(run=[footprint])
+    #             else:
+    #                 _schedule_today[man_id]['run'].append(footprint)
+    #
+    #         conn.close()
+    #
+    #         # 算orbit, 给t排序
+    #         for key in nodes:
+    #             node = nodes[key]
+    #             t_list = node['t']
+    #             node['t'] = sorted(t_list)
+    #             _orbit.append(node)
+    #
+    #         # 给schedule_today[man_id][run]排序
+    #         for key in _schedule_today:
+    #             schedule = _schedule_today[key]
+    #             schedule['run'] = sorted(schedule['run'], cmp=lambda x, y: cmp(x['t'], y['t']))
+    #     else:
+    #         _orbit = json.loads(orbit_str)
+    #         _schedule_today = json.loads(schedule_today_str)
+    #         return _orbit, _schedule_today
+    #
+    #     # print(json.dumps(_orbit, ensure_ascii=False, indent=2))
+    #     # print(json.dumps(_schedule_today, ensure_ascii=False, indent=2))
+    #     return _orbit, _schedule_today
     # == 解空间: 放redis,ttl=24h ==
     @staticmethod
     def _pre_calculated(_schedule_today):
@@ -443,6 +442,10 @@ class CanBeServed(ReqHandler):
             logging.info(in_time)
             prompts.append(in_time)
 
+    @staticmethod
+    def cmp(a, b):
+        return (a > b) - (a < b)
+
     # == 输出1: 推荐始发站点, 推荐目的站点 ==
     @staticmethod
     def _find_nearby(_node, _orbit, prompts):
@@ -458,7 +461,7 @@ class CanBeServed(ReqHandler):
                 if len(_s0) < limit_count:
                     _s0.append(dict(point=p, dist=dist_0, n0=n0))
                 else:
-                    _s0 = sorted(_s0, cmp=lambda x, y: cmp(x['dist'], y['dist']))
+                    _s0 = sorted(_s0, cmp=lambda x, y: CanBeServed.cmp(x['dist'], y['dist']))
                     max_dist = _s0[-1]['dist']
                     if dist_0 < max_dist:
                         _s0[-1] = dict(point=p, dist=dist_0, n0=n0)
@@ -468,7 +471,7 @@ class CanBeServed(ReqHandler):
                 if len(_sn) < limit_count:
                     _sn.append(dict(point=p, dist=dist_n, nn=nn))
                 else:
-                    _sn = sorted(_sn, cmp=lambda x, y: cmp(x['dist'], y['dist']))
+                    _sn = sorted(_sn, cmp=lambda x, y: CanBeServed.cmp(x['dist'], y['dist']))
                     max_dist = _sn[-1]['dist']
                     if dist_n < max_dist:
                         _sn[-1] = dict(point=p, dist=dist_n, nn=nn)
@@ -637,12 +640,15 @@ class OneKeyCall(ReqHandler):
                     }
                 }
                 # 3.1 找到该客户没付钱的前20单(如有), 塞到这个呼叫里面
-                es = Express.objects(creator__id=shop['id'], status__status=ExprState.STATUS_PRE_CREATED).only('number').limit(20).all()
+                es = Express.objects(creator__id=shop['id'], status__status=ExprState.STATUS_PRE_CREATED).only(
+                    'number').limit(20).all()
                 if es:
                     number_list = [e['number'] for e in es]
-                    c = Call(shop_id=shop['id'], shop_name=shop['name'], shop_tel=shop['tel'], loc=loc, count=kw['count'], number_list=number_list)
+                    c = Call(shop_id=shop['id'], shop_name=shop['name'], shop_tel=shop['tel'], loc=loc,
+                             count=kw['count'], number_list=number_list)
                 else:
-                    c = Call(shop_id=shop['id'], shop_name=shop['name'], shop_tel=shop['tel'], loc=loc, count=kw['count'])
+                    c = Call(shop_id=shop['id'], shop_name=shop['name'], shop_tel=shop['tel'], loc=loc,
+                             count=kw['count'])
                 c.save()
         except Exception as e:
             logging.exception(e)
@@ -823,7 +829,8 @@ class OneKeyCallSingle(ReqHandler):
             self.resp_error(e.message)
             return
         else:
-            self.resp(modified_call.pack(only=['number_list', 'transact_list', 'id', 'assignee', 'loc', 'create_time', 'shop_id']))
+            self.resp(modified_call.pack(
+                only=['number_list', 'transact_list', 'id', 'assignee', 'loc', 'create_time', 'shop_id']))
 
 
 # ==> AG-uwsgi: 微信/支付宝 支付成功的首次通知

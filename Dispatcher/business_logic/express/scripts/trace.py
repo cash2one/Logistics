@@ -29,7 +29,7 @@ MONGODB_CONFIG = {
 
 
 def pprint(*arg):
-    print(safe_join(arg))
+    print((safe_join(arg)))
 
 
 def sign_in():
@@ -42,7 +42,7 @@ def sign_in():
 
 
 if __name__ == '__main__':
-    print(MONGODB_NAME, MONGODB_CONFIG)
+    print((MONGODB_NAME, MONGODB_CONFIG))
     from functools import partial
 
     pool = Pool(8)

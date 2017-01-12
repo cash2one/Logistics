@@ -32,7 +32,7 @@ client = MongoClient(**MONGODB_CONFIG)
 crontab_conn = client['aeolus']['crontab']
 
 if __name__ == '__main__':
-    print(MONGODB_NAME, MONGODB_CONFIG)
+    print((MONGODB_NAME, MONGODB_CONFIG))
     shop_conn = client['profile']['shop']
     for doc in shop_conn.find():
-        print(safe_join([doc.get('name', "空"), doc['tel'], doc.get("fee", {}).get("fh_base", 15)]))
+        print((safe_join([doc.get('name', "空"), doc['tel'], doc.get("fee", {}).get("fh_base", 15)])))

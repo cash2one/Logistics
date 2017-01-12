@@ -482,7 +482,7 @@ class Express(Document):
         elif isinstance(value, list):
             ret = [Express._field_to_json(_) for _ in value]
         elif isinstance(value, dict):
-            ret = {k: Express._field_to_json(v) for k, v in value.items()}
+            ret = {k: Express._field_to_json(v) for k, v in list(value.items())}
         elif isinstance(value, float):
             ret = round(ret, 10)
         return ret

@@ -9,7 +9,6 @@ from tools_lib.common_util.log import init_log
 
 # 配置全局logging. => 配完PYTHON_PATH,在所有的import前做!!!
 init_log(os.path.dirname(os.path.abspath(__file__)))
-
 import logging
 import tornado.web
 import tornado.ioloop
@@ -17,14 +16,18 @@ import tornado.httpserver
 from tornado.options import define, options
 from urls import urls
 from settings import settings, MONGODB_NAME
-from tools_lib.gmongoengine.connnection import connect
+from tools_lib.gmongoengine.connnection import connect, disconnect
 
 define("port", default=5002, help="run on the given port", type=int)
 
 
 class Application(tornado.web.Application):
+    def __del__(self):
+        disconnect(alias=self.alias)
+
     def __init__(self):
-        connect(MONGODB_NAME, alias='aeolus_connection')
+        self.alias = 'aeolus_connection'
+        connect(MONGODB_NAME, alias=self.alias)
         tornado.web.Application.__init__(self, urls, **settings)
 
     def log_request(self, handler):
